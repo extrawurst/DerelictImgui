@@ -1,0 +1,16 @@
+{
+    "name": "derelict-imgui",
+    "description": "Dynamic bindings to the cimgui library (a c-api for IMGUI) for the D programming language",
+    "homepage": "",
+    "license": "MIT",
+    "authors": [
+        "Stephan Dilly"
+    ],
+
+    "targetName": "DerelictImgui",
+    "targetPath": "lib",
+
+    "dependencies": {
+        "derelict-util": "~>1.9.1"
+    }
+}
