@@ -38,8 +38,6 @@ private
 	import std.c.stdarg:va_list;
 }
 
-ImVec2 foo;
-
 extern(C) @nogc nothrow
 {
 	alias da_ig_GetIO 						= ImGuiIO* function();
@@ -264,7 +262,10 @@ extern(C) @nogc nothrow
 	alias da_ig_SetMouseCursor				= void				function(ImGuiMouseCursor type);
 	alias da_ig_GetTime						= float			function();
 	alias da_ig_GetFrameCount				= int				function();
-	alias da_ig_GetStyleColName				= const char*		function(ImGuiCol idx);
+    version(LDC)
+        alias da_ig_GetStyleColName             = const char*		function(int idx);//to make ldc0.15.1 happy, otherwise ImGuiCol is correct
+    else
+        alias da_ig_GetStyleColName             = const char*       function(ImGuiCol idx);
 	alias da_ig_CalcItemRectClosestPoint	= void function(ImVec2* pOut, const ImVec2 pos, bool on_edge = false, float outward = +0.0f);
 	alias da_ig_CalcTextSize				= void function(ImVec2* pOut, const char* text, const char* text_end = null, bool hide_text_after_double_hash = false, float wrap_width = -1.0f);
 	alias da_ig_CalcListClipping			= void				function(int items_count, float items_height, int* out_items_display_start, int* out_items_display_end);

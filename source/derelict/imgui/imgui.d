@@ -62,9 +62,8 @@ private
         static assert(0, "Need to implement imgui libNames for this operating system.");
 }
 
-class DerelictImguiLoader : SharedLibLoader
+final class DerelictImguiLoader : SharedLibLoader
 {
-
     protected
     {
         override void loadSymbols()
