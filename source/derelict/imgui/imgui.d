@@ -87,7 +87,7 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_Begin2, "ig_Begin2");
 				bindFunc(cast(void**)&ig_End, "ig_End");
 				bindFunc(cast(void**)&ig_BeginChild, "ig_BeginChild");
-				bindFunc(cast(void**)&ig_BeginChild2, "ig_BeginChild2");
+				bindFunc(cast(void**)&ig_BeginChildEx, "ig_BeginChildEx");
 				bindFunc(cast(void**)&ig_EndChild, "ig_EndChild");
 				bindFunc(cast(void**)&ig_GetContentRegionMax, "ig_GetContentRegionMax");
 				bindFunc(cast(void**)&ig_GetWindowContentRegionMin, "ig_GetWindowContentRegionMin");
@@ -109,7 +109,7 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_SetWindowSize, "ig_SetWindowSize");
 				bindFunc(cast(void**)&ig_SetWindowCollapsed, "ig_SetWindowCollapsed");
 				bindFunc(cast(void**)&ig_SetWindowFocus, "ig_SetWindowFocus");
-				bindFunc(cast(void**)&ig_SetWindowPos2, "ig_SetWindowPos2");
+				bindFunc(cast(void**)&ig_SetWindowPosByName, "ig_SetWindowPosByName");
 				bindFunc(cast(void**)&ig_SetWindowSize2, "ig_SetWindowSize2");
 				bindFunc(cast(void**)&ig_SetWindowCollapsed2, "ig_SetWindowCollapsed2");
 				bindFunc(cast(void**)&ig_SetWindowFocus2, "ig_SetWindowFocus2");
@@ -171,9 +171,9 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_GetTextLineHeight, "ig_GetTextLineHeight");
 				bindFunc(cast(void**)&ig_GetTextLineHeightWithSpacing, "ig_GetTextLineHeightWithSpacing");
 
-				bindFunc(cast(void**)&ig_PushID, "ig_PushID");
-				bindFunc(cast(void**)&ig_PushID2, "ig_PushID2");
-				bindFunc(cast(void**)&ig_PushID3, "ig_PushID3");
+				bindFunc(cast(void**)&ig_PushIdStr, "ig_PushIdStr");
+				bindFunc(cast(void**)&ig_PushIdPtr, "ig_PushIdPtr");
+				bindFunc(cast(void**)&ig_PushIdInt, "ig_PushIdInt");
 				bindFunc(cast(void**)&ig_PopID, "ig_PopID");
 				bindFunc(cast(void**)&ig_GetID, "ig_GetID");
 				bindFunc(cast(void**)&ig_GetID2, "ig_GetID2");
@@ -198,8 +198,8 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_CollapsingHeader, "ig_CollapsingHeader");
 				bindFunc(cast(void**)&ig_Checkbox, "ig_Checkbox");
 				bindFunc(cast(void**)&ig_CheckboxFlags, "ig_CheckboxFlags");
+				bindFunc(cast(void**)&ig_RadioButtonBool, "ig_RadioButtonBool");
 				bindFunc(cast(void**)&ig_RadioButton, "ig_RadioButton");
-				bindFunc(cast(void**)&ig_RadioButton2, "ig_RadioButton2");
 				bindFunc(cast(void**)&ig_Combo, "ig_Combo");
 				bindFunc(cast(void**)&ig_Combo2, "ig_Combo2");
 				bindFunc(cast(void**)&ig_Combo3, "ig_Combo3");
@@ -238,27 +238,27 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_InputInt4, "ig_InputInt4");
 			
 				bindFunc(cast(void**)&ig_TreeNode, "ig_TreeNode");
-				bindFunc(cast(void**)&ig_TreeNode2, "ig_TreeNode2");
-				bindFunc(cast(void**)&ig_TreeNode3, "ig_TreeNode3");
-				bindFunc(cast(void**)&ig_TreeNodeV, "ig_TreeNodeV");
-				bindFunc(cast(void**)&ig_TreeNodeV2, "ig_TreeNodeV2");
-				bindFunc(cast(void**)&ig_TreePush, "ig_TreePush");
-				bindFunc(cast(void**)&ig_TreePush2, "ig_TreePush2");
+				bindFunc(cast(void**)&ig_TreeNodeStr, "ig_TreeNodeStr");
+				bindFunc(cast(void**)&ig_TreeNodePtr, "ig_TreeNodePtr");
+				bindFunc(cast(void**)&ig_TreeNodeStrV, "ig_TreeNodeStrV");
+				bindFunc(cast(void**)&ig_TreeNodePtrV, "ig_TreeNodePtrV");
+				bindFunc(cast(void**)&ig_TreePushStr, "ig_TreePushStr");
+				bindFunc(cast(void**)&ig_TreePushPtr, "ig_TreePushPtr");
 				bindFunc(cast(void**)&ig_TreePop, "ig_TreePop");
 				bindFunc(cast(void**)&ig_SetNextTreeNodeOpened, "ig_SetNextTreeNodeOpened");
 
 				bindFunc(cast(void**)&ig_Selectable, "ig_Selectable");
-				bindFunc(cast(void**)&ig_Selectable2, "ig_Selectable2");
+				bindFunc(cast(void**)&ig_SelectableEx, "ig_SelectableEx");
 				bindFunc(cast(void**)&ig_ListBox, "ig_ListBox");
 				bindFunc(cast(void**)&ig_ListBox2, "ig_ListBox2");
 				bindFunc(cast(void**)&ig_ListBoxHeader, "ig_ListBoxHeader");
 				bindFunc(cast(void**)&ig_ListBoxHeader2, "ig_ListBoxHeader2");
 				bindFunc(cast(void**)&ig_ListBoxFooter, "ig_ListBoxFooter");
 
-				bindFunc(cast(void**)&ig_Value, "ig_Value");
-				bindFunc(cast(void**)&ig_Value2, "ig_Value2");
-				bindFunc(cast(void**)&ig_Value3, "ig_Value3");
-				bindFunc(cast(void**)&ig_Value4, "ig_Value4");
+				bindFunc(cast(void**)&ig_ValueBool, "ig_ValueBool");
+				bindFunc(cast(void**)&ig_ValueInt, "ig_ValueInt");
+				bindFunc(cast(void**)&ig_ValueUInt, "ig_ValueUInt");
+				bindFunc(cast(void**)&ig_ValueFloat, "ig_ValueFloat");
 				bindFunc(cast(void**)&ig_Color, "ig_Color");
 				bindFunc(cast(void**)&ig_Color2, "ig_Color2");
 

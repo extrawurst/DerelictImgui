@@ -55,7 +55,7 @@ extern(C) @nogc nothrow
 	alias da_ig_Begin2 						= bool function(const char* name, bool* p_opened, const ImVec2 size_on_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0);
 	alias da_ig_End 						= void function();
 	alias da_ig_BeginChild 					= bool function(const char* str_id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
-	alias da_ig_BeginChild2 				= bool function(ImGuiID id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
+	alias da_ig_BeginChildEx 				= bool function(ImGuiID id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
 	alias da_ig_EndChild 					= void function();
 	alias da_ig_GetContentRegionMax 		= void function(ImVec2* outParam);
 	alias da_ig_GetWindowContentRegionMin 	= void function(ImVec2* outParam);
@@ -77,7 +77,7 @@ extern(C) @nogc nothrow
 	alias da_ig_SetWindowSize 				= void function(const ImVec2 size, ImGuiSetCond cond = 0);
 	alias da_ig_SetWindowCollapsed 			= void function(bool collapsed, ImGuiSetCond cond = 0);
 	alias da_ig_SetWindowFocus 				= void function();
-	alias da_ig_SetWindowPos2 				= void function(const char* name, const ImVec2 pos, ImGuiSetCond cond = 0);
+	alias da_ig_SetWindowPosByName 				= void function(const char* name, const ImVec2 pos, ImGuiSetCond cond = 0);
 	alias da_ig_SetWindowSize2 				= void function(const char* name, const ImVec2 size, ImGuiSetCond cond = 0);
 	alias da_ig_SetWindowCollapsed2 		= void function(const char* name, bool collapsed, ImGuiSetCond cond = 0);
 	alias da_ig_SetWindowFocus2 			= void function(const char* name);
@@ -139,9 +139,9 @@ extern(C) @nogc nothrow
 	alias da_ig_GetTextLineHeight			= float			function();
 	alias da_ig_GetTextLineHeightWithSpacing	= float			function();
 
-	alias da_ig_PushID						= void				function(const char* str_id);
-	alias da_ig_PushID2						= void				function(const void* ptr_id);
-	alias da_ig_PushID3						= void				function(const int int_id);
+	alias da_ig_PushIdStr					= void				function(const char* str_id);
+	alias da_ig_PushIdPtr					= void				function(const void* ptr_id);
+	alias da_ig_PushIdInt					= void				function(const int int_id);
 	alias da_ig_PopID						= void				function();
 	alias da_ig_GetID						= ImGuiID			function(const char* str_id);
 	alias da_ig_GetID2						= ImGuiID			function(const void* ptr_id);
@@ -166,8 +166,8 @@ extern(C) @nogc nothrow
 	alias da_ig_CollapsingHeader			= bool				function(const char* label, const char* str_id = null, bool display_frame = true, bool default_open = false);
 	alias da_ig_Checkbox					= bool				function(const char* label, bool* v);
 	alias da_ig_CheckboxFlags				= bool				function(const char* label, uint* flags, uint flags_value);
-	alias da_ig_RadioButton					= bool				function(const char* label, bool active);
-	alias da_ig_RadioButton2				= bool				function(const char* label, int* v, int v_button);
+	alias da_ig_RadioButtonBool					= bool				function(const char* label, bool active);
+	alias da_ig_RadioButton				= bool				function(const char* label, int* v, int v_button);
 	alias da_ig_Combo						= bool				function(const char* label, int* current_item, const char** items, int items_count, int height_in_items = -1);
 	alias da_ig_Combo2						= bool				function(const char* label, int* current_item, const char* items_separated_by_zeros, int height_in_items = -1);
 	alias da_ig_Combo3						= bool				function(const char* label, int* current_item, bool function(void* data, int idx, const char** out_text) items_getter, void* data, int items_count, int height_in_items = -1);
@@ -206,27 +206,27 @@ extern(C) @nogc nothrow
 	alias da_ig_InputInt4					= bool				function(const char* label, ref int[4] v);
 			
 	alias da_ig_TreeNode					= bool				function(const char* str_label_id);
-	alias da_ig_TreeNode2					= bool				function(const char* str_id, const char* fmt, ...);
-	alias da_ig_TreeNode3					= bool				function(const void* ptr_id, const char* fmt, ...);
-	alias da_ig_TreeNodeV					= bool				function(const char* str_id, const char* fmt, va_list args);
-	alias da_ig_TreeNodeV2					= bool				function(const void* ptr_id, const char* fmt, va_list args);
-	alias da_ig_TreePush					= void				function(const char* str_id = null);
-	alias da_ig_TreePush2					= void				function(const void* ptr_id = null);
+	alias da_ig_TreeNodeStr					= bool				function(const char* str_id, const char* fmt, ...);
+	alias da_ig_TreeNodePtr					= bool				function(const void* ptr_id, const char* fmt, ...);
+	alias da_ig_TreeNodeStrV					= bool				function(const char* str_id, const char* fmt, va_list args);
+	alias da_ig_TreeNodePtrV					= bool				function(const void* ptr_id, const char* fmt, va_list args);
+	alias da_ig_TreePushStr					= void				function(const char* str_id = null);
+	alias da_ig_TreePushPtr					= void				function(const void* ptr_id = null);
 	alias da_ig_TreePop						= void				function();
 	alias da_ig_SetNextTreeNodeOpened		= void				function(bool opened, ImGuiSetCond cond = 0);
 
 	alias da_ig_Selectable					= bool				function(const char* label, bool selected = false, const ImVec2 size = ImVec2(0, 0));
-	alias da_ig_Selectable2					= bool				function(const char* label, bool* p_selected, const ImVec2 size = ImVec2(0, 0));
+	alias da_ig_SelectableEx					= bool				function(const char* label, bool* p_selected, const ImVec2 size = ImVec2(0, 0));
 	alias da_ig_ListBox						= bool				function(const char* label, int* current_item, const char** items, int items_count, int height_in_items = -1);
 	alias da_ig_ListBox2					= bool				function(const char* label, int* current_item, bool function(void* data, int idx, const char** out_text) items_getter, void* data, int items_count, int height_in_items = -1);
 	alias da_ig_ListBoxHeader				= bool				function(const char* label, const ImVec2 size = ImVec2(0, 0));
 	alias da_ig_ListBoxHeader2				= bool				function(const char* label, int items_count, int height_in_items = -1);
 	alias da_ig_ListBoxFooter				= void				function();
 
-	alias da_ig_Value		= void				function(const char* prefix, bool b);
-	alias da_ig_Value2		= void				function(const char* prefix, int v);
-	alias da_ig_Value3		= void				function(const char* prefix, uint v);
-	alias da_ig_Value4		= void				function(const char* prefix, float v, const char* float_format = null);
+	alias da_ig_ValueBool		= void				function(const char* prefix, bool b);
+	alias da_ig_ValueInt		= void				function(const char* prefix, int v);
+	alias da_ig_ValueUInt		= void				function(const char* prefix, uint v);
+	alias da_ig_ValueFloat		= void				function(const char* prefix, float v, const char* float_format = null);
 	alias da_ig_Color		= void				function(const char* prefix, const ImVec4 v);
 	alias da_ig_Color2		= void				function(const char* prefix, uint v);
 
@@ -311,7 +311,7 @@ __gshared
 	da_ig_Begin2 ig_Begin2;
 	da_ig_End ig_End;
 	da_ig_BeginChild ig_BeginChild;
-	da_ig_BeginChild2 ig_BeginChild2;
+	da_ig_BeginChildEx ig_BeginChildEx;
 	da_ig_EndChild ig_EndChild;
 	da_ig_GetContentRegionMax ig_GetContentRegionMax;
 	da_ig_GetWindowContentRegionMin ig_GetWindowContentRegionMin;
@@ -333,7 +333,7 @@ __gshared
 	da_ig_SetWindowSize ig_SetWindowSize;
 	da_ig_SetWindowCollapsed ig_SetWindowCollapsed;
 	da_ig_SetWindowFocus ig_SetWindowFocus;
-	da_ig_SetWindowPos2 ig_SetWindowPos2;
+	da_ig_SetWindowPosByName ig_SetWindowPosByName;
 	da_ig_SetWindowSize2 ig_SetWindowSize2;
 	da_ig_SetWindowCollapsed2 ig_SetWindowCollapsed2;
 	da_ig_SetWindowFocus2 ig_SetWindowFocus2;
@@ -395,9 +395,9 @@ __gshared
 	da_ig_GetTextLineHeight ig_GetTextLineHeight;
 	da_ig_GetTextLineHeightWithSpacing ig_GetTextLineHeightWithSpacing;
 
-	da_ig_PushID ig_PushID;
-	da_ig_PushID2 ig_PushID2;
-	da_ig_PushID3 ig_PushID3;
+	da_ig_PushIdStr ig_PushIdStr;
+	da_ig_PushIdPtr ig_PushIdPtr;
+	da_ig_PushIdInt ig_PushIdInt;
 	da_ig_PopID ig_PopID;
 	da_ig_GetID ig_GetID;
 	da_ig_GetID2 ig_GetID2;
@@ -422,8 +422,8 @@ __gshared
 	da_ig_CollapsingHeader ig_CollapsingHeader;
 	da_ig_Checkbox ig_Checkbox;
 	da_ig_CheckboxFlags ig_CheckboxFlags;
+	da_ig_RadioButtonBool ig_RadioButtonBool;
 	da_ig_RadioButton ig_RadioButton;
-	da_ig_RadioButton2 ig_RadioButton2;
 	da_ig_Combo ig_Combo;
 	da_ig_Combo2 ig_Combo2;
 	da_ig_Combo3 ig_Combo3;
@@ -462,27 +462,27 @@ __gshared
 	da_ig_InputInt4 ig_InputInt4;
 			
 	da_ig_TreeNode ig_TreeNode;
-	da_ig_TreeNode2 ig_TreeNode2;
-	da_ig_TreeNode3 ig_TreeNode3;
-	da_ig_TreeNodeV ig_TreeNodeV;
-	da_ig_TreeNodeV2 ig_TreeNodeV2;
-	da_ig_TreePush ig_TreePush;
-	da_ig_TreePush2 ig_TreePush2;
+	da_ig_TreeNodeStr ig_TreeNodeStr;
+	da_ig_TreeNodePtr ig_TreeNodePtr;
+	da_ig_TreeNodeStrV ig_TreeNodeStrV;
+	da_ig_TreeNodePtrV ig_TreeNodePtrV;
+	da_ig_TreePushStr ig_TreePushStr;
+	da_ig_TreePushPtr ig_TreePushPtr;
 	da_ig_TreePop ig_TreePop;
 	da_ig_SetNextTreeNodeOpened ig_SetNextTreeNodeOpened;
 
 	da_ig_Selectable ig_Selectable;
-	da_ig_Selectable2 ig_Selectable2;
+	da_ig_SelectableEx ig_SelectableEx;
 	da_ig_ListBox ig_ListBox;
 	da_ig_ListBox2 ig_ListBox2;
 	da_ig_ListBoxHeader ig_ListBoxHeader;
 	da_ig_ListBoxHeader2 ig_ListBoxHeader2;
 	da_ig_ListBoxFooter ig_ListBoxFooter;
 
-	da_ig_Value ig_Value;
-	da_ig_Value2 ig_Value2;
-	da_ig_Value3 ig_Value3;
-	da_ig_Value4 ig_Value4;
+	da_ig_ValueBool ig_ValueBool;
+	da_ig_ValueInt ig_ValueInt;
+	da_ig_ValueUInt ig_ValueUInt;
+	da_ig_ValueFloat ig_ValueFloat;
 	da_ig_Color ig_Color;
 	da_ig_Color2 ig_Color2;
 
