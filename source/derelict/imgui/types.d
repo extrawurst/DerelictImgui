@@ -161,12 +161,14 @@ alias int ImGuiSetCond;           // enum ImGuiSetCond_
 alias int ImGuiInputTextFlags;    // enum ImGuiInputTextFlags_
 alias int function(ImGuiTextEditCallbackData *data) ImGuiTextEditCallback;
 
-alias RenderDrawListFunc = extern(C) nothrow void function(ImDrawList** draw_lists, int count);
-alias GetClipboardTextFunc = extern(C) nothrow const(char)* function();
-alias SetClipboardTextFunc = extern(C) nothrow void function(const(char)*);
-alias MemAllocFunc = extern(C) nothrow void* function(size_t);
-alias MemFreeFunc = extern(C) nothrow void function(void*);
-alias ImeSetInputScreenPosFunc = extern(C) nothrow void function(int,int);
+extern(C) nothrow {
+    alias RenderDrawListFunc = void function(ImDrawList** draw_lists, int count);
+    alias GetClipboardTextFunc = const(char)* function();
+    alias SetClipboardTextFunc = void function(const(char)*);
+    alias MemAllocFunc = void* function(size_t);
+    alias MemFreeFunc = void function(void*);
+    alias ImeSetInputScreenPosFunc = void function(int,int);
+}
 
 // Shared state of InputText(), passed to callback when a ImGuiInputTextFlags_Callback* flag is used.
 align(1) struct ImGuiTextEditCallbackData
