@@ -33,8 +33,7 @@ module derelict.imgui.types;
 
 import derelict.util.system;
 
-// User fill ImGuiIO.KeyMap[] array with indices into the ImGuiIO.KeysDown[512] array
-enum ImGuiKey_:int
+enum
 {
 	ImGuiKey_Tab,
 	ImGuiKey_LeftArrow,
@@ -77,8 +76,7 @@ enum
     ImGuiWindowFlags_Popup                  = 1 << 14   // For internal use by BeginPopup()
 };
 
-// Flags for ImGui::InputText()
-enum ImGuiInputTextFlags_
+enum
 {
     // Default: 0
     ImGuiInputTextFlags_CharsDecimal        = 1 << 0,   // Allow 0123456789.+-*/
@@ -100,7 +98,7 @@ enum
     ImGuiSetCond_FirstUseEver  = 1 << 2  // Only set the variable if the window doesn't exist in the .ini file
 };
 
-enum ImGuiCol_
+enum
 {
     ImGuiCol_Text,
     ImGuiCol_WindowBg,
@@ -142,6 +140,41 @@ enum ImGuiCol_
     ImGuiCol_TextSelectedBg,
     ImGuiCol_TooltipBg,
     ImGuiCol_COUNT
+};
+
+enum
+{
+	ImGuiStyleVar_Alpha,               // float
+	ImGuiStyleVar_WindowPadding,       // ImVec2
+	ImGuiStyleVar_WindowRounding,      // float
+	ImGuiStyleVar_ChildWindowRounding, // float
+	ImGuiStyleVar_FramePadding,        // ImVec2
+	ImGuiStyleVar_FrameRounding,       // float
+	ImGuiStyleVar_ItemSpacing,         // ImVec2
+	ImGuiStyleVar_ItemInnerSpacing,    // ImVec2
+	ImGuiStyleVar_IndentSpacing,       // float
+	ImGuiStyleVar_GrabMinSize          // float
+};
+
+enum
+{
+	ImGuiColorEditMode_UserSelect = -2,
+	ImGuiColorEditMode_UserSelectShowButton = -1,
+	ImGuiColorEditMode_RGB = 0,
+	ImGuiColorEditMode_HSV = 1,
+	ImGuiColorEditMode_HEX = 2
+};
+
+enum
+{
+	ImGuiMouseCursor_Arrow = 0,
+	ImGuiMouseCursor_TextInput,         // When hovering over InputText, etc.
+	ImGuiMouseCursor_Move,              // Unused
+	ImGuiMouseCursor_ResizeNS,          // Unused
+	ImGuiMouseCursor_ResizeEW,          // When hovering over a column
+	ImGuiMouseCursor_ResizeNESW,        // Unused
+	ImGuiMouseCursor_ResizeNWSE,        // When hovering over the bottom-right corner of a window
+	ImGuiMouseCursor_Count_
 };
 
 align(1) struct ImVec2
@@ -220,7 +253,7 @@ align(1) struct ImGuiIO
 	float         MouseDoubleClickTime;     // = 0.30f              // Time for a double-click, in seconds.
 	float         MouseDoubleClickMaxDist;  // = 6.0f               // Distance threshold to stay in to validate a double-click, in pixels.
 	float         MouseDragThreshold;       // = 6.0f               // Distance threshold before considering we are dragging
-	int[ImGuiKey_.ImGuiKey_COUNT]           KeyMap;   // <unset>              // Map of indices into the KeysDown[512] entries array
+	int[ImGuiKey_COUNT]           KeyMap;   // <unset>              // Map of indices into the KeysDown[512] entries array
 	void*         UserData;                 // = NULL               // Store your own data for retrieval by callbacks.
 	
 	ImFontAtlas*  Fonts;                    // <auto>               // Load and assemble one or more fonts into a single tightly packed texture. Output to Fonts array.
@@ -310,7 +343,7 @@ align(1) struct ImGuiStyle
     float       ScrollbarWidth;             // Width of the vertical scrollbar
     float       GrabMinSize;                // Minimum width/height of a slider or scrollbar grab
     ImVec2      DisplaySafeAreaPadding;     // Window positions are clamped to be visible within the display area. If you cannot see the edge of your screen (e.g. on a TV) increase the safe area padding.
-    ImVec4[ImGuiCol_.ImGuiCol_COUNT]      Colors;
+    ImVec4[ImGuiCol_COUNT]      Colors;
 };
 
 align(1) struct ImDrawVert
