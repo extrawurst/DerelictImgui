@@ -170,7 +170,7 @@ extern(C) @nogc nothrow
 	alias da_ig_RadioButton				= bool				function(const char* label, int* v, int v_button);
 	alias da_ig_Combo						= bool				function(const char* label, int* current_item, const char** items, int items_count, int height_in_items = -1);
 	alias da_ig_Combo2						= bool				function(const char* label, int* current_item, const char* items_separated_by_zeros, int height_in_items = -1);
-	alias da_ig_Combo3						= bool				function(const char* label, int* current_item, bool function(void* data, int idx, const char** out_text) items_getter, void* data, int items_count, int height_in_items = -1);
+	alias da_ig_Combo3						= bool				function(const char* label, int* current_item, bool function(void* data, int idx, const(char)** out_text) items_getter, void* data, int items_count, int height_in_items = -1);
 	alias da_ig_ColorButton					= bool				function(const ImVec4 col, bool small_height = false, bool outline_border = true);
 	alias da_ig_ColorEdit3					= bool				function(const char* label, ref float[3] col);
 	alias da_ig_ColorEdit4					= bool				function(const char* label, ref float[4] col, bool show_alpha = true);
