@@ -283,11 +283,22 @@ extern(C) @nogc nothrow
 	alias da_ig_SetInternalState			= void				function(void* state, bool construct = false);
 }
 
+// ImFontAtlas Methods
+extern(C) @nogc nothrow
+{
+	alias da_ImFontAtlas_GetTexDataAsRGBA32 = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
+	alias da_ImFontAtlas_GetTexDataAsAlpha8 = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
+	alias da_ImFontAtlas_SetTexID 			= void function(ImFontAtlas* atlas, void* id);
+	alias da_ImFontAtlas_AddFontDefault 	= ImFont* function(ImFontAtlas* atlas);
+	alias da_ImFontAtlas_AddFontFromFileTTF	= ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
+	alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* in_ttf_data, size_t in_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
+	alias da_ImFontAtlas_ClearTexData 		= void function(ImFontAtlas* atlas, void* id);
+	alias da_ImFontAtlas_Clear 				= void function(ImFontAtlas* atlas, void* id);
+}
+
 //TODO: rework
 extern(C) @nogc nothrow
 {
-	alias void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel) da_ImFontAtlas_GetTexDataAsRGBA32;
-    alias void function(ImFontAtlas* atlas, void* id) da_ImFontAtlas_SetTexID;
 	alias int function(ImDrawList* list) da_ImDrawList_GetVertexBufferSize;
 	alias ImDrawVert* function(ImDrawList* list, int n) da_ImDrawList_GetVertexPtr;
 	alias int function(ImDrawList* list) da_ImDrawList_GetCmdSize;
@@ -536,12 +547,21 @@ __gshared
 	da_ig_SetInternalState ig_SetInternalState;
 }
 
+__gshared
+{
+	da_ImFontAtlas_GetTexDataAsRGBA32 		ImFontAtlas_GetTexDataAsRGBA32;
+	da_ImFontAtlas_GetTexDataAsAlpha8 		ImFontAtlas_GetTexDataAsAlpha8;
+	da_ImFontAtlas_SetTexID 				ImFontAtlas_SetTexID;
+	da_ImFontAtlas_AddFontDefault 			ImFontAtlas_AddFontDefault;
+	da_ImFontAtlas_AddFontFromFileTTF 		ImFontAtlas_AddFontFromFileTTF;
+	da_ImFontAtlas_AddFontFromMemoryTTF 	ImFontAtlas_AddFontFromMemoryTTF;
+	da_ImFontAtlas_ClearTexData 			ImFontAtlas_ClearTexData;
+	da_ImFontAtlas_Clear 					ImFontAtlas_Clear;
+}
+
 //TODO: rework
 __gshared
 {
-	da_ImFontAtlas_GetTexDataAsRGBA32 ImFontAtlas_GetTexDataAsRGBA32;
-    da_ImFontAtlas_SetTexID ImFontAtlas_SetTexID;
-
 	da_ImDrawList_GetVertexBufferSize ImDrawList_GetVertexBufferSize;
 	da_ImDrawList_GetVertexPtr ImDrawList_GetVertexPtr;
 	da_ImDrawList_GetCmdSize ImDrawList_GetCmdSize;
@@ -549,7 +569,3 @@ __gshared
 
     da_ImGuiIO_AddInputCharacter ImGuiIO_AddInputCharacter;
 }
-
-
-  
-
