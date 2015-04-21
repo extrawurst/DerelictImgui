@@ -1,2 +1,3 @@
 lib
 .dub
+dub.selections.json
