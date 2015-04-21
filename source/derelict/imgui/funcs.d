@@ -140,11 +140,13 @@ extern(C) @nogc nothrow
 	alias da_ig_GetTextLineHeightWithSpacing	= float			function();
 
 	alias da_ig_PushIdStr					= void				function(const char* str_id);
+    alias da_ig_PushIdStrRange              = void              function(const char* str_begin, const char* str_end);
 	alias da_ig_PushIdPtr					= void				function(const void* ptr_id);
 	alias da_ig_PushIdInt					= void				function(const int int_id);
-	alias da_ig_PopID						= void				function();
-	alias da_ig_GetID						= ImGuiID			function(const char* str_id);
-	alias da_ig_GetID2						= ImGuiID			function(const void* ptr_id);
+	alias da_ig_PopId						= void				function();
+	alias da_ig_GetIdStr					= ImGuiID			function(const char* str_id);
+    alias da_ig_GetIdStrRange               = ImGuiID           function(const char* str_begin, const char* str_end);
+	alias da_ig_GetIdPtr					= ImGuiID			function(const void* ptr_id);
 
 	alias da_ig_Text						= void				function(const char* fmt, ...);
 	alias da_ig_TextV						= void				function(const char* fmt, va_list args);
@@ -192,8 +194,15 @@ extern(C) @nogc nothrow
 	alias da_ig_VSliderFloat				= bool				function(const char* label, const ImVec2 size, float* v, float v_min, float v_max, const char* display_format = "%.3f", float power = 1.0f);
 	alias da_ig_VSliderInt					= bool				function(const char* label, const ImVec2 size, int* v, int v_min, int v_max, const char* display_format = "%.0f");
 
-	alias da_ig_DragFloat					= bool				function(const char* label, float* v, float v_step = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f");
-	alias da_ig_DragInt						= bool				function(const char* label, int* v, int v_step = 1, int v_min = 0, int v_max = 0, const char* display_format = "%.0f");
+    alias da_ig_DragFloat                   = bool              function(const char* label, float* v, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f", float power = 1.0f);     // If v_max >= v_max we have no bound
+    alias da_ig_DragFloat2                  = bool              function(const char* label, ref float[2] v, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f", float power = 1.0f);
+    alias da_ig_DragFloat3                  = bool              function(const char* label, ref float[3] v, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f", float power = 1.0f);
+    alias da_ig_DragFloat4                  = bool              function(const char* label, ref float[4] v, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f", float power = 1.0f);
+    alias da_ig_DragInt                     = bool              function(const char* label, int* v, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.3f");                                       // If v_max >= v_max we have no bound
+    alias da_ig_DragInt2                    = bool              function(const char* label, ref int[2] v, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.3f");
+    alias da_ig_DragInt3                    = bool              function(const char* label, ref int[3] v, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.3f");
+    alias da_ig_DragInt4                    = bool              function(const char* label, ref int[4] v, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.3f");
+
 
 	alias da_ig_InputText					= bool				function(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags = 0, ImGuiTextEditCallback callback = null, void* user_data = null);
 	alias da_ig_InputFloat					= bool				function(const char* label, float* v, float step = 0.0f, float step_fast = 0.0f, int decimal_precision = -1, ImGuiInputTextFlags extra_flags = 0);
@@ -241,13 +250,14 @@ extern(C) @nogc nothrow
 	alias da_ig_IsItemHoveredRect			= bool				function();
 	alias da_ig_IsItemActive				= bool				function();
 	alias da_ig_IsAnyItemActive				= bool				function();
+    alias da_ig_IsItemVisible               = bool              function();
 	alias da_ig_GetItemRectMin				= void function(ImVec2* pOut);
 	alias da_ig_GetItemRectMax				= void function(ImVec2* pOut);
 	alias da_ig_GetItemRectSize				= void function(ImVec2* pOut);
 	alias da_ig_IsWindowFocused				= bool				function();
 	alias da_ig_IsRootWindowFocused			= bool				function();
 	alias da_ig_IsRootWindowOrAnyChildFocused	= bool				function();
-	alias da_ig_IsClipped					= bool				function(const ImVec2 item_size);
+	alias da_ig_IsRectClipped					= bool				function(const ImVec2 item_size);
 	alias da_ig_IsKeyPressed				= bool				function(int key_index, bool repeat = true);
 	alias da_ig_IsMouseClicked				= bool				function(int button, bool repeat = false);
 	alias da_ig_IsMouseDoubleClicked		= bool				function(int button);
@@ -258,6 +268,7 @@ extern(C) @nogc nothrow
 	alias da_ig_IsPosHoveringAnyWindow		= bool				function(const ImVec2 pos);
 	alias da_ig_GetMousePos					= void function(ImVec2* pOut);
 	alias da_ig_GetMouseDragDelta			= void function(ImVec2* pOut, int button = 0, float lock_threshold = -1.0f);
+    alias da_ig_ResetMouseDragDelta         = void function(int button=0);
 	alias da_ig_GetMouseCursor				= ImGuiMouseCursor function();
 	alias da_ig_SetMouseCursor				= void				function(ImGuiMouseCursor type);
 	alias da_ig_GetTime						= float			function();
@@ -286,14 +297,15 @@ extern(C) @nogc nothrow
 // ImFontAtlas Methods
 extern(C) @nogc nothrow
 {
-	alias da_ImFontAtlas_GetTexDataAsRGBA32 = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
-	alias da_ImFontAtlas_GetTexDataAsAlpha8 = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
-	alias da_ImFontAtlas_SetTexID 			= void function(ImFontAtlas* atlas, void* id);
-	alias da_ImFontAtlas_AddFontDefault 	= ImFont* function(ImFontAtlas* atlas);
-	alias da_ImFontAtlas_AddFontFromFileTTF	= ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
-	alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* in_ttf_data, size_t in_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
-	alias da_ImFontAtlas_ClearTexData 		= void function(ImFontAtlas* atlas, void* id);
-	alias da_ImFontAtlas_Clear 				= void function(ImFontAtlas* atlas, void* id);
+	alias da_ImFontAtlas_GetTexDataAsRGBA32   = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
+	alias da_ImFontAtlas_GetTexDataAsAlpha8   = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
+	alias da_ImFontAtlas_SetTexID 			  = void function(ImFontAtlas* atlas, void* id);
+	alias da_ImFontAtlas_AddFontDefault 	  = ImFont* function(ImFontAtlas* atlas);
+	alias da_ImFontAtlas_AddFontFromFileTTF	  = ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
+	alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* in_ttf_data, uint in_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
+    alias ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* in_compressed_ttf_data, uint in_compressed_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = NULL, int font_no = 0);
+	alias da_ImFontAtlas_ClearTexData         = void function(ImFontAtlas* atlas, void* id);
+	alias da_ImFontAtlas_Clear 				  = void function(ImFontAtlas* atlas, void* id);
 }
 
 //TODO: rework
@@ -407,11 +419,13 @@ __gshared
 	da_ig_GetTextLineHeightWithSpacing ig_GetTextLineHeightWithSpacing;
 
 	da_ig_PushIdStr ig_PushIdStr;
+    da_ig_PushIdStrRange ig_PushIdStrRange;
 	da_ig_PushIdPtr ig_PushIdPtr;
 	da_ig_PushIdInt ig_PushIdInt;
-	da_ig_PopID ig_PopID;
-	da_ig_GetID ig_GetID;
-	da_ig_GetID2 ig_GetID2;
+	da_ig_PopId ig_PopId;
+	da_ig_GetIdStr ig_GetIdStr;
+    da_ig_GetIdStrRange ig_GetIdStrRange;
+	da_ig_GetIdPtr ig_GetIdPtr;
 
 	da_ig_Text ig_Text;
 	da_ig_TextV ig_TextV;
@@ -460,7 +474,13 @@ __gshared
 	da_ig_VSliderInt ig_VSliderInt;
 
 	da_ig_DragFloat ig_DragFloat;
+    da_ig_DragFloat2 ig_DragFloat2;
+    da_ig_DragFloat3 ig_DragFloat3;
+    da_ig_DragFloat4 ig_DragFloat4;
 	da_ig_DragInt ig_DragInt;
+    da_ig_DragInt2 ig_DragInt2;
+    da_ig_DragInt3 ig_DragInt3;
+    da_ig_DragInt4 ig_DragInt4;
 
 	da_ig_InputText ig_InputText;
 	da_ig_InputFloat ig_InputFloat;
@@ -508,13 +528,14 @@ __gshared
 	da_ig_IsItemHoveredRect ig_IsItemHoveredRect;
 	da_ig_IsItemActive ig_IsItemActive;
 	da_ig_IsAnyItemActive ig_IsAnyItemActive;
+    da_ig_IsItemVisible ig_IsItemVisible;
 	da_ig_GetItemRectMin ig_GetItemRectMin;
 	da_ig_GetItemRectMax ig_GetItemRectMax;
 	da_ig_GetItemRectSize ig_GetItemRectSize;
 	da_ig_IsWindowFocused ig_IsWindowFocused;
 	da_ig_IsRootWindowFocused ig_IsRootWindowFocused;
 	da_ig_IsRootWindowOrAnyChildFocused ig_IsRootWindowOrAnyChildFocused;
-	da_ig_IsClipped ig_IsClipped;
+    da_ig_IsRectClipped ig_IsRectClipped;
 	da_ig_IsKeyPressed ig_IsKeyPressed;
 	da_ig_IsMouseClicked ig_IsMouseClicked;
 	da_ig_IsMouseDoubleClicked ig_IsMouseDoubleClicked;
@@ -525,6 +546,7 @@ __gshared
 	da_ig_IsPosHoveringAnyWindow ig_IsPosHoveringAnyWindow;
 	da_ig_GetMousePos ig_GetMousePos;
 	da_ig_GetMouseDragDelta ig_GetMouseDragDelta;
+    da_ig_ResetMouseDragDelta ig_ResetMouseDragDelta;
 	da_ig_GetMouseCursor ig_GetMouseCursor;
 	da_ig_SetMouseCursor ig_SetMouseCursor;
 	da_ig_GetTime ig_GetTime;

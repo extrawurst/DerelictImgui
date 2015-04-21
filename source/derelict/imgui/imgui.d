@@ -172,11 +172,13 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_GetTextLineHeightWithSpacing, "ig_GetTextLineHeightWithSpacing");
 
 				bindFunc(cast(void**)&ig_PushIdStr, "ig_PushIdStr");
+                bindFunc(cast(void**)&ig_PushIdStrRange, "ig_PushIdStrRange");
 				bindFunc(cast(void**)&ig_PushIdPtr, "ig_PushIdPtr");
 				bindFunc(cast(void**)&ig_PushIdInt, "ig_PushIdInt");
-				bindFunc(cast(void**)&ig_PopID, "ig_PopID");
-				bindFunc(cast(void**)&ig_GetID, "ig_GetID");
-				bindFunc(cast(void**)&ig_GetID2, "ig_GetID2");
+				bindFunc(cast(void**)&ig_PopId, "ig_PopId");
+				bindFunc(cast(void**)&ig_GetIdStr, "ig_GetIdStr");
+                bindFunc(cast(void**)&ig_GetIdStrRange, "ig_GetIdStrRange");
+				bindFunc(cast(void**)&ig_GetIdPtr, "ig_GetIdPtr");
 
 				bindFunc(cast(void**)&ig_Text, "ig_Text");
 				bindFunc(cast(void**)&ig_TextV, "ig_TextV");
@@ -225,7 +227,13 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_VSliderInt, "ig_VSliderInt");
 
 				bindFunc(cast(void**)&ig_DragFloat, "ig_DragFloat");
+                bindFunc(cast(void**)&ig_DragFloat2, "ig_DragFloat2");
+                bindFunc(cast(void**)&ig_DragFloat3, "ig_DragFloat3");
+                bindFunc(cast(void**)&ig_DragFloat4, "ig_DragFloat4");
 				bindFunc(cast(void**)&ig_DragInt, "ig_DragInt");
+                bindFunc(cast(void**)&ig_DragInt2, "ig_DragInt2");
+                bindFunc(cast(void**)&ig_DragInt3, "ig_DragInt3");
+                bindFunc(cast(void**)&ig_DragInt4, "ig_DragInt4");
 
 				bindFunc(cast(void**)&ig_InputText, "ig_InputText");
 				bindFunc(cast(void**)&ig_InputFloat, "ig_InputFloat");
@@ -273,13 +281,14 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_IsItemHoveredRect, "ig_IsItemHoveredRect");
 				bindFunc(cast(void**)&ig_IsItemActive, "ig_IsItemActive");
 				bindFunc(cast(void**)&ig_IsAnyItemActive, "ig_IsAnyItemActive");
+                bindFunc(cast(void**)&ig_IsItemVisible, "ig_IsItemVisible");
 				bindFunc(cast(void**)&ig_GetItemRectMin, "ig_GetItemRectMin");
 				bindFunc(cast(void**)&ig_GetItemRectMax, "ig_GetItemRectMax");
 				bindFunc(cast(void**)&ig_GetItemRectSize, "ig_GetItemRectSize");
 				bindFunc(cast(void**)&ig_IsWindowFocused, "ig_IsWindowFocused");
 				bindFunc(cast(void**)&ig_IsRootWindowFocused, "ig_IsRootWindowFocused");
 				bindFunc(cast(void**)&ig_IsRootWindowOrAnyChildFocused, "ig_IsRootWindowOrAnyChildFocused");
-				bindFunc(cast(void**)&ig_IsClipped, "ig_IsClipped");
+                bindFunc(cast(void**)&ig_IsRectClipped, "ig_IsRectClipped");
 				bindFunc(cast(void**)&ig_IsKeyPressed, "ig_IsKeyPressed");
 				bindFunc(cast(void**)&ig_IsMouseClicked, "ig_IsMouseClicked");
 				bindFunc(cast(void**)&ig_IsMouseDoubleClicked, "ig_IsMouseDoubleClicked");
@@ -290,6 +299,7 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_IsPosHoveringAnyWindow, "ig_IsPosHoveringAnyWindow");
 				bindFunc(cast(void**)&ig_GetMousePos, "ig_GetMousePos");
 				bindFunc(cast(void**)&ig_GetMouseDragDelta, "ig_GetMouseDragDelta");
+                bindFunc(cast(void**)&ig_ResetMouseDragDelta, "ig_ResetMouseDragDelta");
 				bindFunc(cast(void**)&ig_GetMouseCursor, "ig_GetMouseCursor");
 				bindFunc(cast(void**)&ig_SetMouseCursor, "ig_SetMouseCursor");
 				bindFunc(cast(void**)&ig_GetTime, "ig_GetTime");
