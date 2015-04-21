@@ -329,6 +329,7 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ImFontAtlas_AddFontDefault, "ImFontAtlas_AddFontDefault");
 				bindFunc(cast(void**)&ImFontAtlas_AddFontFromFileTTF, "ImFontAtlas_AddFontFromFileTTF");
 				bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryTTF, "ImFontAtlas_AddFontFromMemoryTTF");
+                bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryCompressedTTF, "ImFontAtlas_AddFontFromMemoryCompressedTTF");
 				bindFunc(cast(void**)&ImFontAtlas_ClearTexData, "ImFontAtlas_ClearTexData");
 				bindFunc(cast(void**)&ImFontAtlas_Clear, "ImFontAtlas_Clear");
 			}

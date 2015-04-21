@@ -303,7 +303,7 @@ extern(C) @nogc nothrow
 	alias da_ImFontAtlas_AddFontDefault 	  = ImFont* function(ImFontAtlas* atlas);
 	alias da_ImFontAtlas_AddFontFromFileTTF	  = ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
 	alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* in_ttf_data, uint in_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
-    alias ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* in_compressed_ttf_data, uint in_compressed_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = NULL, int font_no = 0);
+    alias da_ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* in_compressed_ttf_data, uint in_compressed_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
 	alias da_ImFontAtlas_ClearTexData         = void function(ImFontAtlas* atlas, void* id);
 	alias da_ImFontAtlas_Clear 				  = void function(ImFontAtlas* atlas, void* id);
 }
@@ -577,6 +577,7 @@ __gshared
 	da_ImFontAtlas_AddFontDefault 			ImFontAtlas_AddFontDefault;
 	da_ImFontAtlas_AddFontFromFileTTF 		ImFontAtlas_AddFontFromFileTTF;
 	da_ImFontAtlas_AddFontFromMemoryTTF 	ImFontAtlas_AddFontFromMemoryTTF;
+    da_ImFontAtlas_AddFontFromMemoryCompressedTTF ImFontAtlas_AddFontFromMemoryCompressedTTF;
 	da_ImFontAtlas_ClearTexData 			ImFontAtlas_ClearTexData;
 	da_ImFontAtlas_Clear 					ImFontAtlas_Clear;
 }
