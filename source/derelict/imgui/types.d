@@ -67,14 +67,16 @@ enum
     ImGuiWindowFlags_AlwaysAutoResize       = 1 << 6,   // Resize every window to its content every frame
     ImGuiWindowFlags_ShowBorders            = 1 << 7,   // Show borders around windows and items
     ImGuiWindowFlags_NoSavedSettings        = 1 << 8,   // Never load/save settings in .ini file
+    ImGuiWindowFlags_MenuBar                = 1 << 9,   // Has a menubar
     // [Internal]
-    ImGuiWindowFlags_ChildWindow            = 1 << 9,   // For internal use by BeginChild()
-    ImGuiWindowFlags_ChildWindowAutoFitX    = 1 << 10,  // For internal use by BeginChild()
-    ImGuiWindowFlags_ChildWindowAutoFitY    = 1 << 11,  // For internal use by BeginChild()
-    ImGuiWindowFlags_ComboBox               = 1 << 12,  // For internal use by ComboBox()
-    ImGuiWindowFlags_Tooltip                = 1 << 13,  // For internal use by BeginTooltip()
-    ImGuiWindowFlags_Popup                  = 1 << 14   // For internal use by BeginPopup()
-};
+    ImGuiWindowFlags_ChildWindow            = 1 << 20,  // Don't use! For internal use by BeginChild()
+    ImGuiWindowFlags_ChildWindowAutoFitX    = 1 << 21,  // Don't use! For internal use by BeginChild()
+    ImGuiWindowFlags_ChildWindowAutoFitY    = 1 << 22,  // Don't use! For internal use by BeginChild()
+    ImGuiWindowFlags_ComboBox               = 1 << 23,  // Don't use! For internal use by ComboBox()
+    ImGuiWindowFlags_Tooltip                = 1 << 24,  // Don't use! For internal use by BeginTooltip()
+    ImGuiWindowFlags_Popup                  = 1 << 25,  // Don't use! For internal use by BeginPopup()
+    ImGuiWindowFlags_ChildMenu              = 1 << 26   // Don't use! For internal use by BeginMenu()
+}
 
 enum
 {
@@ -89,18 +91,20 @@ enum
     ImGuiInputTextFlags_CallbackHistory     = 1 << 7,   // Call user function on pressing Up/Down arrows (for history handling)
     ImGuiInputTextFlags_CallbackAlways      = 1 << 8,   // Call user function every time
     ImGuiInputTextFlags_CallbackCharFilter  = 1 << 9    // Call user function to filter character. Modify data->EventChar to replace/filter input, or return 1 to discard character.
-};
+}
 
 enum
 {
     ImGuiSetCond_Always        = 1 << 0, // Set the variable
     ImGuiSetCond_Once          = 1 << 1, // Only set the variable on the first call per runtime session
-    ImGuiSetCond_FirstUseEver  = 1 << 2  // Only set the variable if the window doesn't exist in the .ini file
-};
+    ImGuiSetCond_FirstUseEver  = 1 << 2, // Only set the variable if the window doesn't exist in the .ini file
+    ImGuiSetCond_Appearing     = 1 << 3  // Only set the variable if the window is appearing after being inactive (or the first time)
+}
 
 enum
 {
     ImGuiCol_Text,
+    ImGuiCol_TextDisabled,
     ImGuiCol_WindowBg,
     ImGuiCol_ChildWindowBg,
     ImGuiCol_Border,
@@ -110,6 +114,7 @@ enum
     ImGuiCol_FrameBgActive,
     ImGuiCol_TitleBg,
     ImGuiCol_TitleBgCollapsed,
+    ImGuiCol_MenuBarBg,
     ImGuiCol_ScrollbarBg,
     ImGuiCol_ScrollbarGrab,
     ImGuiCol_ScrollbarGrabHovered,
@@ -140,13 +145,14 @@ enum
     ImGuiCol_TextSelectedBg,
     ImGuiCol_TooltipBg,
     ImGuiCol_COUNT
-};
+}
 
 enum
 {
 	ImGuiStyleVar_Alpha,               // float
 	ImGuiStyleVar_WindowPadding,       // ImVec2
 	ImGuiStyleVar_WindowRounding,      // float
+    ImGuiStyleVar_WindowMinSize,       // ImVec2
 	ImGuiStyleVar_ChildWindowRounding, // float
 	ImGuiStyleVar_FramePadding,        // ImVec2
 	ImGuiStyleVar_FrameRounding,       // float
@@ -154,7 +160,15 @@ enum
 	ImGuiStyleVar_ItemInnerSpacing,    // ImVec2
 	ImGuiStyleVar_IndentSpacing,       // float
 	ImGuiStyleVar_GrabMinSize          // float
-};
+}
+
+enum 
+{
+    ImGuiAlign_Left     = 1 << 0,
+    ImGuiAlign_Center   = 1 << 1,
+    ImGuiAlign_Right    = 1 << 2,
+    ImGuiAlign_Default  = ImGuiAlign_Left,
+}
 
 enum
 {
@@ -163,7 +177,7 @@ enum
 	ImGuiColorEditMode_RGB = 0,
 	ImGuiColorEditMode_HSV = 1,
 	ImGuiColorEditMode_HEX = 2
-};
+}
 
 enum
 {
@@ -175,7 +189,7 @@ enum
 	ImGuiMouseCursor_ResizeNESW,        // Unused
 	ImGuiMouseCursor_ResizeNWSE,        // When hovering over the bottom-right corner of a window
 	ImGuiMouseCursor_Count_
-};
+}
 
 align(1) struct ImVec2
 {
@@ -203,6 +217,7 @@ alias ImU32 ImGuiID;              // unique ID used by widgets (typically hashed
 alias int ImGuiCol;               // enum ImGuiCol_
 alias int ImGuiStyleVar;          // enum ImGuiStyleVar_
 alias int ImGuiKey;               // enum ImGuiKey_
+alias int ImGuiAlign;             // enum ImGuiAlign_
 alias int ImGuiColorEditMode;     // enum ImGuiColorEditMode_
 alias int ImGuiMouseCursor;       // enum ImGuiMouseCursor_
 alias int ImGuiWindowFlags;       // enum ImGuiWindowFlags_
@@ -306,7 +321,9 @@ align(1) struct ImGuiIO
 	bool        WantCaptureMouse;           // Mouse is hovering a window or widget is active (= ImGui will use your mouse input)
 	bool        WantCaptureKeyboard;        // Widget is active (= ImGui will use your keyboard input)
 	float       Framerate;                  // Framerate estimation, in frame per second. Rolling average estimation based on IO.DeltaTime over 120 frames
-	int         MetricsVertices;            // Vertices processed during last call to Render()
+    int         MetricsAllocs;              // Number of active memory allocations
+    int         MetricsRenderVertices;      // Vertices processed during last call to Render()
+    int         MetricsActiveWindows;       // Number of visible windows (exclude child windows)
 	
 	//------------------------------------------------------------------
 	// [Internal] ImGui will maintain those fields for you
@@ -330,19 +347,21 @@ align(1) struct ImGuiStyle
     ImVec2      WindowPadding;              // Padding within a window
     ImVec2      WindowMinSize;              // Minimum window size
     float       WindowRounding;             // Radius of window corners rounding. Set to 0.0f to have rectangular windows
+    ImGuiAlign  WindowTitleAlign;           // Alignment for title bar text
     float       ChildWindowRounding;        // Radius of child window corners rounding. Set to 0.0f to have rectangular windows
     ImVec2      FramePadding;               // Padding within a framed rectangle (used by most widgets)
     float       FrameRounding;              // Radius of frame corners rounding. Set to 0.0f to have rectangular frame (used by most widgets).
     ImVec2      ItemSpacing;                // Horizontal and vertical spacing between widgets/lines
     ImVec2      ItemInnerSpacing;           // Horizontal and vertical spacing between within elements of a composed widget (e.g. a slider and its label)
     ImVec2      TouchExtraPadding;          // Expand reactive bounding box for touch-based system where touch position is not accurate enough. Unfortunately we don't sort widgets so priority on overlap will always be given to the first widget. So don't grow this too much!
-    ImVec2      AutoFitPadding;             // Extra space after auto-fit (double-clicking on resize grip)
     float       WindowFillAlphaDefault;     // Default alpha of window background, if not specified in ImGui::Begin()
     float       IndentSpacing;              // Horizontal indentation when e.g. entering a tree node
     float       ColumnsMinSpacing;          // Minimum horizontal spacing between two columns
     float       ScrollbarWidth;             // Width of the vertical scrollbar
-    float       GrabMinSize;                // Minimum width/height of a slider or scrollbar grab
-    ImVec2      DisplaySafeAreaPadding;     // Window positions are clamped to be visible within the display area. If you cannot see the edge of your screen (e.g. on a TV) increase the safe area padding.
+    float       ScrollbarRounding;          // Radius of grab corners for scrollbar
+    float       GrabMinSize;                // Minimum width/height of a grab box for slider/scrollbar
+    ImVec2      DisplayWindowPadding;       // Window positions are clamped to be visible within the display area by at least this amount. Only covers regular windows.
+    ImVec2      DisplaySafeAreaPadding;     // If you cannot see the edge of your screen (e.g. on a TV) increase the safe area padding. Covers popups/tooltips as well regular windows.
     ImVec4[ImGuiCol_COUNT]      Colors;
 };
 
