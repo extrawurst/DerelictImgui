@@ -142,14 +142,17 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_BeginTooltip, "ig_BeginTooltip");
 				bindFunc(cast(void**)&ig_EndTooltip, "ig_EndTooltip");
 
+                bindFunc(cast(void**)&ig_OpenPopup, "ig_OpenPopup");
 				bindFunc(cast(void**)&ig_BeginPopup, "ig_BeginPopup");
 				bindFunc(cast(void**)&ig_EndPopup, "ig_EndPopup");
+                bindFunc(cast(void**)&ig_CloseCurrentPopup, "ig_CloseCurrentPopup");
 
 				bindFunc(cast(void**)&ig_BeginGroup, "ig_BeginGroup");
 				bindFunc(cast(void**)&ig_EndGroup, "ig_EndGroup");
 				bindFunc(cast(void**)&ig_Separator, "ig_Separator");
 				bindFunc(cast(void**)&ig_SameLine, "ig_SameLine");
 				bindFunc(cast(void**)&ig_Spacing, "ig_Spacing");
+                bindFunc(cast(void**)&ig_Dummy, "ig_Dummy");
 				bindFunc(cast(void**)&ig_Indent, "ig_Indent");
 				bindFunc(cast(void**)&ig_Unindent, "ig_Unindent");
 				bindFunc(cast(void**)&ig_Columns, "ig_Columns");
@@ -263,6 +266,15 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_ListBoxHeader2, "ig_ListBoxHeader2");
 				bindFunc(cast(void**)&ig_ListBoxFooter, "ig_ListBoxFooter");
 
+                bindFunc(cast(void**)&ig_BeginMainMenuBar, "ig_BeginMainMenuBar");
+                bindFunc(cast(void**)&ig_EndMainMenuBar, "ig_EndMainMenuBar");
+                bindFunc(cast(void**)&ig_BeginMenuBar, "ig_BeginMenuBar");
+                bindFunc(cast(void**)&ig_EndMenuBar, "ig_EndMenuBar");
+                bindFunc(cast(void**)&ig_BeginMenu, "ig_BeginMenu");
+                bindFunc(cast(void**)&ig_EndMenu, "ig_EndMenu");
+                bindFunc(cast(void**)&ig_MenuItem, "ig_MenuItem");
+                bindFunc(cast(void**)&ig_MenuItemPtr, "ig_MenuItemPtr");
+
 				bindFunc(cast(void**)&ig_ValueBool, "ig_ValueBool");
 				bindFunc(cast(void**)&ig_ValueInt, "ig_ValueInt");
 				bindFunc(cast(void**)&ig_ValueUInt, "ig_ValueUInt");
@@ -289,7 +301,9 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_IsRootWindowFocused, "ig_IsRootWindowFocused");
 				bindFunc(cast(void**)&ig_IsRootWindowOrAnyChildFocused, "ig_IsRootWindowOrAnyChildFocused");
                 bindFunc(cast(void**)&ig_IsRectClipped, "ig_IsRectClipped");
-				bindFunc(cast(void**)&ig_IsKeyPressed, "ig_IsKeyPressed");
+                bindFunc(cast(void**)&ig_IsKeyDown, "ig_IsKeyDown");
+                bindFunc(cast(void**)&ig_IsKeyPressed, "ig_IsKeyPressed");
+                bindFunc(cast(void**)&ig_IsMouseDown, "ig_IsMouseDown");
 				bindFunc(cast(void**)&ig_IsMouseClicked, "ig_IsMouseClicked");
 				bindFunc(cast(void**)&ig_IsMouseDoubleClicked, "ig_IsMouseDoubleClicked");
 				bindFunc(cast(void**)&ig_IsMouseHoveringWindow, "ig_IsMouseHoveringWindow");

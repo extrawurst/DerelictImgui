@@ -105,19 +105,22 @@ extern(C) @nogc nothrow
 	alias da_ig_PushTextWrapPos				= void				function(float wrap_pos_x = 0.0f);
 	alias da_ig_PopTextWrapPos				= void				function();
 
-	alias da_ig_SetTooltip					= void				function(const char* fmt, ...);
-	alias da_ig_SetTooltipV					= void				function(const char* fmt, va_list args);
+    alias da_ig_SetTooltip					= void				function(const(char)* fmt, ...);
+    alias da_ig_SetTooltipV					= void				function(const(char)* fmt, va_list args);
 	alias da_ig_BeginTooltip				= void				function();
 	alias da_ig_EndTooltip					= void				function();
 
-	alias da_ig_BeginPopup					= void				function(bool* p_opened);
+    alias da_ig_OpenPopup                   = void              function(const(char)* str_id);
+    alias da_ig_BeginPopup					= bool				function(const(char)* str_id);
 	alias da_ig_EndPopup					= void				function();
+    alias da_ig_CloseCurrentPopup           = void              function();
 
 	alias da_ig_BeginGroup					= void				function();
 	alias da_ig_EndGroup					= void				function();
 	alias da_ig_Separator					= void				function();
 	alias da_ig_SameLine					= void				function(int column_x = 0, int spacing_w = -1);
 	alias da_ig_Spacing						= void				function();
+    alias da_ig_Dummy                       = void              function(const ImVec2* size);
 	alias da_ig_Indent						= void				function();
 	alias da_ig_Unindent					= void				function();
 	alias da_ig_Columns						= void				function(int count = 1, const char* id = null, bool border = true);
@@ -206,13 +209,13 @@ extern(C) @nogc nothrow
 
 	alias da_ig_InputText					= bool				function(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags = 0, ImGuiTextEditCallback callback = null, void* user_data = null);
 	alias da_ig_InputFloat					= bool				function(const char* label, float* v, float step = 0.0f, float step_fast = 0.0f, int decimal_precision = -1, ImGuiInputTextFlags extra_flags = 0);
-	alias da_ig_InputFloat2					= bool				function(const char* label, ref float[2] v, int decimal_precision = -1);
-	alias da_ig_InputFloat3					= bool				function(const char* label, ref float[3] v, int decimal_precision = -1);
-	alias da_ig_InputFloat4					= bool				function(const char* label, ref float[4] v, int decimal_precision = -1);
+    alias da_ig_InputFloat2					= bool				function(const char* label, ref float[2] v, int decimal_precision = -1, ImGuiInputTextFlags extra_flags = 0);
+	alias da_ig_InputFloat3					= bool				function(const char* label, ref float[3] v, int decimal_precision = -1, ImGuiInputTextFlags extra_flags = 0);
+	alias da_ig_InputFloat4					= bool				function(const char* label, ref float[4] v, int decimal_precision = -1, ImGuiInputTextFlags extra_flags = 0);
 	alias da_ig_InputInt					= bool				function(const char* label, int* v, int step = 1, int step_fast = 100, ImGuiInputTextFlags extra_flags = 0);
-	alias da_ig_InputInt2					= bool				function(const char* label, ref int[2] v);
-	alias da_ig_InputInt3					= bool				function(const char* label, ref int[3] v);
-	alias da_ig_InputInt4					= bool				function(const char* label, ref int[4] v);
+	alias da_ig_InputInt2					= bool				function(const char* label, ref int[2] v, ImGuiInputTextFlags extra_flags = 0);
+	alias da_ig_InputInt3					= bool				function(const char* label, ref int[3] v, ImGuiInputTextFlags extra_flags = 0);
+	alias da_ig_InputInt4					= bool				function(const char* label, ref int[4] v, ImGuiInputTextFlags extra_flags = 0);
 			
 	alias da_ig_TreeNode					= bool				function(const char* str_label_id);
 	alias da_ig_TreeNodeStr					= bool				function(const char* str_id, const char* fmt, ...);
@@ -231,6 +234,16 @@ extern(C) @nogc nothrow
 	alias da_ig_ListBoxHeader				= bool				function(const char* label, const ImVec2 size = ImVec2(0, 0));
 	alias da_ig_ListBoxHeader2				= bool				function(const char* label, int items_count, int height_in_items = -1);
 	alias da_ig_ListBoxFooter				= void				function();
+
+    // Widgets: Menus
+    alias da_ig_BeginMainMenuBar            = bool      function();
+    alias da_ig_EndMainMenuBar              = void      function();
+    alias da_ig_BeginMenuBar                = bool      function();
+    alias da_ig_EndMenuBar                  = void      function();
+    alias da_ig_BeginMenu                   = bool      function(const(char)* label, bool enabled = true);
+    alias da_ig_EndMenu                     = void      function();
+    alias da_ig_MenuItem                    = bool      function(const(char)* label, const(char)* shortcut, bool selected = false, bool enabled = true);
+    alias da_ig_MenuItemPtr                 = bool      function(const(char)* label, const(char)* shortcut, bool* p_selected, bool enabled = true);
 
 	alias da_ig_ValueBool		= void				function(const char* prefix, bool b);
 	alias da_ig_ValueInt		= void				function(const char* prefix, int v);
@@ -258,7 +271,9 @@ extern(C) @nogc nothrow
 	alias da_ig_IsRootWindowFocused			= bool				function();
 	alias da_ig_IsRootWindowOrAnyChildFocused	= bool				function();
 	alias da_ig_IsRectClipped					= bool				function(const ImVec2 item_size);
+    alias da_ig_IsKeyDown                   = bool              function(int key_index);
 	alias da_ig_IsKeyPressed				= bool				function(int key_index, bool repeat = true);
+    alias da_ig_IsMouseDown                 = bool              function(int button);
 	alias da_ig_IsMouseClicked				= bool				function(int button, bool repeat = false);
 	alias da_ig_IsMouseDoubleClicked		= bool				function(int button);
 	alias da_ig_IsMouseHoveringWindow		= bool				function();
@@ -299,8 +314,9 @@ extern(C) @nogc nothrow
 	alias da_ImFontAtlas_SetTexID 			  = void function(ImFontAtlas* atlas, void* id);
 	alias da_ImFontAtlas_AddFontDefault 	  = ImFont* function(ImFontAtlas* atlas);
 	alias da_ImFontAtlas_AddFontFromFileTTF	  = ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
-	alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* in_ttf_data, uint in_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
-    alias da_ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* in_compressed_ttf_data, uint in_compressed_ttf_data_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
+    alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* ttf_data, int ttf_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
+    alias da_ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* compressed_ttf_data, int compressed_ttf_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
+
 	alias da_ImFontAtlas_ClearTexData         = void function(ImFontAtlas* atlas, void* id);
 	alias da_ImFontAtlas_Clear 				  = void function(ImFontAtlas* atlas, void* id);
 }
@@ -386,14 +402,17 @@ __gshared
 	da_ig_BeginTooltip ig_BeginTooltip;
 	da_ig_EndTooltip ig_EndTooltip;
 
-	da_ig_BeginPopup ig_BeginPopup;
-	da_ig_EndPopup ig_EndPopup;
+    da_ig_OpenPopup ig_OpenPopup;
+    da_ig_BeginPopup ig_BeginPopup;
+    da_ig_EndPopup ig_EndPopup;
+    da_ig_CloseCurrentPopup ig_CloseCurrentPopup;
 
 	da_ig_BeginGroup ig_BeginGroup;
 	da_ig_EndGroup ig_EndGroup;
 	da_ig_Separator ig_Separator;
 	da_ig_SameLine ig_SameLine;
 	da_ig_Spacing ig_Spacing;
+    da_ig_Dummy ig_Dummy;
 	da_ig_Indent ig_Indent;
 	da_ig_Unindent ig_Unindent;
 	da_ig_Columns ig_Columns;
@@ -507,6 +526,15 @@ __gshared
 	da_ig_ListBoxHeader2 ig_ListBoxHeader2;
 	da_ig_ListBoxFooter ig_ListBoxFooter;
 
+    da_ig_BeginMainMenuBar  ig_BeginMainMenuBar;
+    da_ig_EndMainMenuBar    ig_EndMainMenuBar;
+    da_ig_BeginMenuBar      ig_BeginMenuBar;
+    da_ig_EndMenuBar        ig_EndMenuBar;
+    da_ig_BeginMenu         ig_BeginMenu;
+    da_ig_EndMenu           ig_EndMenu;
+    da_ig_MenuItem          ig_MenuItem;
+    da_ig_MenuItemPtr       ig_MenuItemPtr;
+
 	da_ig_ValueBool ig_ValueBool;
 	da_ig_ValueInt ig_ValueInt;
 	da_ig_ValueUInt ig_ValueUInt;
@@ -533,7 +561,9 @@ __gshared
 	da_ig_IsRootWindowFocused ig_IsRootWindowFocused;
 	da_ig_IsRootWindowOrAnyChildFocused ig_IsRootWindowOrAnyChildFocused;
     da_ig_IsRectClipped ig_IsRectClipped;
+    da_ig_IsKeyDown ig_IsKeyDown;
 	da_ig_IsKeyPressed ig_IsKeyPressed;
+    da_ig_IsMouseDown ig_IsMouseDown;
 	da_ig_IsMouseClicked ig_IsMouseClicked;
 	da_ig_IsMouseDoubleClicked ig_IsMouseDoubleClicked;
 	da_ig_IsMouseHoveringWindow ig_IsMouseHoveringWindow;
