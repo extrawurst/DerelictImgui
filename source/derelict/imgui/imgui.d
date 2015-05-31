@@ -99,7 +99,7 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_GetWindowPos, "ig_GetWindowPos");
 				bindFunc(cast(void**)&ig_GetWindowSize, "ig_GetWindowSize");
 				bindFunc(cast(void**)&ig_GetWindowWidth, "ig_GetWindowWidth");
-				bindFunc(cast(void**)&ig_GetWindowCollapsed, "ig_GetWindowCollapsed");
+                bindFunc(cast(void**)&ig_IsWindowCollapsed, "ig_IsWindowCollapsed");
 
 				bindFunc(cast(void**)&ig_SetNextWindowPos, "ig_SetNextWindowPos");
 				bindFunc(cast(void**)&ig_SetNextWindowSize, "ig_SetNextWindowSize");
@@ -136,6 +136,8 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_PopAllowKeyboardFocus, "ig_PopAllowKeyboardFocus");
 				bindFunc(cast(void**)&ig_PushTextWrapPos, "ig_PushTextWrapPos");
 				bindFunc(cast(void**)&ig_PopTextWrapPos, "ig_PopTextWrapPos");
+                bindFunc(cast(void**)&ig_PushButtonRepeat, "ig_PushButtonRepeat");
+                bindFunc(cast(void**)&ig_PopButtonRepeat, "ig_PopButtonRepeat");
 
 				bindFunc(cast(void**)&ig_SetTooltip, "ig_SetTooltip");
 				bindFunc(cast(void**)&ig_SetTooltipV, "ig_SetTooltipV");
@@ -144,6 +146,9 @@ final class DerelictImguiLoader : SharedLibLoader
 
                 bindFunc(cast(void**)&ig_OpenPopup, "ig_OpenPopup");
 				bindFunc(cast(void**)&ig_BeginPopup, "ig_BeginPopup");
+                bindFunc(cast(void**)&ig_BeginPopupContextItem, "ig_BeginPopupContextItem");
+                bindFunc(cast(void**)&ig_BeginPopupContextWindow, "ig_BeginPopupContextWindow");
+                bindFunc(cast(void**)&ig_BeginPopupContextVoid, "ig_BeginPopupContextVoid");
 				bindFunc(cast(void**)&ig_EndPopup, "ig_EndPopup");
                 bindFunc(cast(void**)&ig_CloseCurrentPopup, "ig_CloseCurrentPopup");
 
@@ -173,6 +178,7 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_AlignFirstTextHeightToWidgets, "ig_AlignFirstTextHeightToWidgets");
 				bindFunc(cast(void**)&ig_GetTextLineHeight, "ig_GetTextLineHeight");
 				bindFunc(cast(void**)&ig_GetTextLineHeightWithSpacing, "ig_GetTextLineHeightWithSpacing");
+                bindFunc(cast(void**)&ig_GetItemsLineHeightWithSpacing, "ig_GetItemsLineHeightWithSpacing");
 
 				bindFunc(cast(void**)&ig_PushIdStr, "ig_PushIdStr");
                 bindFunc(cast(void**)&ig_PushIdStrRange, "ig_PushIdStrRange");
@@ -187,6 +193,8 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_TextV, "ig_TextV");
 				bindFunc(cast(void**)&ig_TextColored, "ig_TextColored");
 				bindFunc(cast(void**)&ig_TextColoredV, "ig_TextColoredV");
+                bindFunc(cast(void**)&ig_TextDisabled, "ig_TextDisabled");
+                bindFunc(cast(void**)&ig_TextDisabledV, "ig_TextDisabledV");
 				bindFunc(cast(void**)&ig_TextWrapped, "ig_TextWrapped");
 				bindFunc(cast(void**)&ig_TextWrappedV, "ig_TextWrappedV");
 				bindFunc(cast(void**)&ig_TextUnformatted, "ig_TextUnformatted");
@@ -292,15 +300,16 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_IsItemHovered, "ig_IsItemHovered");
 				bindFunc(cast(void**)&ig_IsItemHoveredRect, "ig_IsItemHoveredRect");
 				bindFunc(cast(void**)&ig_IsItemActive, "ig_IsItemActive");
-				bindFunc(cast(void**)&ig_IsAnyItemActive, "ig_IsAnyItemActive");
                 bindFunc(cast(void**)&ig_IsItemVisible, "ig_IsItemVisible");
+                bindFunc(cast(void**)&ig_IsAnyItemHovered, "ig_IsAnyItemHovered");
+                bindFunc(cast(void**)&ig_IsAnyItemActive, "ig_IsAnyItemActive");
 				bindFunc(cast(void**)&ig_GetItemRectMin, "ig_GetItemRectMin");
 				bindFunc(cast(void**)&ig_GetItemRectMax, "ig_GetItemRectMax");
 				bindFunc(cast(void**)&ig_GetItemRectSize, "ig_GetItemRectSize");
 				bindFunc(cast(void**)&ig_IsWindowFocused, "ig_IsWindowFocused");
 				bindFunc(cast(void**)&ig_IsRootWindowFocused, "ig_IsRootWindowFocused");
 				bindFunc(cast(void**)&ig_IsRootWindowOrAnyChildFocused, "ig_IsRootWindowOrAnyChildFocused");
-                bindFunc(cast(void**)&ig_IsRectClipped, "ig_IsRectClipped");
+                bindFunc(cast(void**)&ig_IsRectVisible, "ig_IsRectVisible");
                 bindFunc(cast(void**)&ig_IsKeyDown, "ig_IsKeyDown");
                 bindFunc(cast(void**)&ig_IsKeyPressed, "ig_IsKeyPressed");
                 bindFunc(cast(void**)&ig_IsMouseDown, "ig_IsMouseDown");

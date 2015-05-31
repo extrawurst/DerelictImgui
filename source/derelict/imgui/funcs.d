@@ -67,7 +67,7 @@ extern(C) @nogc nothrow
 	alias da_ig_GetWindowPos 				= void function(ImVec2* outParam);
 	alias da_ig_GetWindowSize 				= void function(ImVec2* outParam);
 	alias da_ig_GetWindowWidth 				= float function();
-	alias da_ig_GetWindowCollapsed 			= bool function();
+    alias da_ig_IsWindowCollapsed 			= bool function();
 
 	alias da_ig_SetNextWindowPos 			= void function(const ImVec2 pos, ImGuiSetCond cond = 0);
 	alias da_ig_SetNextWindowSize 			= void function(const ImVec2 size, ImGuiSetCond cond = 0);
@@ -104,6 +104,8 @@ extern(C) @nogc nothrow
 	alias da_ig_PopAllowKeyboardFocus		= void				function();
 	alias da_ig_PushTextWrapPos				= void				function(float wrap_pos_x = 0.0f);
 	alias da_ig_PopTextWrapPos				= void				function();
+    alias da_ig_PushButtonRepeat            = void              function(bool repeat);
+    alias da_ig_PopButtonRepeat             = void              function();
 
     alias da_ig_SetTooltip					= void				function(const(char)* fmt, ...);
     alias da_ig_SetTooltipV					= void				function(const(char)* fmt, va_list args);
@@ -112,6 +114,9 @@ extern(C) @nogc nothrow
 
     alias da_ig_OpenPopup                   = void              function(const(char)* str_id);
     alias da_ig_BeginPopup					= bool				function(const(char)* str_id);
+    alias da_ig_BeginPopupContextItem       = bool              function(const(char)* str_id, int mouse_button = 1);
+    alias da_ig_BeginPopupContextWindow     = bool              function(bool also_over_items = true, const(char)* str_id = null, int mouse_button = 1);
+    alias da_ig_BeginPopupContextVoid       = bool              function(const char* str_id = null, int mouse_button = 1);
 	alias da_ig_EndPopup					= void				function();
     alias da_ig_CloseCurrentPopup           = void              function();
 
@@ -141,6 +146,7 @@ extern(C) @nogc nothrow
 	alias da_ig_AlignFirstTextHeightToWidgets	= void				function();
 	alias da_ig_GetTextLineHeight			= float			function();
 	alias da_ig_GetTextLineHeightWithSpacing	= float			function();
+    alias da_ig_GetItemsLineHeightWithSpacing    = float         function();
 
 	alias da_ig_PushIdStr					= void				function(const char* str_id);
     alias da_ig_PushIdStrRange              = void              function(const char* str_begin, const char* str_end);
@@ -155,6 +161,8 @@ extern(C) @nogc nothrow
 	alias da_ig_TextV						= void				function(const char* fmt, va_list args);
 	alias da_ig_TextColored					= void				function(const ImVec4 col, const char* fmt, ...);
 	alias da_ig_TextColoredV				= void				function(const ImVec4 col, const char* fmt, va_list args);
+    alias da_ig_TextDisabled                = void              function(const char* fmt, ...);
+    alias da_ig_TextDisabledV               = void              function(const char* fmt, va_list args);
 	alias da_ig_TextWrapped					= void				function(const char* fmt, ...);
 	alias da_ig_TextWrappedV				= void				function(const char* fmt, va_list args);
 	alias da_ig_TextUnformatted				= void				function(const char* text, const char* text_end = null);
@@ -163,7 +171,7 @@ extern(C) @nogc nothrow
 	alias da_ig_Bullet						= void				function();
 	alias da_ig_BulletText					= void				function(const char* fmt, ...);
 	alias da_ig_BulletTextV					= void				function(const char* fmt, va_list args);
-	alias da_ig_Button						= bool				function(const char* label, const ImVec2 size = ImVec2(0, 0), bool repeat_when_held = false);
+	alias da_ig_Button						= bool				function(const char* label, const ImVec2 size = ImVec2(0, 0));
 	alias da_ig_SmallButton					= bool				function(const char* label);
 	alias da_ig_InvisibleButton				= bool				function(const char* str_id, const ImVec2 size);
 	alias da_ig_Image						= void				function(ImTextureID user_texture_id, const ImVec2 size, const ImVec2 uv0 = ImVec2(0, 0), const ImVec2 uv1 = ImVec2(1, 1), const ImVec4 tint_col = ImVec4(1, 1, 1, 1), const ImVec4 border_col = ImVec4(0, 0, 0, 0));
@@ -261,16 +269,17 @@ extern(C) @nogc nothrow
 
 	alias da_ig_IsItemHovered				= bool				function();
 	alias da_ig_IsItemHoveredRect			= bool				function();
-	alias da_ig_IsItemActive				= bool				function();
-	alias da_ig_IsAnyItemActive				= bool				function();
+    alias da_ig_IsItemActive				= bool				function();
     alias da_ig_IsItemVisible               = bool              function();
+    alias da_ig_IsAnyItemHovered            = bool              function();
+    alias da_ig_IsAnyItemActive             = bool              function();
 	alias da_ig_GetItemRectMin				= void function(ImVec2* pOut);
 	alias da_ig_GetItemRectMax				= void function(ImVec2* pOut);
 	alias da_ig_GetItemRectSize				= void function(ImVec2* pOut);
 	alias da_ig_IsWindowFocused				= bool				function();
 	alias da_ig_IsRootWindowFocused			= bool				function();
 	alias da_ig_IsRootWindowOrAnyChildFocused	= bool				function();
-	alias da_ig_IsRectClipped					= bool				function(const ImVec2 item_size);
+    alias da_ig_IsRectVisible					= bool				function(const ImVec2 item_size);
     alias da_ig_IsKeyDown                   = bool              function(int key_index);
 	alias da_ig_IsKeyPressed				= bool				function(int key_index, bool repeat = true);
     alias da_ig_IsMouseDown                 = bool              function(int button);
@@ -359,7 +368,7 @@ __gshared
 	da_ig_GetWindowPos ig_GetWindowPos;
 	da_ig_GetWindowSize ig_GetWindowSize;
 	da_ig_GetWindowWidth ig_GetWindowWidth;
-	da_ig_GetWindowCollapsed ig_GetWindowCollapsed;
+    da_ig_IsWindowCollapsed ig_IsWindowCollapsed;
 
 	da_ig_SetNextWindowPos ig_SetNextWindowPos;
 	da_ig_SetNextWindowSize ig_SetNextWindowSize;
@@ -396,6 +405,8 @@ __gshared
 	da_ig_PopAllowKeyboardFocus ig_PopAllowKeyboardFocus;
 	da_ig_PushTextWrapPos ig_PushTextWrapPos;
 	da_ig_PopTextWrapPos ig_PopTextWrapPos;
+    da_ig_PushButtonRepeat ig_PushButtonRepeat;
+    da_ig_PopButtonRepeat ig_PopButtonRepeat; 
 
 	da_ig_SetTooltip ig_SetTooltip;
 	da_ig_SetTooltipV ig_SetTooltipV;
@@ -404,6 +415,9 @@ __gshared
 
     da_ig_OpenPopup ig_OpenPopup;
     da_ig_BeginPopup ig_BeginPopup;
+    da_ig_BeginPopupContextItem ig_BeginPopupContextItem;  
+    da_ig_BeginPopupContextWindow ig_BeginPopupContextWindow;
+    da_ig_BeginPopupContextVoid ig_BeginPopupContextVoid;
     da_ig_EndPopup ig_EndPopup;
     da_ig_CloseCurrentPopup ig_CloseCurrentPopup;
 
@@ -433,6 +447,7 @@ __gshared
 	da_ig_AlignFirstTextHeightToWidgets ig_AlignFirstTextHeightToWidgets;
 	da_ig_GetTextLineHeight ig_GetTextLineHeight;
 	da_ig_GetTextLineHeightWithSpacing ig_GetTextLineHeightWithSpacing;
+    da_ig_GetItemsLineHeightWithSpacing ig_GetItemsLineHeightWithSpacing;
 
 	da_ig_PushIdStr ig_PushIdStr;
     da_ig_PushIdStrRange ig_PushIdStrRange;
@@ -447,7 +462,9 @@ __gshared
 	da_ig_TextV ig_TextV;
 	da_ig_TextColored ig_TextColored;
 	da_ig_TextColoredV ig_TextColoredV;
-	da_ig_TextWrapped ig_TextWrapped;
+    da_ig_TextDisabled ig_TextDisabled;
+    da_ig_TextDisabledV ig_TextDisabledV;
+    da_ig_TextWrapped ig_TextWrapped;
 	da_ig_TextWrappedV ig_TextWrappedV;
 	da_ig_TextUnformatted ig_TextUnformatted;
 	da_ig_LabelText ig_LabelText;
@@ -552,15 +569,16 @@ __gshared
 	da_ig_IsItemHovered ig_IsItemHovered;
 	da_ig_IsItemHoveredRect ig_IsItemHoveredRect;
 	da_ig_IsItemActive ig_IsItemActive;
-	da_ig_IsAnyItemActive ig_IsAnyItemActive;
     da_ig_IsItemVisible ig_IsItemVisible;
+    da_ig_IsAnyItemHovered ig_IsAnyItemHovered;
+    da_ig_IsAnyItemActive ig_IsAnyItemActive;
 	da_ig_GetItemRectMin ig_GetItemRectMin;
 	da_ig_GetItemRectMax ig_GetItemRectMax;
 	da_ig_GetItemRectSize ig_GetItemRectSize;
 	da_ig_IsWindowFocused ig_IsWindowFocused;
 	da_ig_IsRootWindowFocused ig_IsRootWindowFocused;
 	da_ig_IsRootWindowOrAnyChildFocused ig_IsRootWindowOrAnyChildFocused;
-    da_ig_IsRectClipped ig_IsRectClipped;
+    da_ig_IsRectVisible ig_IsRectVisible;
     da_ig_IsKeyDown ig_IsKeyDown;
 	da_ig_IsKeyPressed ig_IsKeyPressed;
     da_ig_IsMouseDown ig_IsMouseDown;
