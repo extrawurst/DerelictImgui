@@ -1,4 +1,4 @@
-# DerelictImgui [![Build Status](https://travis-ci.org/Extrawurst/DerelictImgui.svg)](https://travis-ci.org/Extrawurst/DerelictImgui)
+# DerelictImgui [![Build Status](https://travis-ci.org/Extrawurst/DerelictImgui.svg)](https://travis-ci.org/Extrawurst/DerelictImgui) [![dub](https://img.shields.io/badge/dub-code.dlang.org-blue.svg)](http://code.dlang.org/packages/derelict-imgui)
 
 Dynamic bindings to the [cimgui](https://github.com/Extrawurst/cimgui) library (a c-api for [IMGUI](https://github.com/ocornut/imgui)) for the D programming language
 
