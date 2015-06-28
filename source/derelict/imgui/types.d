@@ -75,7 +75,8 @@ enum
     ImGuiWindowFlags_ComboBox               = 1 << 23,  // Don't use! For internal use by ComboBox()
     ImGuiWindowFlags_Tooltip                = 1 << 24,  // Don't use! For internal use by BeginTooltip()
     ImGuiWindowFlags_Popup                  = 1 << 25,  // Don't use! For internal use by BeginPopup()
-    ImGuiWindowFlags_ChildMenu              = 1 << 26   // Don't use! For internal use by BeginMenu()
+    ImGuiWindowFlags_Modal                  = 1 << 26,  // Don't use! For internal use by BeginPopupModal()
+    ImGuiWindowFlags_ChildMenu              = 1 << 27   // Don't use! For internal use by BeginMenu()
 }
 
 enum
@@ -90,7 +91,18 @@ enum
     ImGuiInputTextFlags_CallbackCompletion  = 1 << 6,   // Call user function on pressing TAB (for completion handling)
     ImGuiInputTextFlags_CallbackHistory     = 1 << 7,   // Call user function on pressing Up/Down arrows (for history handling)
     ImGuiInputTextFlags_CallbackAlways      = 1 << 8,   // Call user function every time
-    ImGuiInputTextFlags_CallbackCharFilter  = 1 << 9    // Call user function to filter character. Modify data->EventChar to replace/filter input, or return 1 to discard character.
+    ImGuiInputTextFlags_CallbackCharFilter  = 1 << 9,   // Call user function to filter character. Modify data->EventChar to replace/filter input, or return 1 to discard character.
+    ImGuiInputTextFlags_AllowTabInput       = 1 << 10,  // Pressing TAB input a '\t' character into the text field
+    ImGuiInputTextFlags_CtrlEnterForNewLine = 1 << 11,  // In multi-line mode, allow exiting edition by pressing Enter. Ctrl+Enter to add new line (by default adds new lines with Enter).
+    // [Internal]
+    ImGuiInputTextFlags_Multiline           = 1 << 20   // For internal use by InputTextMultiline()
+}
+
+enum ImGuiSelectableFlags_
+{
+    // Default: 0
+    ImGuiSelectableFlags_DontClosePopups    = 1 << 0,   // Clicking this don't close parent popup window
+    ImGuiSelectableFlags_SpanAllColumns     = 1 << 1    // Selectable frame can span all columns (text will still fit in current column)
 }
 
 enum
@@ -144,6 +156,7 @@ enum
     ImGuiCol_PlotHistogramHovered,
     ImGuiCol_TextSelectedBg,
     ImGuiCol_TooltipBg,
+    ImGuiCol_ModalWindowDarkening,  // darken entire screen when a modal window is active
     ImGuiCol_COUNT
 }
 
@@ -225,6 +238,7 @@ alias int ImGuiMouseCursor;       // enum ImGuiMouseCursor_
 alias int ImGuiWindowFlags;       // enum ImGuiWindowFlags_
 alias int ImGuiSetCond;           // enum ImGuiSetCond_
 alias int ImGuiInputTextFlags;    // enum ImGuiInputTextFlags_
+alias int ImGuiSelectableFlags;   // enum ImGuiSelectableFlags_
 alias int function(ImGuiTextEditCallbackData *data) ImGuiTextEditCallback;
 
 extern(C) nothrow {
@@ -339,10 +353,13 @@ align(1) struct ImGuiIO
 	ImVec2[5]   MouseClickedPos;         // Position at time of clicking
 	float[5]    MouseClickedTime;        // Time of last click (used to figure out double-click)
 	bool[5]     MouseDoubleClicked;      // Has mouse button been double-clicked?
+    bool[5]     MouseReleased;           // Mouse button went from Down to !Down
 	bool[5]     MouseDownOwned;          // Track if button was clicked inside a window. We don't request mouse capture from the application if click started outside ImGui bounds.
-	float[5]    MouseDownTime;           // Time the mouse button has been down
+    float[5]    MouseDownDuration;       // Duration the mouse button has been down (0.0f == just clicked)
+    float[5]    MouseDownDurationPrev;   // Previous time the mouse button has been down
 	float[5]    MouseDragMaxDistanceSqr; // Squared maximum distance of how much mouse has traveled from the click point
-	float[512]  KeysDownTime;          // Time the keyboard key has been down
+    float[512]  KeysDownDuration;      // Duration the keyboard key has been down (0.0f == just pressed)
+    float[512]  KeysDownDurationPrev;  // Previous duration the key has been down
 }
 
 align(1) struct ImGuiStyle

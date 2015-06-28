@@ -101,7 +101,8 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_GetWindowWidth, "ig_GetWindowWidth");
                 bindFunc(cast(void**)&ig_IsWindowCollapsed, "ig_IsWindowCollapsed");
 
-				bindFunc(cast(void**)&ig_SetNextWindowPos, "ig_SetNextWindowPos");
+                bindFunc(cast(void**)&ig_SetNextWindowPos, "ig_SetNextWindowPos");
+                bindFunc(cast(void**)&ig_SetNextWindowPosCenter, "ig_SetNextWindowPosCenter");
 				bindFunc(cast(void**)&ig_SetNextWindowSize, "ig_SetNextWindowSize");
 				bindFunc(cast(void**)&ig_SetNextWindowCollapsed, "ig_SetNextWindowCollapsed");
 				bindFunc(cast(void**)&ig_SetNextWindowFocus, "ig_SetNextWindowFocus");
@@ -145,7 +146,8 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_EndTooltip, "ig_EndTooltip");
 
                 bindFunc(cast(void**)&ig_OpenPopup, "ig_OpenPopup");
-				bindFunc(cast(void**)&ig_BeginPopup, "ig_BeginPopup");
+                bindFunc(cast(void**)&ig_BeginPopup, "ig_BeginPopup");
+                bindFunc(cast(void**)&ig_BeginPopupModal, "ig_BeginPopupModal");
                 bindFunc(cast(void**)&ig_BeginPopupContextItem, "ig_BeginPopupContextItem");
                 bindFunc(cast(void**)&ig_BeginPopupContextWindow, "ig_BeginPopupContextWindow");
                 bindFunc(cast(void**)&ig_BeginPopupContextVoid, "ig_BeginPopupContextVoid");
@@ -247,6 +249,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&ig_DragInt4, "ig_DragInt4");
 
 				bindFunc(cast(void**)&ig_InputText, "ig_InputText");
+                bindFunc(cast(void**)&ig_InputTextMultiline, "ig_InputTextMultiline");
 				bindFunc(cast(void**)&ig_InputFloat, "ig_InputFloat");
 				bindFunc(cast(void**)&ig_InputFloat2, "ig_InputFloat2");
 				bindFunc(cast(void**)&ig_InputFloat3, "ig_InputFloat3");
@@ -306,6 +309,7 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_GetItemRectMin, "ig_GetItemRectMin");
 				bindFunc(cast(void**)&ig_GetItemRectMax, "ig_GetItemRectMax");
 				bindFunc(cast(void**)&ig_GetItemRectSize, "ig_GetItemRectSize");
+                bindFunc(cast(void**)&ig_IsWindowHovered, "ig_IsWindowHovered");
 				bindFunc(cast(void**)&ig_IsWindowFocused, "ig_IsWindowFocused");
 				bindFunc(cast(void**)&ig_IsRootWindowFocused, "ig_IsRootWindowFocused");
 				bindFunc(cast(void**)&ig_IsRootWindowOrAnyChildFocused, "ig_IsRootWindowOrAnyChildFocused");
@@ -315,6 +319,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&ig_IsMouseDown, "ig_IsMouseDown");
 				bindFunc(cast(void**)&ig_IsMouseClicked, "ig_IsMouseClicked");
 				bindFunc(cast(void**)&ig_IsMouseDoubleClicked, "ig_IsMouseDoubleClicked");
+                bindFunc(cast(void**)&ig_IsMouseReleased, "ig_IsMouseReleased");
 				bindFunc(cast(void**)&ig_IsMouseHoveringWindow, "ig_IsMouseHoveringWindow");
 				bindFunc(cast(void**)&ig_IsMouseHoveringAnyWindow, "ig_IsMouseHoveringAnyWindow");
 				bindFunc(cast(void**)&ig_IsMouseHoveringRect, "ig_IsMouseHoveringRect");

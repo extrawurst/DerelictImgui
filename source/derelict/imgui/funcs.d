@@ -70,6 +70,7 @@ extern(C) @nogc nothrow
     alias da_ig_IsWindowCollapsed 			= bool function();
 
 	alias da_ig_SetNextWindowPos 			= void function(const ImVec2 pos, ImGuiSetCond cond = 0);
+    alias da_ig_SetNextWindowPosCenter      = void function(ImGuiSetCond cond = 0);
 	alias da_ig_SetNextWindowSize 			= void function(const ImVec2 size, ImGuiSetCond cond = 0);
 	alias da_ig_SetNextWindowCollapsed 		= void function(bool collapsed, ImGuiSetCond cond = 0);
 	alias da_ig_SetNextWindowFocus 			= void function();
@@ -114,6 +115,8 @@ extern(C) @nogc nothrow
 
     alias da_ig_OpenPopup                   = void              function(const(char)* str_id);
     alias da_ig_BeginPopup					= bool				function(const(char)* str_id);
+    alias da_ig_BeginPopupModal             = bool function(const(char)* name, bool* p_opened = null, ImGuiWindowFlags extra_flags = 0);
+
     alias da_ig_BeginPopupContextItem       = bool              function(const(char)* str_id, int mouse_button = 1);
     alias da_ig_BeginPopupContextWindow     = bool              function(bool also_over_items = true, const(char)* str_id = null, int mouse_button = 1);
     alias da_ig_BeginPopupContextVoid       = bool              function(const char* str_id = null, int mouse_button = 1);
@@ -175,7 +178,7 @@ extern(C) @nogc nothrow
 	alias da_ig_SmallButton					= bool				function(const char* label);
 	alias da_ig_InvisibleButton				= bool				function(const char* str_id, const ImVec2 size);
 	alias da_ig_Image						= void				function(ImTextureID user_texture_id, const ImVec2 size, const ImVec2 uv0 = ImVec2(0, 0), const ImVec2 uv1 = ImVec2(1, 1), const ImVec4 tint_col = ImVec4(1, 1, 1, 1), const ImVec4 border_col = ImVec4(0, 0, 0, 0));
-	alias da_ig_ImageButton					= bool				function(ImTextureID user_texture_id, const ImVec2 size, const ImVec2 uv0 = ImVec2(0, 0), const ImVec2 uv1 = ImVec2(1, 1), int frame_padding = -1, const ImVec4 bg_col = ImVec4(0, 0, 0, 1), const ImVec4 tint_col = ImVec4(1, 1, 1, 1));
+	alias da_ig_ImageButton					= bool				function(ImTextureID user_texture_id, const ImVec2 size, const ImVec2 uv0 = ImVec2(0, 0), const ImVec2 uv1 = ImVec2(1, 1), int frame_padding = -1, const ImVec4 bg_col = ImVec4(0, 0, 0, 0), const ImVec4 tint_col = ImVec4(1, 1, 1, 1));
 	alias da_ig_CollapsingHeader			= bool				function(const char* label, const char* str_id = null, bool display_frame = true, bool default_open = false);
 	alias da_ig_Checkbox					= bool				function(const char* label, bool* v);
 	alias da_ig_CheckboxFlags				= bool				function(const char* label, uint* flags, uint flags_value);
@@ -216,6 +219,7 @@ extern(C) @nogc nothrow
 
 
 	alias da_ig_InputText					= bool				function(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags = 0, ImGuiTextEditCallback callback = null, void* user_data = null);
+    alias da_ig_InputTextMultiline          = bool              function(const char* label, char* buf, size_t buf_size, const ImVec2 size = ImVec2(0,0), ImGuiInputTextFlags flags = 0, ImGuiTextEditCallback callback = null, void* user_data = null);
 	alias da_ig_InputFloat					= bool				function(const char* label, float* v, float step = 0.0f, float step_fast = 0.0f, int decimal_precision = -1, ImGuiInputTextFlags extra_flags = 0);
     alias da_ig_InputFloat2					= bool				function(const char* label, ref float[2] v, int decimal_precision = -1, ImGuiInputTextFlags extra_flags = 0);
 	alias da_ig_InputFloat3					= bool				function(const char* label, ref float[3] v, int decimal_precision = -1, ImGuiInputTextFlags extra_flags = 0);
@@ -235,8 +239,9 @@ extern(C) @nogc nothrow
 	alias da_ig_TreePop						= void				function();
 	alias da_ig_SetNextTreeNodeOpened		= void				function(bool opened, ImGuiSetCond cond = 0);
 
-	alias da_ig_Selectable					= bool				function(const char* label, bool selected = false, const ImVec2 size = ImVec2(0, 0));
-	alias da_ig_SelectableEx					= bool				function(const char* label, bool* p_selected, const ImVec2 size = ImVec2(0, 0));
+    alias da_ig_Selectable					= bool				function(const char* label, bool selected = false, ImGuiSelectableFlags flags = 0, const ImVec2 size = ImVec2(0, 0));
+    alias da_ig_SelectableEx				= bool				function(const char* label, bool* p_selected, ImGuiSelectableFlags flags = 0, const ImVec2 size = ImVec2(0, 0));
+
 	alias da_ig_ListBox						= bool				function(const char* label, int* current_item, const char** items, int items_count, int height_in_items = -1);
 	alias da_ig_ListBox2					= bool				function(const char* label, int* current_item, bool function(void* data, int idx, const char** out_text) items_getter, void* data, int items_count, int height_in_items = -1);
 	alias da_ig_ListBoxHeader				= bool				function(const char* label, const ImVec2 size = ImVec2(0, 0));
@@ -276,15 +281,18 @@ extern(C) @nogc nothrow
 	alias da_ig_GetItemRectMin				= void function(ImVec2* pOut);
 	alias da_ig_GetItemRectMax				= void function(ImVec2* pOut);
 	alias da_ig_GetItemRectSize				= void function(ImVec2* pOut);
+    alias da_ig_IsWindowHovered             = bool              function();
 	alias da_ig_IsWindowFocused				= bool				function();
 	alias da_ig_IsRootWindowFocused			= bool				function();
 	alias da_ig_IsRootWindowOrAnyChildFocused	= bool				function();
     alias da_ig_IsRectVisible					= bool				function(const ImVec2 item_size);
     alias da_ig_IsKeyDown                   = bool              function(int key_index);
 	alias da_ig_IsKeyPressed				= bool				function(int key_index, bool repeat = true);
+    alias da_ig_IsKeyReleased               = bool              function(int key_index);
     alias da_ig_IsMouseDown                 = bool              function(int button);
 	alias da_ig_IsMouseClicked				= bool				function(int button, bool repeat = false);
 	alias da_ig_IsMouseDoubleClicked		= bool				function(int button);
+    alias da_ig_IsMouseReleased             = bool              function(int button);
 	alias da_ig_IsMouseHoveringWindow		= bool				function();
 	alias da_ig_IsMouseHoveringAnyWindow	= bool				function();
 	alias da_ig_IsMouseHoveringRect			= bool				function(const ImVec2 rect_min, const ImVec2 rect_max);
@@ -302,7 +310,7 @@ extern(C) @nogc nothrow
 	alias da_ig_CalcTextSize				= void function(ImVec2* pOut, const char* text, const char* text_end = null, bool hide_text_after_double_hash = false, float wrap_width = -1.0f);
 	alias da_ig_CalcListClipping			= void				function(int items_count, float items_height, int* out_items_display_start, int* out_items_display_end);
 
-	alias da_ig_BeginChildFrame				= void				function(ImGuiID id, const ImVec2 size);
+	alias da_ig_BeginChildFrame				= bool				function(ImGuiID id, const ImVec2 size);
 	alias da_ig_EndChildFrame				= void				function();
 
 	alias da_ig_ColorConvertFloat4ToU32		= ImU32	function(const ImVec4 in_);
@@ -371,6 +379,7 @@ __gshared
     da_ig_IsWindowCollapsed ig_IsWindowCollapsed;
 
 	da_ig_SetNextWindowPos ig_SetNextWindowPos;
+    da_ig_SetNextWindowPosCenter ig_SetNextWindowPosCenter;
 	da_ig_SetNextWindowSize ig_SetNextWindowSize;
 	da_ig_SetNextWindowCollapsed ig_SetNextWindowCollapsed;
 	da_ig_SetNextWindowFocus ig_SetNextWindowFocus;
@@ -415,6 +424,7 @@ __gshared
 
     da_ig_OpenPopup ig_OpenPopup;
     da_ig_BeginPopup ig_BeginPopup;
+    da_ig_BeginPopupModal ig_BeginPopupModal;
     da_ig_BeginPopupContextItem ig_BeginPopupContextItem;  
     da_ig_BeginPopupContextWindow ig_BeginPopupContextWindow;
     da_ig_BeginPopupContextVoid ig_BeginPopupContextVoid;
@@ -516,6 +526,7 @@ __gshared
     da_ig_DragInt4 ig_DragInt4;
 
 	da_ig_InputText ig_InputText;
+    da_ig_InputTextMultiline ig_InputTextMultiline;
 	da_ig_InputFloat ig_InputFloat;
 	da_ig_InputFloat2 ig_InputFloat2;
 	da_ig_InputFloat3 ig_InputFloat3;
@@ -575,15 +586,18 @@ __gshared
 	da_ig_GetItemRectMin ig_GetItemRectMin;
 	da_ig_GetItemRectMax ig_GetItemRectMax;
 	da_ig_GetItemRectSize ig_GetItemRectSize;
+    da_ig_IsWindowHovered ig_IsWindowHovered;
 	da_ig_IsWindowFocused ig_IsWindowFocused;
 	da_ig_IsRootWindowFocused ig_IsRootWindowFocused;
 	da_ig_IsRootWindowOrAnyChildFocused ig_IsRootWindowOrAnyChildFocused;
     da_ig_IsRectVisible ig_IsRectVisible;
     da_ig_IsKeyDown ig_IsKeyDown;
 	da_ig_IsKeyPressed ig_IsKeyPressed;
+    da_ig_IsKeyReleased ig_IsKeyReleased;
     da_ig_IsMouseDown ig_IsMouseDown;
 	da_ig_IsMouseClicked ig_IsMouseClicked;
 	da_ig_IsMouseDoubleClicked ig_IsMouseDoubleClicked;
+    da_ig_IsMouseReleased ig_IsMouseReleased;
 	da_ig_IsMouseHoveringWindow ig_IsMouseHoveringWindow;
 	da_ig_IsMouseHoveringAnyWindow ig_IsMouseHoveringAnyWindow;
 	da_ig_IsMouseHoveringRect ig_IsMouseHoveringRect;
