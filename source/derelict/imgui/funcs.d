@@ -83,9 +83,11 @@ extern(C) @nogc nothrow
 	alias da_ig_SetWindowCollapsed2 		= void function(const char* name, bool collapsed, ImGuiSetCond cond = 0);
 	alias da_ig_SetWindowFocus2 			= void function(const char* name);
 	
-	alias da_ig_GetScrollPosY				= float			function();
+	alias da_ig_GetScrollY				    = float			function();
 	alias da_ig_GetScrollMaxY				= float			function();
-	alias da_ig_SetScrollPosHere			= void				function();
+    alias da_ig_SetScrollY                  = void              function(int scroll_y);
+	alias da_ig_SetScrollHere			    = void				function(float center_y_ratio = 0.5f);
+    alias da_ig_SetScrollFromPosY           = void              function(float pos_y, float center_y_ratio = 0.5f);
 	alias da_ig_SetKeyboardFocusHere		= void				function(int offset = 0);
 	alias da_ig_SetStateStorage				= void				function(ImGuiStorage* tree);
 	alias da_ig_GetStateStorage				= ImGuiStorage*	function();
@@ -108,21 +110,6 @@ extern(C) @nogc nothrow
     alias da_ig_PushButtonRepeat            = void              function(bool repeat);
     alias da_ig_PopButtonRepeat             = void              function();
 
-    alias da_ig_SetTooltip					= void				function(const(char)* fmt, ...);
-    alias da_ig_SetTooltipV					= void				function(const(char)* fmt, va_list args);
-	alias da_ig_BeginTooltip				= void				function();
-	alias da_ig_EndTooltip					= void				function();
-
-    alias da_ig_OpenPopup                   = void              function(const(char)* str_id);
-    alias da_ig_BeginPopup					= bool				function(const(char)* str_id);
-    alias da_ig_BeginPopupModal             = bool function(const(char)* name, bool* p_opened = null, ImGuiWindowFlags extra_flags = 0);
-
-    alias da_ig_BeginPopupContextItem       = bool              function(const(char)* str_id, int mouse_button = 1);
-    alias da_ig_BeginPopupContextWindow     = bool              function(bool also_over_items = true, const(char)* str_id = null, int mouse_button = 1);
-    alias da_ig_BeginPopupContextVoid       = bool              function(const char* str_id = null, int mouse_button = 1);
-	alias da_ig_EndPopup					= void				function();
-    alias da_ig_CloseCurrentPopup           = void              function();
-
 	alias da_ig_BeginGroup					= void				function();
 	alias da_ig_EndGroup					= void				function();
 	alias da_ig_Separator					= void				function();
@@ -144,6 +131,7 @@ extern(C) @nogc nothrow
 	alias da_ig_SetCursorPos				= void				function(const ImVec2 pos);
 	alias da_ig_SetCursorPosX				= void				function(float x);
 	alias da_ig_SetCursorPosY				= void				function(float y);
+    alias da_ig_GetCursorStartPos           = void function(ImVec2* pOut);
 	alias da_ig_GetCursorScreenPos			= void function(ImVec2* pOut);
 	alias da_ig_SetCursorScreenPos			= void				function(const ImVec2 pos);
 	alias da_ig_AlignFirstTextHeightToWidgets	= void				function();
@@ -212,11 +200,12 @@ extern(C) @nogc nothrow
     alias da_ig_DragFloat2                  = bool              function(const char* label, ref float[2] v, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f", float power = 1.0f);
     alias da_ig_DragFloat3                  = bool              function(const char* label, ref float[3] v, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f", float power = 1.0f);
     alias da_ig_DragFloat4                  = bool              function(const char* label, ref float[4] v, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f", float power = 1.0f);
+    alias da_ig_DragFloatRange2             = bool              function(const char* label, float* v_current_min, float* v_current_max, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* display_format = "%.3f", const char* display_format_max = null, float power = 1.0f);
     alias da_ig_DragInt                     = bool              function(const char* label, int* v, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.3f");                                       // If v_max >= v_max we have no bound
     alias da_ig_DragInt2                    = bool              function(const char* label, ref int[2] v, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.3f");
     alias da_ig_DragInt3                    = bool              function(const char* label, ref int[3] v, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.3f");
     alias da_ig_DragInt4                    = bool              function(const char* label, ref int[4] v, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.3f");
-
+    alias da_ig_DragIntRange2               = bool              function(const char* label, int* v_current_min, int* v_current_max, float v_speed = 1.0f, int v_min = 0, int v_max = 0, const char* display_format = "%.0f", const char* display_format_max = null);
 
 	alias da_ig_InputText					= bool				function(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags = 0, ImGuiTextEditCallback callback = null, void* user_data = null);
     alias da_ig_InputTextMultiline          = bool              function(const char* label, char* buf, size_t buf_size, const ImVec2 size = ImVec2(0,0), ImGuiInputTextFlags flags = 0, ImGuiTextEditCallback callback = null, void* user_data = null);
@@ -248,6 +237,18 @@ extern(C) @nogc nothrow
 	alias da_ig_ListBoxHeader2				= bool				function(const char* label, int items_count, int height_in_items = -1);
 	alias da_ig_ListBoxFooter				= void				function();
 
+    alias da_ig_ValueBool       = void              function(const char* prefix, bool b);
+    alias da_ig_ValueInt        = void              function(const char* prefix, int v);
+    alias da_ig_ValueUInt       = void              function(const char* prefix, uint v);
+    alias da_ig_ValueFloat      = void              function(const char* prefix, float v, const char* float_format = null);
+    alias da_ig_Color           = void              function(const char* prefix, const ImVec4 v);
+    alias da_ig_Color2          = void              function(const char* prefix, uint v);
+
+    alias da_ig_SetTooltip                  = void              function(const(char)* fmt, ...);
+    alias da_ig_SetTooltipV                 = void              function(const(char)* fmt, va_list args);
+    alias da_ig_BeginTooltip                = void              function();
+    alias da_ig_EndTooltip                  = void              function();
+
     // Widgets: Menus
     alias da_ig_BeginMainMenuBar            = bool      function();
     alias da_ig_EndMainMenuBar              = void      function();
@@ -258,12 +259,14 @@ extern(C) @nogc nothrow
     alias da_ig_MenuItem                    = bool      function(const(char)* label, const(char)* shortcut, bool selected = false, bool enabled = true);
     alias da_ig_MenuItemPtr                 = bool      function(const(char)* label, const(char)* shortcut, bool* p_selected, bool enabled = true);
 
-	alias da_ig_ValueBool		= void				function(const char* prefix, bool b);
-	alias da_ig_ValueInt		= void				function(const char* prefix, int v);
-	alias da_ig_ValueUInt		= void				function(const char* prefix, uint v);
-	alias da_ig_ValueFloat		= void				function(const char* prefix, float v, const char* float_format = null);
-	alias da_ig_Color		= void				function(const char* prefix, const ImVec4 v);
-	alias da_ig_Color2		= void				function(const char* prefix, uint v);
+    alias da_ig_OpenPopup                   = void              function(const(char)* str_id);
+    alias da_ig_BeginPopup                  = bool              function(const(char)* str_id);
+    alias da_ig_BeginPopupModal             = bool function(const(char)* name, bool* p_opened = null, ImGuiWindowFlags extra_flags = 0);
+    alias da_ig_BeginPopupContextItem       = bool              function(const(char)* str_id, int mouse_button = 1);
+    alias da_ig_BeginPopupContextWindow     = bool              function(bool also_over_items = true, const(char)* str_id = null, int mouse_button = 1);
+    alias da_ig_BeginPopupContextVoid       = bool              function(const char* str_id = null, int mouse_button = 1);
+    alias da_ig_EndPopup                    = void              function();
+    alias da_ig_CloseCurrentPopup           = void              function();
 
 	alias da_ig_LogToTTY		= void				function(int max_depth = -1);
 	alias da_ig_LogToFile		= void				function(int max_depth = -1, const char* filename = null);
@@ -392,9 +395,11 @@ __gshared
 	da_ig_SetWindowCollapsed2 ig_SetWindowCollapsed2;
 	da_ig_SetWindowFocus2 ig_SetWindowFocus2;
 	
-	da_ig_GetScrollPosY ig_GetScrollPosY;
+	da_ig_GetScrollY ig_GetScrollY;
 	da_ig_GetScrollMaxY ig_GetScrollMaxY;
-	da_ig_SetScrollPosHere ig_SetScrollPosHere;
+    da_ig_SetScrollY ig_SetScrollY;
+	da_ig_SetScrollHere ig_SetScrollHere;
+    da_ig_SetScrollFromPosY ig_SetScrollFromPosY;
 	da_ig_SetKeyboardFocusHere ig_SetKeyboardFocusHere;
 	da_ig_SetStateStorage ig_SetStateStorage;
 	da_ig_GetStateStorage ig_GetStateStorage;
@@ -452,6 +457,7 @@ __gshared
 	da_ig_SetCursorPos ig_SetCursorPos;
 	da_ig_SetCursorPosX ig_SetCursorPosX;
 	da_ig_SetCursorPosY ig_SetCursorPosY;
+    da_ig_GetCursorStartPos ig_GetCursorStartPos;
 	da_ig_GetCursorScreenPos ig_GetCursorScreenPos;
 	da_ig_SetCursorScreenPos ig_SetCursorScreenPos;
 	da_ig_AlignFirstTextHeightToWidgets ig_AlignFirstTextHeightToWidgets;
@@ -520,10 +526,12 @@ __gshared
     da_ig_DragFloat2 ig_DragFloat2;
     da_ig_DragFloat3 ig_DragFloat3;
     da_ig_DragFloat4 ig_DragFloat4;
+    da_ig_DragFloatRange2 ig_DragFloatRange2;
 	da_ig_DragInt ig_DragInt;
     da_ig_DragInt2 ig_DragInt2;
     da_ig_DragInt3 ig_DragInt3;
     da_ig_DragInt4 ig_DragInt4;
+    da_ig_DragIntRange2 ig_DragIntRange2;
 
 	da_ig_InputText ig_InputText;
     da_ig_InputTextMultiline ig_InputTextMultiline;

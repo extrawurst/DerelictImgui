@@ -115,9 +115,11 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_SetWindowCollapsed2, "ig_SetWindowCollapsed2");
 				bindFunc(cast(void**)&ig_SetWindowFocus2, "ig_SetWindowFocus2");
 				
-				bindFunc(cast(void**)&ig_GetScrollPosY, "ig_GetScrollPosY");
+				bindFunc(cast(void**)&ig_GetScrollY, "ig_GetScrollY");
 				bindFunc(cast(void**)&ig_GetScrollMaxY, "ig_GetScrollMaxY");
-				bindFunc(cast(void**)&ig_SetScrollPosHere, "ig_SetScrollPosHere");
+                bindFunc(cast(void**)&ig_SetScrollY, "ig_SetScrollY");
+				bindFunc(cast(void**)&ig_SetScrollHere, "ig_SetScrollHere");
+                bindFunc(cast(void**)&ig_SetScrollFromPosY, "ig_SetScrollFromPosY");
 				bindFunc(cast(void**)&ig_SetKeyboardFocusHere, "ig_SetKeyboardFocusHere");
 				bindFunc(cast(void**)&ig_SetStateStorage, "ig_SetStateStorage");
 				bindFunc(cast(void**)&ig_GetStateStorage, "ig_GetStateStorage");
@@ -175,6 +177,7 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ig_SetCursorPos, "ig_SetCursorPos");
 				bindFunc(cast(void**)&ig_SetCursorPosX, "ig_SetCursorPosX");
 				bindFunc(cast(void**)&ig_SetCursorPosY, "ig_SetCursorPosY");
+                bindFunc(cast(void**)&ig_GetCursorStartPos, "ig_GetCursorStartPos");
 				bindFunc(cast(void**)&ig_GetCursorScreenPos, "ig_GetCursorScreenPos");
 				bindFunc(cast(void**)&ig_SetCursorScreenPos, "ig_SetCursorScreenPos");
 				bindFunc(cast(void**)&ig_AlignFirstTextHeightToWidgets, "ig_AlignFirstTextHeightToWidgets");
@@ -243,10 +246,12 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&ig_DragFloat2, "ig_DragFloat2");
                 bindFunc(cast(void**)&ig_DragFloat3, "ig_DragFloat3");
                 bindFunc(cast(void**)&ig_DragFloat4, "ig_DragFloat4");
+                bindFunc(cast(void**)&ig_DragFloatRange2, "ig_DragFloatRange2");
 				bindFunc(cast(void**)&ig_DragInt, "ig_DragInt");
                 bindFunc(cast(void**)&ig_DragInt2, "ig_DragInt2");
                 bindFunc(cast(void**)&ig_DragInt3, "ig_DragInt3");
                 bindFunc(cast(void**)&ig_DragInt4, "ig_DragInt4");
+                bindFunc(cast(void**)&ig_DragIntRange2, "ig_DragIntRange2");
 
 				bindFunc(cast(void**)&ig_InputText, "ig_InputText");
                 bindFunc(cast(void**)&ig_InputTextMultiline, "ig_InputTextMultiline");
