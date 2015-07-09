@@ -33,8 +33,8 @@ module derelict.imgui.imgui;
 
 public
 {
-	import derelict.imgui.types;
-	import derelict.imgui.funcs;
+    import derelict.imgui.types;
+    import derelict.imgui.funcs;
 }
 
 private
@@ -57,7 +57,7 @@ private
     else static if (Derelict_OS_Mac)
         enum libNames = "cimgui.dylib";
     else static if (Derelict_OS_Linux)
-		enum libNames = "cimgui.so";
+        enum libNames = "cimgui.so";
     else
         static assert(0, "Need to implement imgui libNames for this operating system.");
 }
@@ -68,309 +68,309 @@ final class DerelictImguiLoader : SharedLibLoader
     {
         override void loadSymbols()
         {
-			{
-				//search: (ig_\S+)
-				//replace: bindFunc\(cast\(void**\)&$1, "$1"\);
-			
-				bindFunc(cast(void**)&ig_GetIO, "ig_GetIO");
-				bindFunc(cast(void**)&ig_GetStyle, "ig_GetStyle");
-				bindFunc(cast(void**)&ig_NewFrame, "ig_NewFrame");
-				bindFunc(cast(void**)&ig_Render, "ig_Render");
-				bindFunc(cast(void**)&ig_Shutdown, "ig_Shutdown");
-				bindFunc(cast(void**)&ig_ShowUserGuide, "ig_ShowUserGuide");
-				bindFunc(cast(void**)&ig_ShowStyleEditor, "ig_ShowStyleEditor");
-				bindFunc(cast(void**)&ig_ShowTestWindow, "ig_ShowTestWindow");
-				bindFunc(cast(void**)&ig_ShowMetricsWindow, "ig_ShowMetricsWindow");
+            {
+                //search: (ig\S+)
+                //replace: bindFunc\(cast\(void**\)&$1, "$1"\);
+            
+                bindFunc(cast(void**)&igGetIO, "igGetIO");
+                bindFunc(cast(void**)&igGetStyle, "igGetStyle");
+                bindFunc(cast(void**)&igNewFrame, "igNewFrame");
+                bindFunc(cast(void**)&igRender, "igRender");
+                bindFunc(cast(void**)&igShutdown, "igShutdown");
+                bindFunc(cast(void**)&igShowUserGuide, "igShowUserGuide");
+                bindFunc(cast(void**)&igShowStyleEditor, "igShowStyleEditor");
+                bindFunc(cast(void**)&igShowTestWindow, "igShowTestWindow");
+                bindFunc(cast(void**)&igShowMetricsWindow, "igShowMetricsWindow");
 
-				// Window
-				bindFunc(cast(void**)&ig_Begin, "ig_Begin");
-				bindFunc(cast(void**)&ig_Begin2, "ig_Begin2");
-				bindFunc(cast(void**)&ig_End, "ig_End");
-				bindFunc(cast(void**)&ig_BeginChild, "ig_BeginChild");
-				bindFunc(cast(void**)&ig_BeginChildEx, "ig_BeginChildEx");
-				bindFunc(cast(void**)&ig_EndChild, "ig_EndChild");
-				bindFunc(cast(void**)&ig_GetContentRegionMax, "ig_GetContentRegionMax");
-				bindFunc(cast(void**)&ig_GetWindowContentRegionMin, "ig_GetWindowContentRegionMin");
-				bindFunc(cast(void**)&ig_GetWindowContentRegionMax, "ig_GetWindowContentRegionMax");
-				bindFunc(cast(void**)&ig_GetWindowDrawList, "ig_GetWindowDrawList");
-				bindFunc(cast(void**)&ig_GetWindowFont, "ig_GetWindowFont");
-				bindFunc(cast(void**)&ig_GetWindowFontSize, "ig_GetWindowFontSize");
-				bindFunc(cast(void**)&ig_SetWindowFontScale, "ig_SetWindowFontScale");
-				bindFunc(cast(void**)&ig_GetWindowPos, "ig_GetWindowPos");
-				bindFunc(cast(void**)&ig_GetWindowSize, "ig_GetWindowSize");
-				bindFunc(cast(void**)&ig_GetWindowWidth, "ig_GetWindowWidth");
-                bindFunc(cast(void**)&ig_IsWindowCollapsed, "ig_IsWindowCollapsed");
+                // Window
+                bindFunc(cast(void**)&igBegin, "igBegin");
+                bindFunc(cast(void**)&igBegin2, "igBegin2");
+                bindFunc(cast(void**)&igEnd, "igEnd");
+                bindFunc(cast(void**)&igBeginChild, "igBeginChild");
+                bindFunc(cast(void**)&igBeginChildEx, "igBeginChildEx");
+                bindFunc(cast(void**)&igEndChild, "igEndChild");
+                bindFunc(cast(void**)&igGetContentRegionMax, "igGetContentRegionMax");
+                bindFunc(cast(void**)&igGetWindowContentRegionMin, "igGetWindowContentRegionMin");
+                bindFunc(cast(void**)&igGetWindowContentRegionMax, "igGetWindowContentRegionMax");
+                bindFunc(cast(void**)&igGetWindowDrawList, "igGetWindowDrawList");
+                bindFunc(cast(void**)&igGetWindowFont, "igGetWindowFont");
+                bindFunc(cast(void**)&igGetWindowFontSize, "igGetWindowFontSize");
+                bindFunc(cast(void**)&igSetWindowFontScale, "igSetWindowFontScale");
+                bindFunc(cast(void**)&igGetWindowPos, "igGetWindowPos");
+                bindFunc(cast(void**)&igGetWindowSize, "igGetWindowSize");
+                bindFunc(cast(void**)&igGetWindowWidth, "igGetWindowWidth");
+                bindFunc(cast(void**)&igIsWindowCollapsed, "igIsWindowCollapsed");
 
-                bindFunc(cast(void**)&ig_SetNextWindowPos, "ig_SetNextWindowPos");
-                bindFunc(cast(void**)&ig_SetNextWindowPosCenter, "ig_SetNextWindowPosCenter");
-				bindFunc(cast(void**)&ig_SetNextWindowSize, "ig_SetNextWindowSize");
-				bindFunc(cast(void**)&ig_SetNextWindowCollapsed, "ig_SetNextWindowCollapsed");
-				bindFunc(cast(void**)&ig_SetNextWindowFocus, "ig_SetNextWindowFocus");
-				bindFunc(cast(void**)&ig_SetWindowPos, "ig_SetWindowPos");
-				bindFunc(cast(void**)&ig_SetWindowSize, "ig_SetWindowSize");
-				bindFunc(cast(void**)&ig_SetWindowCollapsed, "ig_SetWindowCollapsed");
-				bindFunc(cast(void**)&ig_SetWindowFocus, "ig_SetWindowFocus");
-				bindFunc(cast(void**)&ig_SetWindowPosByName, "ig_SetWindowPosByName");
-				bindFunc(cast(void**)&ig_SetWindowSize2, "ig_SetWindowSize2");
-				bindFunc(cast(void**)&ig_SetWindowCollapsed2, "ig_SetWindowCollapsed2");
-				bindFunc(cast(void**)&ig_SetWindowFocus2, "ig_SetWindowFocus2");
-				
-				bindFunc(cast(void**)&ig_GetScrollY, "ig_GetScrollY");
-				bindFunc(cast(void**)&ig_GetScrollMaxY, "ig_GetScrollMaxY");
-                bindFunc(cast(void**)&ig_SetScrollY, "ig_SetScrollY");
-				bindFunc(cast(void**)&ig_SetScrollHere, "ig_SetScrollHere");
-                bindFunc(cast(void**)&ig_SetScrollFromPosY, "ig_SetScrollFromPosY");
-				bindFunc(cast(void**)&ig_SetKeyboardFocusHere, "ig_SetKeyboardFocusHere");
-				bindFunc(cast(void**)&ig_SetStateStorage, "ig_SetStateStorage");
-				bindFunc(cast(void**)&ig_GetStateStorage, "ig_GetStateStorage");
+                bindFunc(cast(void**)&igSetNextWindowPos, "igSetNextWindowPos");
+                bindFunc(cast(void**)&igSetNextWindowPosCenter, "igSetNextWindowPosCenter");
+                bindFunc(cast(void**)&igSetNextWindowSize, "igSetNextWindowSize");
+                bindFunc(cast(void**)&igSetNextWindowCollapsed, "igSetNextWindowCollapsed");
+                bindFunc(cast(void**)&igSetNextWindowFocus, "igSetNextWindowFocus");
+                bindFunc(cast(void**)&igSetWindowPos, "igSetWindowPos");
+                bindFunc(cast(void**)&igSetWindowSize, "igSetWindowSize");
+                bindFunc(cast(void**)&igSetWindowCollapsed, "igSetWindowCollapsed");
+                bindFunc(cast(void**)&igSetWindowFocus, "igSetWindowFocus");
+                bindFunc(cast(void**)&igSetWindowPosByName, "igSetWindowPosByName");
+                bindFunc(cast(void**)&igSetWindowSize2, "igSetWindowSize2");
+                bindFunc(cast(void**)&igSetWindowCollapsed2, "igSetWindowCollapsed2");
+                bindFunc(cast(void**)&igSetWindowFocus2, "igSetWindowFocus2");
+                
+                bindFunc(cast(void**)&igGetScrollY, "igGetScrollY");
+                bindFunc(cast(void**)&igGetScrollMaxY, "igGetScrollMaxY");
+                bindFunc(cast(void**)&igSetScrollY, "igSetScrollY");
+                bindFunc(cast(void**)&igSetScrollHere, "igSetScrollHere");
+                bindFunc(cast(void**)&igSetScrollFromPosY, "igSetScrollFromPosY");
+                bindFunc(cast(void**)&igSetKeyboardFocusHere, "igSetKeyboardFocusHere");
+                bindFunc(cast(void**)&igSetStateStorage, "igSetStateStorage");
+                bindFunc(cast(void**)&igGetStateStorage, "igGetStateStorage");
 
-				bindFunc(cast(void**)&ig_PushFont, "ig_PushFont");
-				bindFunc(cast(void**)&ig_PopFont, "ig_PopFont");
-				bindFunc(cast(void**)&ig_PushStyleColor, "ig_PushStyleColor");
-				bindFunc(cast(void**)&ig_PopStyleColor, "ig_PopStyleColor");
-				bindFunc(cast(void**)&ig_PushStyleVar, "ig_PushStyleVar");
-				bindFunc(cast(void**)&ig_PushStyleVarVec, "ig_PushStyleVarVec");
-				bindFunc(cast(void**)&ig_PopStyleVar, "ig_PopStyleVar");
+                bindFunc(cast(void**)&igPushFont, "igPushFont");
+                bindFunc(cast(void**)&igPopFont, "igPopFont");
+                bindFunc(cast(void**)&igPushStyleColor, "igPushStyleColor");
+                bindFunc(cast(void**)&igPopStyleColor, "igPopStyleColor");
+                bindFunc(cast(void**)&igPushStyleVar, "igPushStyleVar");
+                bindFunc(cast(void**)&igPushStyleVarVec, "igPushStyleVarVec");
+                bindFunc(cast(void**)&igPopStyleVar, "igPopStyleVar");
 
-				bindFunc(cast(void**)&ig_PushItemWidth, "ig_PushItemWidth");
-				bindFunc(cast(void**)&ig_PopItemWidth, "ig_PopItemWidth");
-				bindFunc(cast(void**)&ig_CalcItemWidth, "ig_CalcItemWidth");
-				bindFunc(cast(void**)&ig_PushAllowKeyboardFocus, "ig_PushAllowKeyboardFocus");
-				bindFunc(cast(void**)&ig_PopAllowKeyboardFocus, "ig_PopAllowKeyboardFocus");
-				bindFunc(cast(void**)&ig_PushTextWrapPos, "ig_PushTextWrapPos");
-				bindFunc(cast(void**)&ig_PopTextWrapPos, "ig_PopTextWrapPos");
-                bindFunc(cast(void**)&ig_PushButtonRepeat, "ig_PushButtonRepeat");
-                bindFunc(cast(void**)&ig_PopButtonRepeat, "ig_PopButtonRepeat");
+                bindFunc(cast(void**)&igPushItemWidth, "igPushItemWidth");
+                bindFunc(cast(void**)&igPopItemWidth, "igPopItemWidth");
+                bindFunc(cast(void**)&igCalcItemWidth, "igCalcItemWidth");
+                bindFunc(cast(void**)&igPushAllowKeyboardFocus, "igPushAllowKeyboardFocus");
+                bindFunc(cast(void**)&igPopAllowKeyboardFocus, "igPopAllowKeyboardFocus");
+                bindFunc(cast(void**)&igPushTextWrapPos, "igPushTextWrapPos");
+                bindFunc(cast(void**)&igPopTextWrapPos, "igPopTextWrapPos");
+                bindFunc(cast(void**)&igPushButtonRepeat, "igPushButtonRepeat");
+                bindFunc(cast(void**)&igPopButtonRepeat, "igPopButtonRepeat");
 
-				bindFunc(cast(void**)&ig_SetTooltip, "ig_SetTooltip");
-				bindFunc(cast(void**)&ig_SetTooltipV, "ig_SetTooltipV");
-				bindFunc(cast(void**)&ig_BeginTooltip, "ig_BeginTooltip");
-				bindFunc(cast(void**)&ig_EndTooltip, "ig_EndTooltip");
+                bindFunc(cast(void**)&igSetTooltip, "igSetTooltip");
+                bindFunc(cast(void**)&igSetTooltipV, "igSetTooltipV");
+                bindFunc(cast(void**)&igBeginTooltip, "igBeginTooltip");
+                bindFunc(cast(void**)&igEndTooltip, "igEndTooltip");
 
-                bindFunc(cast(void**)&ig_OpenPopup, "ig_OpenPopup");
-                bindFunc(cast(void**)&ig_BeginPopup, "ig_BeginPopup");
-                bindFunc(cast(void**)&ig_BeginPopupModal, "ig_BeginPopupModal");
-                bindFunc(cast(void**)&ig_BeginPopupContextItem, "ig_BeginPopupContextItem");
-                bindFunc(cast(void**)&ig_BeginPopupContextWindow, "ig_BeginPopupContextWindow");
-                bindFunc(cast(void**)&ig_BeginPopupContextVoid, "ig_BeginPopupContextVoid");
-				bindFunc(cast(void**)&ig_EndPopup, "ig_EndPopup");
-                bindFunc(cast(void**)&ig_CloseCurrentPopup, "ig_CloseCurrentPopup");
+                bindFunc(cast(void**)&igOpenPopup, "igOpenPopup");
+                bindFunc(cast(void**)&igBeginPopup, "igBeginPopup");
+                bindFunc(cast(void**)&igBeginPopupModal, "igBeginPopupModal");
+                bindFunc(cast(void**)&igBeginPopupContextItem, "igBeginPopupContextItem");
+                bindFunc(cast(void**)&igBeginPopupContextWindow, "igBeginPopupContextWindow");
+                bindFunc(cast(void**)&igBeginPopupContextVoid, "igBeginPopupContextVoid");
+                bindFunc(cast(void**)&igEndPopup, "igEndPopup");
+                bindFunc(cast(void**)&igCloseCurrentPopup, "igCloseCurrentPopup");
 
-				bindFunc(cast(void**)&ig_BeginGroup, "ig_BeginGroup");
-				bindFunc(cast(void**)&ig_EndGroup, "ig_EndGroup");
-				bindFunc(cast(void**)&ig_Separator, "ig_Separator");
-				bindFunc(cast(void**)&ig_SameLine, "ig_SameLine");
-				bindFunc(cast(void**)&ig_Spacing, "ig_Spacing");
-                bindFunc(cast(void**)&ig_Dummy, "ig_Dummy");
-				bindFunc(cast(void**)&ig_Indent, "ig_Indent");
-				bindFunc(cast(void**)&ig_Unindent, "ig_Unindent");
-				bindFunc(cast(void**)&ig_Columns, "ig_Columns");
-				bindFunc(cast(void**)&ig_NextColumn, "ig_NextColumn");
-				bindFunc(cast(void**)&ig_GetColumnIndex, "ig_GetColumnIndex");
-				bindFunc(cast(void**)&ig_GetColumnOffset, "ig_GetColumnOffset");
-				bindFunc(cast(void**)&ig_SetColumnOffset, "ig_SetColumnOffset");
-				bindFunc(cast(void**)&ig_GetColumnWidth, "ig_GetColumnWidth");
-				bindFunc(cast(void**)&ig_GetColumnsCount, "ig_GetColumnsCount");
-				bindFunc(cast(void**)&ig_GetCursorPos, "ig_GetCursorPos");
-				bindFunc(cast(void**)&ig_GetCursorPosX, "ig_GetCursorPosX");
-				bindFunc(cast(void**)&ig_GetCursorPosY, "ig_GetCursorPosY");
-				bindFunc(cast(void**)&ig_SetCursorPos, "ig_SetCursorPos");
-				bindFunc(cast(void**)&ig_SetCursorPosX, "ig_SetCursorPosX");
-				bindFunc(cast(void**)&ig_SetCursorPosY, "ig_SetCursorPosY");
-                bindFunc(cast(void**)&ig_GetCursorStartPos, "ig_GetCursorStartPos");
-				bindFunc(cast(void**)&ig_GetCursorScreenPos, "ig_GetCursorScreenPos");
-				bindFunc(cast(void**)&ig_SetCursorScreenPos, "ig_SetCursorScreenPos");
-				bindFunc(cast(void**)&ig_AlignFirstTextHeightToWidgets, "ig_AlignFirstTextHeightToWidgets");
-				bindFunc(cast(void**)&ig_GetTextLineHeight, "ig_GetTextLineHeight");
-				bindFunc(cast(void**)&ig_GetTextLineHeightWithSpacing, "ig_GetTextLineHeightWithSpacing");
-                bindFunc(cast(void**)&ig_GetItemsLineHeightWithSpacing, "ig_GetItemsLineHeightWithSpacing");
+                bindFunc(cast(void**)&igBeginGroup, "igBeginGroup");
+                bindFunc(cast(void**)&igEndGroup, "igEndGroup");
+                bindFunc(cast(void**)&igSeparator, "igSeparator");
+                bindFunc(cast(void**)&igSameLine, "igSameLine");
+                bindFunc(cast(void**)&igSpacing, "igSpacing");
+                bindFunc(cast(void**)&igDummy, "igDummy");
+                bindFunc(cast(void**)&igIndent, "igIndent");
+                bindFunc(cast(void**)&igUnindent, "igUnindent");
+                bindFunc(cast(void**)&igColumns, "igColumns");
+                bindFunc(cast(void**)&igNextColumn, "igNextColumn");
+                bindFunc(cast(void**)&igGetColumnIndex, "igGetColumnIndex");
+                bindFunc(cast(void**)&igGetColumnOffset, "igGetColumnOffset");
+                bindFunc(cast(void**)&igSetColumnOffset, "igSetColumnOffset");
+                bindFunc(cast(void**)&igGetColumnWidth, "igGetColumnWidth");
+                bindFunc(cast(void**)&igGetColumnsCount, "igGetColumnsCount");
+                bindFunc(cast(void**)&igGetCursorPos, "igGetCursorPos");
+                bindFunc(cast(void**)&igGetCursorPosX, "igGetCursorPosX");
+                bindFunc(cast(void**)&igGetCursorPosY, "igGetCursorPosY");
+                bindFunc(cast(void**)&igSetCursorPos, "igSetCursorPos");
+                bindFunc(cast(void**)&igSetCursorPosX, "igSetCursorPosX");
+                bindFunc(cast(void**)&igSetCursorPosY, "igSetCursorPosY");
+                bindFunc(cast(void**)&igGetCursorStartPos, "igGetCursorStartPos");
+                bindFunc(cast(void**)&igGetCursorScreenPos, "igGetCursorScreenPos");
+                bindFunc(cast(void**)&igSetCursorScreenPos, "igSetCursorScreenPos");
+                bindFunc(cast(void**)&igAlignFirstTextHeightToWidgets, "igAlignFirstTextHeightToWidgets");
+                bindFunc(cast(void**)&igGetTextLineHeight, "igGetTextLineHeight");
+                bindFunc(cast(void**)&igGetTextLineHeightWithSpacing, "igGetTextLineHeightWithSpacing");
+                bindFunc(cast(void**)&igGetItemsLineHeightWithSpacing, "igGetItemsLineHeightWithSpacing");
 
-				bindFunc(cast(void**)&ig_PushIdStr, "ig_PushIdStr");
-                bindFunc(cast(void**)&ig_PushIdStrRange, "ig_PushIdStrRange");
-				bindFunc(cast(void**)&ig_PushIdPtr, "ig_PushIdPtr");
-				bindFunc(cast(void**)&ig_PushIdInt, "ig_PushIdInt");
-				bindFunc(cast(void**)&ig_PopId, "ig_PopId");
-				bindFunc(cast(void**)&ig_GetIdStr, "ig_GetIdStr");
-                bindFunc(cast(void**)&ig_GetIdStrRange, "ig_GetIdStrRange");
-				bindFunc(cast(void**)&ig_GetIdPtr, "ig_GetIdPtr");
+                bindFunc(cast(void**)&igPushIdStr, "igPushIdStr");
+                bindFunc(cast(void**)&igPushIdStrRange, "igPushIdStrRange");
+                bindFunc(cast(void**)&igPushIdPtr, "igPushIdPtr");
+                bindFunc(cast(void**)&igPushIdInt, "igPushIdInt");
+                bindFunc(cast(void**)&igPopId, "igPopId");
+                bindFunc(cast(void**)&igGetIdStr, "igGetIdStr");
+                bindFunc(cast(void**)&igGetIdStrRange, "igGetIdStrRange");
+                bindFunc(cast(void**)&igGetIdPtr, "igGetIdPtr");
 
-				bindFunc(cast(void**)&ig_Text, "ig_Text");
-				bindFunc(cast(void**)&ig_TextV, "ig_TextV");
-				bindFunc(cast(void**)&ig_TextColored, "ig_TextColored");
-				bindFunc(cast(void**)&ig_TextColoredV, "ig_TextColoredV");
-                bindFunc(cast(void**)&ig_TextDisabled, "ig_TextDisabled");
-                bindFunc(cast(void**)&ig_TextDisabledV, "ig_TextDisabledV");
-				bindFunc(cast(void**)&ig_TextWrapped, "ig_TextWrapped");
-				bindFunc(cast(void**)&ig_TextWrappedV, "ig_TextWrappedV");
-				bindFunc(cast(void**)&ig_TextUnformatted, "ig_TextUnformatted");
-				bindFunc(cast(void**)&ig_LabelText, "ig_LabelText");
-				bindFunc(cast(void**)&ig_LabelTextV, "ig_LabelTextV");
-				bindFunc(cast(void**)&ig_Bullet, "ig_Bullet");
-				bindFunc(cast(void**)&ig_BulletText, "ig_BulletText");
-				bindFunc(cast(void**)&ig_BulletTextV, "ig_BulletTextV");
-				bindFunc(cast(void**)&ig_Button, "ig_Button");
-				bindFunc(cast(void**)&ig_SmallButton, "ig_SmallButton");
-				bindFunc(cast(void**)&ig_InvisibleButton, "ig_InvisibleButton");
-				bindFunc(cast(void**)&ig_Image, "ig_Image");
-				bindFunc(cast(void**)&ig_ImageButton, "ig_ImageButton");
-				bindFunc(cast(void**)&ig_CollapsingHeader, "ig_CollapsingHeader");
-				bindFunc(cast(void**)&ig_Checkbox, "ig_Checkbox");
-				bindFunc(cast(void**)&ig_CheckboxFlags, "ig_CheckboxFlags");
-				bindFunc(cast(void**)&ig_RadioButtonBool, "ig_RadioButtonBool");
-				bindFunc(cast(void**)&ig_RadioButton, "ig_RadioButton");
-				bindFunc(cast(void**)&ig_Combo, "ig_Combo");
-				bindFunc(cast(void**)&ig_Combo2, "ig_Combo2");
-				bindFunc(cast(void**)&ig_Combo3, "ig_Combo3");
-				bindFunc(cast(void**)&ig_ColorButton, "ig_ColorButton");
-				bindFunc(cast(void**)&ig_ColorEdit3, "ig_ColorEdit3");
-				bindFunc(cast(void**)&ig_ColorEdit4, "ig_ColorEdit4");
-				bindFunc(cast(void**)&ig_ColorEditMode, "ig_ColorEditMode");
-				bindFunc(cast(void**)&ig_PlotLines, "ig_PlotLines");
-				bindFunc(cast(void**)&ig_PlotLines2, "ig_PlotLines2");
-				bindFunc(cast(void**)&ig_PlotHistogram, "ig_PlotHistogram");
-				bindFunc(cast(void**)&ig_PlotHistogram2, "ig_PlotHistogram2");
+                bindFunc(cast(void**)&igText, "igText");
+                bindFunc(cast(void**)&igTextV, "igTextV");
+                bindFunc(cast(void**)&igTextColored, "igTextColored");
+                bindFunc(cast(void**)&igTextColoredV, "igTextColoredV");
+                bindFunc(cast(void**)&igTextDisabled, "igTextDisabled");
+                bindFunc(cast(void**)&igTextDisabledV, "igTextDisabledV");
+                bindFunc(cast(void**)&igTextWrapped, "igTextWrapped");
+                bindFunc(cast(void**)&igTextWrappedV, "igTextWrappedV");
+                bindFunc(cast(void**)&igTextUnformatted, "igTextUnformatted");
+                bindFunc(cast(void**)&igLabelText, "igLabelText");
+                bindFunc(cast(void**)&igLabelTextV, "igLabelTextV");
+                bindFunc(cast(void**)&igBullet, "igBullet");
+                bindFunc(cast(void**)&igBulletText, "igBulletText");
+                bindFunc(cast(void**)&igBulletTextV, "igBulletTextV");
+                bindFunc(cast(void**)&igButton, "igButton");
+                bindFunc(cast(void**)&igSmallButton, "igSmallButton");
+                bindFunc(cast(void**)&igInvisibleButton, "igInvisibleButton");
+                bindFunc(cast(void**)&igImage, "igImage");
+                bindFunc(cast(void**)&igImageButton, "igImageButton");
+                bindFunc(cast(void**)&igCollapsingHeader, "igCollapsingHeader");
+                bindFunc(cast(void**)&igCheckbox, "igCheckbox");
+                bindFunc(cast(void**)&igCheckboxFlags, "igCheckboxFlags");
+                bindFunc(cast(void**)&igRadioButtonBool, "igRadioButtonBool");
+                bindFunc(cast(void**)&igRadioButton, "igRadioButton");
+                bindFunc(cast(void**)&igCombo, "igCombo");
+                bindFunc(cast(void**)&igCombo2, "igCombo2");
+                bindFunc(cast(void**)&igCombo3, "igCombo3");
+                bindFunc(cast(void**)&igColorButton, "igColorButton");
+                bindFunc(cast(void**)&igColorEdit3, "igColorEdit3");
+                bindFunc(cast(void**)&igColorEdit4, "igColorEdit4");
+                bindFunc(cast(void**)&igColorEditMode, "igColorEditMode");
+                bindFunc(cast(void**)&igPlotLines, "igPlotLines");
+                bindFunc(cast(void**)&igPlotLines2, "igPlotLines2");
+                bindFunc(cast(void**)&igPlotHistogram, "igPlotHistogram");
+                bindFunc(cast(void**)&igPlotHistogram2, "igPlotHistogram2");
 
-				bindFunc(cast(void**)&ig_SliderFloat, "ig_SliderFloat");
-				bindFunc(cast(void**)&ig_SliderFloat2, "ig_SliderFloat2");
-				bindFunc(cast(void**)&ig_SliderFloat3, "ig_SliderFloat3");
-				bindFunc(cast(void**)&ig_SliderFloat4, "ig_SliderFloat4");
-				bindFunc(cast(void**)&ig_SliderAngle, "ig_SliderAngle");
-				bindFunc(cast(void**)&ig_SliderInt, "ig_SliderInt");
-				bindFunc(cast(void**)&ig_SliderInt2, "ig_SliderInt2");
-				bindFunc(cast(void**)&ig_SliderInt3, "ig_SliderInt3");
-				bindFunc(cast(void**)&ig_SliderInt4, "ig_SliderInt4");
-				bindFunc(cast(void**)&ig_VSliderFloat, "ig_VSliderFloat");
-				bindFunc(cast(void**)&ig_VSliderInt, "ig_VSliderInt");
+                bindFunc(cast(void**)&igSliderFloat, "igSliderFloat");
+                bindFunc(cast(void**)&igSliderFloat2, "igSliderFloat2");
+                bindFunc(cast(void**)&igSliderFloat3, "igSliderFloat3");
+                bindFunc(cast(void**)&igSliderFloat4, "igSliderFloat4");
+                bindFunc(cast(void**)&igSliderAngle, "igSliderAngle");
+                bindFunc(cast(void**)&igSliderInt, "igSliderInt");
+                bindFunc(cast(void**)&igSliderInt2, "igSliderInt2");
+                bindFunc(cast(void**)&igSliderInt3, "igSliderInt3");
+                bindFunc(cast(void**)&igSliderInt4, "igSliderInt4");
+                bindFunc(cast(void**)&igVSliderFloat, "igVSliderFloat");
+                bindFunc(cast(void**)&igVSliderInt, "igVSliderInt");
 
-				bindFunc(cast(void**)&ig_DragFloat, "ig_DragFloat");
-                bindFunc(cast(void**)&ig_DragFloat2, "ig_DragFloat2");
-                bindFunc(cast(void**)&ig_DragFloat3, "ig_DragFloat3");
-                bindFunc(cast(void**)&ig_DragFloat4, "ig_DragFloat4");
-                bindFunc(cast(void**)&ig_DragFloatRange2, "ig_DragFloatRange2");
-				bindFunc(cast(void**)&ig_DragInt, "ig_DragInt");
-                bindFunc(cast(void**)&ig_DragInt2, "ig_DragInt2");
-                bindFunc(cast(void**)&ig_DragInt3, "ig_DragInt3");
-                bindFunc(cast(void**)&ig_DragInt4, "ig_DragInt4");
-                bindFunc(cast(void**)&ig_DragIntRange2, "ig_DragIntRange2");
+                bindFunc(cast(void**)&igDragFloat, "igDragFloat");
+                bindFunc(cast(void**)&igDragFloat2, "igDragFloat2");
+                bindFunc(cast(void**)&igDragFloat3, "igDragFloat3");
+                bindFunc(cast(void**)&igDragFloat4, "igDragFloat4");
+                bindFunc(cast(void**)&igDragFloatRange2, "igDragFloatRange2");
+                bindFunc(cast(void**)&igDragInt, "igDragInt");
+                bindFunc(cast(void**)&igDragInt2, "igDragInt2");
+                bindFunc(cast(void**)&igDragInt3, "igDragInt3");
+                bindFunc(cast(void**)&igDragInt4, "igDragInt4");
+                bindFunc(cast(void**)&igDragIntRange2, "igDragIntRange2");
 
-				bindFunc(cast(void**)&ig_InputText, "ig_InputText");
-                bindFunc(cast(void**)&ig_InputTextMultiline, "ig_InputTextMultiline");
-				bindFunc(cast(void**)&ig_InputFloat, "ig_InputFloat");
-				bindFunc(cast(void**)&ig_InputFloat2, "ig_InputFloat2");
-				bindFunc(cast(void**)&ig_InputFloat3, "ig_InputFloat3");
-				bindFunc(cast(void**)&ig_InputFloat4, "ig_InputFloat4");
-				bindFunc(cast(void**)&ig_InputInt, "ig_InputInt");
-				bindFunc(cast(void**)&ig_InputInt2, "ig_InputInt2");
-				bindFunc(cast(void**)&ig_InputInt3, "ig_InputInt3");
-				bindFunc(cast(void**)&ig_InputInt4, "ig_InputInt4");
-			
-				bindFunc(cast(void**)&ig_TreeNode, "ig_TreeNode");
-				bindFunc(cast(void**)&ig_TreeNodeStr, "ig_TreeNodeStr");
-				bindFunc(cast(void**)&ig_TreeNodePtr, "ig_TreeNodePtr");
-				bindFunc(cast(void**)&ig_TreeNodeStrV, "ig_TreeNodeStrV");
-				bindFunc(cast(void**)&ig_TreeNodePtrV, "ig_TreeNodePtrV");
-				bindFunc(cast(void**)&ig_TreePushStr, "ig_TreePushStr");
-				bindFunc(cast(void**)&ig_TreePushPtr, "ig_TreePushPtr");
-				bindFunc(cast(void**)&ig_TreePop, "ig_TreePop");
-				bindFunc(cast(void**)&ig_SetNextTreeNodeOpened, "ig_SetNextTreeNodeOpened");
+                bindFunc(cast(void**)&igInputText, "igInputText");
+                bindFunc(cast(void**)&igInputTextMultiline, "igInputTextMultiline");
+                bindFunc(cast(void**)&igInputFloat, "igInputFloat");
+                bindFunc(cast(void**)&igInputFloat2, "igInputFloat2");
+                bindFunc(cast(void**)&igInputFloat3, "igInputFloat3");
+                bindFunc(cast(void**)&igInputFloat4, "igInputFloat4");
+                bindFunc(cast(void**)&igInputInt, "igInputInt");
+                bindFunc(cast(void**)&igInputInt2, "igInputInt2");
+                bindFunc(cast(void**)&igInputInt3, "igInputInt3");
+                bindFunc(cast(void**)&igInputInt4, "igInputInt4");
+            
+                bindFunc(cast(void**)&igTreeNode, "igTreeNode");
+                bindFunc(cast(void**)&igTreeNodeStr, "igTreeNodeStr");
+                bindFunc(cast(void**)&igTreeNodePtr, "igTreeNodePtr");
+                bindFunc(cast(void**)&igTreeNodeStrV, "igTreeNodeStrV");
+                bindFunc(cast(void**)&igTreeNodePtrV, "igTreeNodePtrV");
+                bindFunc(cast(void**)&igTreePushStr, "igTreePushStr");
+                bindFunc(cast(void**)&igTreePushPtr, "igTreePushPtr");
+                bindFunc(cast(void**)&igTreePop, "igTreePop");
+                bindFunc(cast(void**)&igSetNextTreeNodeOpened, "igSetNextTreeNodeOpened");
 
-				bindFunc(cast(void**)&ig_Selectable, "ig_Selectable");
-				bindFunc(cast(void**)&ig_SelectableEx, "ig_SelectableEx");
-				bindFunc(cast(void**)&ig_ListBox, "ig_ListBox");
-				bindFunc(cast(void**)&ig_ListBox2, "ig_ListBox2");
-				bindFunc(cast(void**)&ig_ListBoxHeader, "ig_ListBoxHeader");
-				bindFunc(cast(void**)&ig_ListBoxHeader2, "ig_ListBoxHeader2");
-				bindFunc(cast(void**)&ig_ListBoxFooter, "ig_ListBoxFooter");
+                bindFunc(cast(void**)&igSelectable, "igSelectable");
+                bindFunc(cast(void**)&igSelectableEx, "igSelectableEx");
+                bindFunc(cast(void**)&igListBox, "igListBox");
+                bindFunc(cast(void**)&igListBox2, "igListBox2");
+                bindFunc(cast(void**)&igListBoxHeader, "igListBoxHeader");
+                bindFunc(cast(void**)&igListBoxHeader2, "igListBoxHeader2");
+                bindFunc(cast(void**)&igListBoxFooter, "igListBoxFooter");
 
-                bindFunc(cast(void**)&ig_BeginMainMenuBar, "ig_BeginMainMenuBar");
-                bindFunc(cast(void**)&ig_EndMainMenuBar, "ig_EndMainMenuBar");
-                bindFunc(cast(void**)&ig_BeginMenuBar, "ig_BeginMenuBar");
-                bindFunc(cast(void**)&ig_EndMenuBar, "ig_EndMenuBar");
-                bindFunc(cast(void**)&ig_BeginMenu, "ig_BeginMenu");
-                bindFunc(cast(void**)&ig_EndMenu, "ig_EndMenu");
-                bindFunc(cast(void**)&ig_MenuItem, "ig_MenuItem");
-                bindFunc(cast(void**)&ig_MenuItemPtr, "ig_MenuItemPtr");
+                bindFunc(cast(void**)&igBeginMainMenuBar, "igBeginMainMenuBar");
+                bindFunc(cast(void**)&igEndMainMenuBar, "igEndMainMenuBar");
+                bindFunc(cast(void**)&igBeginMenuBar, "igBeginMenuBar");
+                bindFunc(cast(void**)&igEndMenuBar, "igEndMenuBar");
+                bindFunc(cast(void**)&igBeginMenu, "igBeginMenu");
+                bindFunc(cast(void**)&igEndMenu, "igEndMenu");
+                bindFunc(cast(void**)&igMenuItem, "igMenuItem");
+                bindFunc(cast(void**)&igMenuItemPtr, "igMenuItemPtr");
 
-				bindFunc(cast(void**)&ig_ValueBool, "ig_ValueBool");
-				bindFunc(cast(void**)&ig_ValueInt, "ig_ValueInt");
-				bindFunc(cast(void**)&ig_ValueUInt, "ig_ValueUInt");
-				bindFunc(cast(void**)&ig_ValueFloat, "ig_ValueFloat");
-				bindFunc(cast(void**)&ig_Color, "ig_Color");
-				bindFunc(cast(void**)&ig_Color2, "ig_Color2");
+                bindFunc(cast(void**)&igValueBool, "igValueBool");
+                bindFunc(cast(void**)&igValueInt, "igValueInt");
+                bindFunc(cast(void**)&igValueUInt, "igValueUInt");
+                bindFunc(cast(void**)&igValueFloat, "igValueFloat");
+                bindFunc(cast(void**)&igColor, "igColor");
+                bindFunc(cast(void**)&igColor2, "igColor2");
 
-				bindFunc(cast(void**)&ig_LogToTTY, "ig_LogToTTY");
-				bindFunc(cast(void**)&ig_LogToFile, "ig_LogToFile");
-				bindFunc(cast(void**)&ig_LogToClipboard, "ig_LogToClipboard");
-				bindFunc(cast(void**)&ig_LogFinish, "ig_LogFinish");
-				bindFunc(cast(void**)&ig_LogButtons, "ig_LogButtons");
-				bindFunc(cast(void**)&ig_LogText, "ig_LogText");
+                bindFunc(cast(void**)&igLogToTTY, "igLogToTTY");
+                bindFunc(cast(void**)&igLogToFile, "igLogToFile");
+                bindFunc(cast(void**)&igLogToClipboard, "igLogToClipboard");
+                bindFunc(cast(void**)&igLogFinish, "igLogFinish");
+                bindFunc(cast(void**)&igLogButtons, "igLogButtons");
+                bindFunc(cast(void**)&igLogText, "igLogText");
 
-				bindFunc(cast(void**)&ig_IsItemHovered, "ig_IsItemHovered");
-				bindFunc(cast(void**)&ig_IsItemHoveredRect, "ig_IsItemHoveredRect");
-				bindFunc(cast(void**)&ig_IsItemActive, "ig_IsItemActive");
-                bindFunc(cast(void**)&ig_IsItemVisible, "ig_IsItemVisible");
-                bindFunc(cast(void**)&ig_IsAnyItemHovered, "ig_IsAnyItemHovered");
-                bindFunc(cast(void**)&ig_IsAnyItemActive, "ig_IsAnyItemActive");
-				bindFunc(cast(void**)&ig_GetItemRectMin, "ig_GetItemRectMin");
-				bindFunc(cast(void**)&ig_GetItemRectMax, "ig_GetItemRectMax");
-				bindFunc(cast(void**)&ig_GetItemRectSize, "ig_GetItemRectSize");
-                bindFunc(cast(void**)&ig_IsWindowHovered, "ig_IsWindowHovered");
-				bindFunc(cast(void**)&ig_IsWindowFocused, "ig_IsWindowFocused");
-				bindFunc(cast(void**)&ig_IsRootWindowFocused, "ig_IsRootWindowFocused");
-				bindFunc(cast(void**)&ig_IsRootWindowOrAnyChildFocused, "ig_IsRootWindowOrAnyChildFocused");
-                bindFunc(cast(void**)&ig_IsRectVisible, "ig_IsRectVisible");
-                bindFunc(cast(void**)&ig_IsKeyDown, "ig_IsKeyDown");
-                bindFunc(cast(void**)&ig_IsKeyPressed, "ig_IsKeyPressed");
-                bindFunc(cast(void**)&ig_IsMouseDown, "ig_IsMouseDown");
-				bindFunc(cast(void**)&ig_IsMouseClicked, "ig_IsMouseClicked");
-				bindFunc(cast(void**)&ig_IsMouseDoubleClicked, "ig_IsMouseDoubleClicked");
-                bindFunc(cast(void**)&ig_IsMouseReleased, "ig_IsMouseReleased");
-				bindFunc(cast(void**)&ig_IsMouseHoveringWindow, "ig_IsMouseHoveringWindow");
-				bindFunc(cast(void**)&ig_IsMouseHoveringAnyWindow, "ig_IsMouseHoveringAnyWindow");
-				bindFunc(cast(void**)&ig_IsMouseHoveringRect, "ig_IsMouseHoveringRect");
-				bindFunc(cast(void**)&ig_IsMouseDragging, "ig_IsMouseDragging");
-				bindFunc(cast(void**)&ig_IsPosHoveringAnyWindow, "ig_IsPosHoveringAnyWindow");
-				bindFunc(cast(void**)&ig_GetMousePos, "ig_GetMousePos");
-				bindFunc(cast(void**)&ig_GetMouseDragDelta, "ig_GetMouseDragDelta");
-                bindFunc(cast(void**)&ig_ResetMouseDragDelta, "ig_ResetMouseDragDelta");
-				bindFunc(cast(void**)&ig_GetMouseCursor, "ig_GetMouseCursor");
-				bindFunc(cast(void**)&ig_SetMouseCursor, "ig_SetMouseCursor");
-				bindFunc(cast(void**)&ig_GetTime, "ig_GetTime");
-				bindFunc(cast(void**)&ig_GetFrameCount, "ig_GetFrameCount");
-				bindFunc(cast(void**)&ig_GetStyleColName, "ig_GetStyleColName");
-				bindFunc(cast(void**)&ig_CalcItemRectClosestPoint, "ig_CalcItemRectClosestPoint");
-				bindFunc(cast(void**)&ig_CalcTextSize, "ig_CalcTextSize");
-				bindFunc(cast(void**)&ig_CalcListClipping, "ig_CalcListClipping");
+                bindFunc(cast(void**)&igIsItemHovered, "igIsItemHovered");
+                bindFunc(cast(void**)&igIsItemHoveredRect, "igIsItemHoveredRect");
+                bindFunc(cast(void**)&igIsItemActive, "igIsItemActive");
+                bindFunc(cast(void**)&igIsItemVisible, "igIsItemVisible");
+                bindFunc(cast(void**)&igIsAnyItemHovered, "igIsAnyItemHovered");
+                bindFunc(cast(void**)&igIsAnyItemActive, "igIsAnyItemActive");
+                bindFunc(cast(void**)&igGetItemRectMin, "igGetItemRectMin");
+                bindFunc(cast(void**)&igGetItemRectMax, "igGetItemRectMax");
+                bindFunc(cast(void**)&igGetItemRectSize, "igGetItemRectSize");
+                bindFunc(cast(void**)&igIsWindowHovered, "igIsWindowHovered");
+                bindFunc(cast(void**)&igIsWindowFocused, "igIsWindowFocused");
+                bindFunc(cast(void**)&igIsRootWindowFocused, "igIsRootWindowFocused");
+                bindFunc(cast(void**)&igIsRootWindowOrAnyChildFocused, "igIsRootWindowOrAnyChildFocused");
+                bindFunc(cast(void**)&igIsRectVisible, "igIsRectVisible");
+                bindFunc(cast(void**)&igIsKeyDown, "igIsKeyDown");
+                bindFunc(cast(void**)&igIsKeyPressed, "igIsKeyPressed");
+                bindFunc(cast(void**)&igIsMouseDown, "igIsMouseDown");
+                bindFunc(cast(void**)&igIsMouseClicked, "igIsMouseClicked");
+                bindFunc(cast(void**)&igIsMouseDoubleClicked, "igIsMouseDoubleClicked");
+                bindFunc(cast(void**)&igIsMouseReleased, "igIsMouseReleased");
+                bindFunc(cast(void**)&igIsMouseHoveringWindow, "igIsMouseHoveringWindow");
+                bindFunc(cast(void**)&igIsMouseHoveringAnyWindow, "igIsMouseHoveringAnyWindow");
+                bindFunc(cast(void**)&igIsMouseHoveringRect, "igIsMouseHoveringRect");
+                bindFunc(cast(void**)&igIsMouseDragging, "igIsMouseDragging");
+                bindFunc(cast(void**)&igIsPosHoveringAnyWindow, "igIsPosHoveringAnyWindow");
+                bindFunc(cast(void**)&igGetMousePos, "igGetMousePos");
+                bindFunc(cast(void**)&igGetMouseDragDelta, "igGetMouseDragDelta");
+                bindFunc(cast(void**)&igResetMouseDragDelta, "igResetMouseDragDelta");
+                bindFunc(cast(void**)&igGetMouseCursor, "igGetMouseCursor");
+                bindFunc(cast(void**)&igSetMouseCursor, "igSetMouseCursor");
+                bindFunc(cast(void**)&igGetTime, "igGetTime");
+                bindFunc(cast(void**)&igGetFrameCount, "igGetFrameCount");
+                bindFunc(cast(void**)&igGetStyleColName, "igGetStyleColName");
+                bindFunc(cast(void**)&igCalcItemRectClosestPoint, "igCalcItemRectClosestPoint");
+                bindFunc(cast(void**)&igCalcTextSize, "igCalcTextSize");
+                bindFunc(cast(void**)&igCalcListClipping, "igCalcListClipping");
 
-				bindFunc(cast(void**)&ig_BeginChildFrame, "ig_BeginChildFrame");
-				bindFunc(cast(void**)&ig_EndChildFrame, "ig_EndChildFrame");
+                bindFunc(cast(void**)&igBeginChildFrame, "igBeginChildFrame");
+                bindFunc(cast(void**)&igEndChildFrame, "igEndChildFrame");
 
-				bindFunc(cast(void**)&ig_ColorConvertFloat4ToU32, "ig_ColorConvertFloat4ToU32");
-				bindFunc(cast(void**)&ig_ColorConvertRGBtoHSV, "ig_ColorConvertRGBtoHSV");
-				bindFunc(cast(void**)&ig_ColorConvertHSVtoRGB, "ig_ColorConvertHSVtoRGB");
+                bindFunc(cast(void**)&igColorConvertFloat4ToU32, "igColorConvertFloat4ToU32");
+                bindFunc(cast(void**)&igColorConvertRGBtoHSV, "igColorConvertRGBtoHSV");
+                bindFunc(cast(void**)&igColorConvertHSVtoRGB, "igColorConvertHSVtoRGB");
 
-				bindFunc(cast(void**)&ig_GetVersion, "ig_GetVersion");
-				bindFunc(cast(void**)&ig_GetInternalState, "ig_GetInternalState");
-				bindFunc(cast(void**)&ig_GetInternalStateSize, "ig_GetInternalStateSize");
-				bindFunc(cast(void**)&ig_SetInternalState, "ig_SetInternalState");
-			}
+                bindFunc(cast(void**)&igGetVersion, "igGetVersion");
+                bindFunc(cast(void**)&igGetInternalState, "igGetInternalState");
+                bindFunc(cast(void**)&igGetInternalStateSize, "igGetInternalStateSize");
+                bindFunc(cast(void**)&igSetInternalState, "igSetInternalState");
+            }
 
-			{
-				bindFunc(cast(void**)&ImFontAtlas_GetTexDataAsRGBA32, "ImFontAtlas_GetTexDataAsRGBA32");
-				bindFunc(cast(void**)&ImFontAtlas_GetTexDataAsAlpha8, "ImFontAtlas_GetTexDataAsAlpha8");
-				bindFunc(cast(void**)&ImFontAtlas_SetTexID, "ImFontAtlas_SetTexID");
-				bindFunc(cast(void**)&ImFontAtlas_AddFontDefault, "ImFontAtlas_AddFontDefault");
-				bindFunc(cast(void**)&ImFontAtlas_AddFontFromFileTTF, "ImFontAtlas_AddFontFromFileTTF");
-				bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryTTF, "ImFontAtlas_AddFontFromMemoryTTF");
+            {
+                bindFunc(cast(void**)&ImFontAtlas_GetTexDataAsRGBA32, "ImFontAtlas_GetTexDataAsRGBA32");
+                bindFunc(cast(void**)&ImFontAtlas_GetTexDataAsAlpha8, "ImFontAtlas_GetTexDataAsAlpha8");
+                bindFunc(cast(void**)&ImFontAtlas_SetTexID, "ImFontAtlas_SetTexID");
+                bindFunc(cast(void**)&ImFontAtlas_AddFontDefault, "ImFontAtlas_AddFontDefault");
+                bindFunc(cast(void**)&ImFontAtlas_AddFontFromFileTTF, "ImFontAtlas_AddFontFromFileTTF");
+                bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryTTF, "ImFontAtlas_AddFontFromMemoryTTF");
                 bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryCompressedTTF, "ImFontAtlas_AddFontFromMemoryCompressedTTF");
-				bindFunc(cast(void**)&ImFontAtlas_ClearTexData, "ImFontAtlas_ClearTexData");
-				bindFunc(cast(void**)&ImFontAtlas_Clear, "ImFontAtlas_Clear");
-			}
+                bindFunc(cast(void**)&ImFontAtlas_ClearTexData, "ImFontAtlas_ClearTexData");
+                bindFunc(cast(void**)&ImFontAtlas_Clear, "ImFontAtlas_Clear");
+            }
 
-			bindFunc(cast(void**)&ImDrawList_GetVertexBufferSize, "ImDrawList_GetVertexBufferSize");
-			bindFunc(cast(void**)&ImDrawList_GetVertexPtr, "ImDrawList_GetVertexPtr");
-			bindFunc(cast(void**)&ImDrawList_GetCmdSize, "ImDrawList_GetCmdSize");
-			bindFunc(cast(void**)&ImDrawList_GetCmdPtr, "ImDrawList_GetCmdPtr");
+            bindFunc(cast(void**)&ImDrawList_GetVertexBufferSize, "ImDrawList_GetVertexBufferSize");
+            bindFunc(cast(void**)&ImDrawList_GetVertexPtr, "ImDrawList_GetVertexPtr");
+            bindFunc(cast(void**)&ImDrawList_GetCmdSize, "ImDrawList_GetCmdSize");
+            bindFunc(cast(void**)&ImDrawList_GetCmdPtr, "ImDrawList_GetCmdPtr");
             bindFunc(cast(void**)&ImGuiIO_AddInputCharacter, "ImGuiIO_AddInputCharacter");
         }
     }
@@ -388,5 +388,5 @@ __gshared DerelictImguiLoader DerelictImgui;
 
 shared static this()
 {
-	DerelictImgui = new DerelictImguiLoader();
+    DerelictImgui = new DerelictImguiLoader();
 }
