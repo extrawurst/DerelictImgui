@@ -113,7 +113,7 @@ extern(C) @nogc nothrow
     alias da_igBeginGroup                   = void              function();
     alias da_igEndGroup                 = void              function();
     alias da_igSeparator                    = void              function();
-    alias da_igSameLine                 = void              function(int column_x = 0, int spacing_w = -1);
+    alias da_igSameLine                     = void              function(float pos_x = 0.0f, float spacing_w = -1.0f);
     alias da_igSpacing                      = void              function();
     alias da_igDummy                       = void              function(const ImVec2* size);
     alias da_igIndent                       = void              function();
@@ -142,7 +142,7 @@ extern(C) @nogc nothrow
     alias da_igPushIdStr                    = void              function(const char* str_id);
     alias da_igPushIdStrRange              = void              function(const char* str_begin, const char* str_end);
     alias da_igPushIdPtr                    = void              function(const void* ptr_id);
-    alias da_igPushIdInt                    = void              function(const int int_id);
+    alias da_igPushIdInt                    = void              function(int int_id);
     alias da_igPopId                        = void              function();
     alias da_igGetIdStr                 = ImGuiID           function(const char* str_id);
     alias da_igGetIdStrRange               = ImGuiID           function(const char* str_begin, const char* str_end);
@@ -332,10 +332,11 @@ extern(C) @nogc nothrow
     alias da_ImFontAtlas_GetTexDataAsRGBA32   = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
     alias da_ImFontAtlas_GetTexDataAsAlpha8   = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
     alias da_ImFontAtlas_SetTexID             = void function(ImFontAtlas* atlas, void* id);
-    alias da_ImFontAtlas_AddFontDefault       = ImFont* function(ImFontAtlas* atlas);
-    alias da_ImFontAtlas_AddFontFromFileTTF   = ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
-    alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* ttf_data, int ttf_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
-    alias da_ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* compressed_ttf_data, int compressed_ttf_size, float size_pixels, const ImWchar* glyph_ranges = null, int font_no = 0);
+    alias da_ImFontAtlas_AddFont       = ImFont* function(ImFontAtlas* atlas, const ImFontConfig* font_cfg);
+    alias da_ImFontAtlas_AddFontDefault       = ImFont* function(ImFontAtlas* atlas, const ImFontConfig* font_cfg);
+    alias da_ImFontAtlas_AddFontFromFileTTF   = ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImFontConfig* font_cfg, const ImWchar* glyph_ranges = null);
+    alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* ttf_data, int ttf_size, float size_pixels, const ImFontConfig* font_cfg, const ImWchar* glyph_ranges = null);
+    alias da_ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* compressed_ttf_data, int compressed_ttf_size, float size_pixels, const ImFontConfig* font_cfg, const ImWchar* glyph_ranges = null);
 
     alias da_ImFontAtlas_ClearTexData         = void function(ImFontAtlas* atlas, void* id);
     alias da_ImFontAtlas_Clear                = void function(ImFontAtlas* atlas, void* id);
@@ -344,11 +345,17 @@ extern(C) @nogc nothrow
 //TODO: rework
 extern(C) @nogc nothrow
 {
-    alias int function(ImDrawList* list) da_ImDrawList_GetVertexBufferSize;
-    alias ImDrawVert* function(ImDrawList* list, int n) da_ImDrawList_GetVertexPtr;
-    alias int function(ImDrawList* list) da_ImDrawList_GetCmdSize;
-    alias ImDrawCmd* function(ImDrawList* list, int n) da_ImDrawList_GetCmdPtr;
-    alias void function(ushort c) da_ImGuiIO_AddInputCharacter;
+    alias da_ImDrawList_GetVertexBufferSize = int function(ImDrawList* list);
+    alias da_ImDrawList_GetVertexPtr = ImDrawVert* function(ImDrawList* list, int n);
+    alias da_ImDrawList_GetIndexBufferSize = int function(ImDrawList* list);
+    alias da_ImDrawList_GetIndexPtr = ImDrawIdx* function(ImDrawList* list, int n);
+    alias da_ImDrawList_GetCmdSize = int function(ImDrawList* list);
+    alias da_ImDrawList_GetCmdPtr = ImDrawCmd* function(ImDrawList* list, int n);
+
+    alias da_ImDrawData_DeIndexAllBuffers = void function(ImDrawData* drawData);
+
+    alias da_ImGuiIO_AddInputCharacter = void function(ushort c);
+    alias da_ImGuiIO_AddInputCharactersUTF8 = void function(const(char*) utf8_chars);
 }
 
 __gshared
@@ -641,6 +648,7 @@ __gshared
     da_ImFontAtlas_GetTexDataAsRGBA32       ImFontAtlas_GetTexDataAsRGBA32;
     da_ImFontAtlas_GetTexDataAsAlpha8       ImFontAtlas_GetTexDataAsAlpha8;
     da_ImFontAtlas_SetTexID                 ImFontAtlas_SetTexID;
+    da_ImFontAtlas_AddFont                  ImFontAtlas_AddFont;
     da_ImFontAtlas_AddFontDefault           ImFontAtlas_AddFontDefault;
     da_ImFontAtlas_AddFontFromFileTTF       ImFontAtlas_AddFontFromFileTTF;
     da_ImFontAtlas_AddFontFromMemoryTTF     ImFontAtlas_AddFontFromMemoryTTF;
@@ -654,8 +662,13 @@ __gshared
 {
     da_ImDrawList_GetVertexBufferSize ImDrawList_GetVertexBufferSize;
     da_ImDrawList_GetVertexPtr ImDrawList_GetVertexPtr;
+    da_ImDrawList_GetIndexBufferSize ImDrawList_GetIndexBufferSize;
+    da_ImDrawList_GetIndexPtr ImDrawList_GetIndexPtr;
     da_ImDrawList_GetCmdSize ImDrawList_GetCmdSize;
     da_ImDrawList_GetCmdPtr ImDrawList_GetCmdPtr;
 
+    da_ImDrawData_DeIndexAllBuffers ImDrawData_DeIndexAllBuffers;
+
     da_ImGuiIO_AddInputCharacter ImGuiIO_AddInputCharacter;
+    da_ImGuiIO_AddInputCharactersUTF8 ImGuiIO_AddInputCharactersUTF8;
 }

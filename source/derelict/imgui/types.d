@@ -96,6 +96,8 @@ enum
     ImGuiInputTextFlags_CallbackCharFilter  = 1 << 9,   // Call user function to filter character. Modify data->EventChar to replace/filter input, or return 1 to discard character.
     ImGuiInputTextFlags_AllowTabInput       = 1 << 10,  // Pressing TAB input a '\t' character into the text field
     ImGuiInputTextFlags_CtrlEnterForNewLine = 1 << 11,  // In multi-line mode, allow exiting edition by pressing Enter. Ctrl+Enter to add new line (by default adds new lines with Enter).
+    ImGuiInputTextFlags_NoHorizontalScroll  = 1 << 12,  // Disable following the cursor horizontally
+    ImGuiInputTextFlags_AlwaysInsertMode    = 1 << 13,  // Insert mode
     // [Internal]
     ImGuiInputTextFlags_Multiline           = 1 << 20   // For internal use by InputTextMultiline()
 }
@@ -245,7 +247,7 @@ alias int ImGuiSelectableFlags;   // enum ImGuiSelectableFlags_
 alias int function(ImGuiTextEditCallbackData *data) ImGuiTextEditCallback;
 
 extern(C) nothrow {
-    alias RenderDrawListFunc = void function(ImDrawList** draw_lists, int count);
+    alias RenderDrawListFunc = void function(ImDrawData* data);
     alias GetClipboardTextFunc = const(char)* function();
     alias SetClipboardTextFunc = void function(const(char)*);
     alias MemAllocFunc = void* function(size_t);
@@ -344,6 +346,7 @@ align(1) struct ImGuiIO
 	float       Framerate;                  // Framerate estimation, in frame per second. Rolling average estimation based on IO.DeltaTime over 120 frames
     int         MetricsAllocs;              // Number of active memory allocations
     int         MetricsRenderVertices;      // Vertices processed during last call to Render()
+    int         MetricsRenderIndices;       // 
     int         MetricsActiveWindows;       // Number of visible windows (exclude child windows)
 	
 	//------------------------------------------------------------------
@@ -384,8 +387,11 @@ align(1) struct ImGuiStyle
     float       ScrollbarWidth;             // Width of the vertical scrollbar
     float       ScrollbarRounding;          // Radius of grab corners for scrollbar
     float       GrabMinSize;                // Minimum width/height of a grab box for slider/scrollbar
+    float       GrabRounding;               // Radius of grabs corners rounding. Set to 0.0f to have rectangular slider grabs.
     ImVec2      DisplayWindowPadding;       // Window positions are clamped to be visible within the display area by at least this amount. Only covers regular windows.
     ImVec2      DisplaySafeAreaPadding;     // If you cannot see the edge of your screen (e.g. on a TV) increase the safe area padding. Covers popups/tooltips as well regular windows.
+    bool        AntiAliasedLines;           // Enable anti-aliasing on lines/borders. Disable if you are really tight on CPU/GPU.
+    bool        AntiAliasedShapes;          // Enable anti-aliasing on filled shapes (rounded rectangles, circles, etc.)
     ImVec4[ImGuiCol_COUNT]      Colors;
 };
 
@@ -400,9 +406,38 @@ alias ImDrawCallback = void function(const ImDrawList* parent_list, const ImDraw
 
 align(1) struct ImDrawCmd
 {
-	uint            vtx_count;                  // Number of vertices (multiple of 3) to be drawn as triangles. The vertices are stored in the callee ImDrawList's vtx_buffer[] array.
-	ImVec4          clip_rect;                  // Clipping rectangle (x1, y1, x2, y2)
-	ImTextureID     texture_id;                 // User-provided texture ID. Set by user in ImfontAtlas::SetTexID() for fonts or passed to Image*() functions. Ignore if never using images or multiple fonts atlas.
-	ImDrawCallback  user_callback;              // If != NULL, call the function instead of rendering the vertices. vtx_count will be 0. clip_rect and texture_id will be set normally.
-	void*           user_callback_data;         // The draw callback code can access this.
-};
+    uint            ElemCount;              // Number of indices (multiple of 3) to be rendered as triangles. Vertices are stored in the callee ImDrawList's vtx_buffer[] array, indices in idx_buffer[].
+    ImVec4          ClipRect;               // Clipping rectangle (x1, y1, x2, y2)
+    ImTextureID     TextureId;              // User-provided texture ID. Set by user in ImfontAtlas::SetTexID() for fonts or passed to Image*() functions. Ignore if never using images or multiple fonts atlas.
+    ImDrawCallback  UserCallback;           // If != NULL, call the function instead of rendering the vertices. clip_rect and texture_id will be set normally.
+    void*           UserCallbackData;       // The draw callback code can access this.
+}
+
+alias ImDrawIdx = ushort;
+
+align(1) struct ImDrawData
+{
+    ImDrawList**    CmdLists;
+    int             CmdListsCount;
+    int             TotalVtxCount;          // For convenience, sum of all cmd_lists vtx_buffer.Size
+    int             TotalIdxCount;          // For convenience, sum of all cmd_lists idx_buffer.Size
+}
+
+align(1) struct ImFontConfig
+{
+    void*           FontData;
+    int             FontDataSize;
+    bool            FontDataOwnedByAtlas=true;
+    int             FontNo=0;
+    float           SizePixels=0.0f; 
+    int             OversampleH=2, OversampleV=2;
+    bool            PixelSnapH=false;
+    ImVec2          GlyphExtraSpacing;
+    const ImWchar*  GlyphRanges;
+    bool            MergeMode=false;
+    bool            MergeGlyphCenterV=false;
+    
+    // [Internal]
+    char[32]        Name;
+    ImFont*         DstFont;
+}
