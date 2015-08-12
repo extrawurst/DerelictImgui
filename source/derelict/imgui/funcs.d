@@ -57,7 +57,8 @@ extern(C) @nogc nothrow
     alias da_igBeginChild                   = bool function(const char* str_id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
     alias da_igBeginChildEx                 = bool function(ImGuiID id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
     alias da_igEndChild                     = void function();
-    alias da_igGetContentRegionMax      = void function(ImVec2* outParam);
+    alias da_igGetContentRegionMax			= void function(ImVec2* outParam);
+	alias da_igGetContentRegionAvail		= void function(ImVec2* outParam);
     alias da_igGetWindowContentRegionMin    = void function(ImVec2* outParam);
     alias da_igGetWindowContentRegionMax    = void function(ImVec2* outParam);
     alias da_igGetWindowDrawList            = ImDrawList* function();
@@ -336,7 +337,8 @@ extern(C) @nogc nothrow
     alias da_ImFontAtlas_AddFontDefault       = ImFont* function(ImFontAtlas* atlas, const ImFontConfig* font_cfg);
     alias da_ImFontAtlas_AddFontFromFileTTF   = ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImFontConfig* font_cfg, const ImWchar* glyph_ranges = null);
     alias da_ImFontAtlas_AddFontFromMemoryTTF = ImFont* function(ImFontAtlas* atlas, void* ttf_data, int ttf_size, float size_pixels, const ImFontConfig* font_cfg, const ImWchar* glyph_ranges = null);
-    alias da_ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* compressed_ttf_data, int compressed_ttf_size, float size_pixels, const ImFontConfig* font_cfg, const ImWchar* glyph_ranges = null);
+    alias da_ImFontAtlas_AddFontFromMemoryCompressedTTF = ImFont* function(ImFontAtlas* atlas, const void* compressed_ttf_data, int compressed_ttf_size, float size_pixels, const ImFontConfig* font_cfg = null, const ImWchar* glyph_ranges = null);
+	alias da_ImFontAtlas_AddFontFromMemoryCompressedBase85TTF = ImFont* function(ImFontAtlas* atlas, const char* compressed_ttf_data_base85, float size_pixels, const ImFontConfig* font_cfg = null, const ImWchar* glyph_ranges = null);
 
     alias da_ImFontAtlas_ClearTexData         = void function(ImFontAtlas* atlas, void* id);
     alias da_ImFontAtlas_Clear                = void function(ImFontAtlas* atlas, void* id);
@@ -377,6 +379,7 @@ __gshared
     da_igBeginChildEx igBeginChildEx;
     da_igEndChild igEndChild;
     da_igGetContentRegionMax igGetContentRegionMax;
+	da_igGetContentRegionAvail igGetContentRegionAvail;
     da_igGetWindowContentRegionMin igGetWindowContentRegionMin;
     da_igGetWindowContentRegionMax igGetWindowContentRegionMax;
     da_igGetWindowDrawList igGetWindowDrawList;
@@ -653,6 +656,7 @@ __gshared
     da_ImFontAtlas_AddFontFromFileTTF       ImFontAtlas_AddFontFromFileTTF;
     da_ImFontAtlas_AddFontFromMemoryTTF     ImFontAtlas_AddFontFromMemoryTTF;
     da_ImFontAtlas_AddFontFromMemoryCompressedTTF ImFontAtlas_AddFontFromMemoryCompressedTTF;
+	da_ImFontAtlas_AddFontFromMemoryCompressedBase85TTF ImFontAtlas_AddFontFromMemoryCompressedBase85TTF;
     da_ImFontAtlas_ClearTexData             ImFontAtlas_ClearTexData;
     da_ImFontAtlas_Clear                    ImFontAtlas_Clear;
 }

@@ -90,6 +90,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igBeginChildEx, "igBeginChildEx");
                 bindFunc(cast(void**)&igEndChild, "igEndChild");
                 bindFunc(cast(void**)&igGetContentRegionMax, "igGetContentRegionMax");
+				bindFunc(cast(void**)&igGetContentRegionAvail, "igGetContentRegionAvail");
                 bindFunc(cast(void**)&igGetWindowContentRegionMin, "igGetWindowContentRegionMin");
                 bindFunc(cast(void**)&igGetWindowContentRegionMax, "igGetWindowContentRegionMax");
                 bindFunc(cast(void**)&igGetWindowDrawList, "igGetWindowDrawList");
@@ -364,6 +365,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&ImFontAtlas_AddFontFromFileTTF, "ImFontAtlas_AddFontFromFileTTF");
                 bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryTTF, "ImFontAtlas_AddFontFromMemoryTTF");
                 bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryCompressedTTF, "ImFontAtlas_AddFontFromMemoryCompressedTTF");
+				bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryCompressedBase85TTF, "ImFontAtlas_AddFontFromMemoryCompressedBase85TTF");
                 bindFunc(cast(void**)&ImFontAtlas_ClearTexData, "ImFontAtlas_ClearTexData");
                 bindFunc(cast(void**)&ImFontAtlas_Clear, "ImFontAtlas_Clear");
             }

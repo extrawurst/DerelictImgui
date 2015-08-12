@@ -69,7 +69,8 @@ enum
     ImGuiWindowFlags_AlwaysAutoResize       = 1 << 6,   // Resize every window to its content every frame
     ImGuiWindowFlags_ShowBorders            = 1 << 7,   // Show borders around windows and items
     ImGuiWindowFlags_NoSavedSettings        = 1 << 8,   // Never load/save settings in .ini file
-    ImGuiWindowFlags_MenuBar                = 1 << 9,   // Has a menubar
+	ImGuiWindowFlags_NoInputs               = 1 << 9,   // Disable catching mouse or keyboard inputs
+    ImGuiWindowFlags_MenuBar                = 1 << 10,   // Has a menubar
     // [Internal]
     ImGuiWindowFlags_ChildWindow            = 1 << 20,  // Don't use! For internal use by BeginChild()
     ImGuiWindowFlags_ChildWindowAutoFitX    = 1 << 21,  // Don't use! For internal use by BeginChild()
@@ -430,7 +431,7 @@ align(1) struct ImFontConfig
     bool            FontDataOwnedByAtlas=true;
     int             FontNo=0;
     float           SizePixels=0.0f; 
-    int             OversampleH=2, OversampleV=2;
+    int             OversampleH=3, OversampleV=1;
     bool            PixelSnapH=false;
     ImVec2          GlyphExtraSpacing;
     const ImWchar*  GlyphRanges;
