@@ -51,7 +51,7 @@ extern(C) @nogc nothrow
     alias da_igShowMetricsWindow            = void function(bool* opened = null);
 
     // Window
-    alias da_igBegin                        = bool function(const char* name = "Debug", bool* p_opened = null, ImGuiWindowFlags flags = 0);
+    alias da_igBegin                        = bool function(const char* name, bool* p_opened = null, ImGuiWindowFlags flags = 0);
     alias da_igBegin2                       = bool function(const char* name, bool* p_opened, const ImVec2 size_on_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0);
     alias da_igEnd                      = void function();
     alias da_igBeginChild                   = bool function(const char* str_id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
@@ -59,8 +59,10 @@ extern(C) @nogc nothrow
     alias da_igEndChild                     = void function();
     alias da_igGetContentRegionMax			= void function(ImVec2* outParam);
 	alias da_igGetContentRegionAvail		= void function(ImVec2* outParam);
+    alias da_igGetContentRegionAvailWidth   = float function();
     alias da_igGetWindowContentRegionMin    = void function(ImVec2* outParam);
     alias da_igGetWindowContentRegionMax    = void function(ImVec2* outParam);
+    alias da_igGetWindowContentRegionWidth  = float function();
     alias da_igGetWindowDrawList            = ImDrawList* function();
     alias da_igGetWindowFont                = ImFont* function();
     alias da_igGetWindowFontSize            = float function(); 
@@ -68,6 +70,7 @@ extern(C) @nogc nothrow
     alias da_igGetWindowPos                 = void function(ImVec2* outParam);
     alias da_igGetWindowSize                = void function(ImVec2* outParam);
     alias da_igGetWindowWidth               = float function();
+    alias da_igGetWindowHeight              = float function();
     alias da_igIsWindowCollapsed            = bool function();
 
     alias da_igSetNextWindowPos             = void function(const ImVec2 pos, ImGuiSetCond cond = 0);
@@ -77,15 +80,20 @@ extern(C) @nogc nothrow
     alias da_igSetNextWindowFocus           = void function();
     alias da_igSetWindowPos                 = void function(const ImVec2 pos, ImGuiSetCond cond = 0);
     alias da_igSetWindowSize                = void function(const ImVec2 size, ImGuiSetCond cond = 0);
+    alias da_igSetNextWindowContentSize     = void function(const ImVec2 size);
+    alias da_igSetNextWindowContentWidth    = void function(float width);
     alias da_igSetWindowCollapsed           = void function(bool collapsed, ImGuiSetCond cond = 0);
     alias da_igSetWindowFocus               = void function();
     alias da_igSetWindowPosByName               = void function(const char* name, const ImVec2 pos, ImGuiSetCond cond = 0);
     alias da_igSetWindowSize2               = void function(const char* name, const ImVec2 size, ImGuiSetCond cond = 0);
     alias da_igSetWindowCollapsed2      = void function(const char* name, bool collapsed, ImGuiSetCond cond = 0);
     alias da_igSetWindowFocus2          = void function(const char* name);
-    
+
+    alias da_igGetScrollX                   = float         function();
     alias da_igGetScrollY                   = float         function();
+    alias da_igGetScrollMaxX                = float         function();
     alias da_igGetScrollMaxY                = float         function();
+    alias da_igSetScrollX                  = void              function(int scroll_x);
     alias da_igSetScrollY                  = void              function(int scroll_y);
     alias da_igSetScrollHere                = void              function(float center_y_ratio = 0.5f);
     alias da_igSetScrollFromPosY           = void              function(float pos_y, float center_y_ratio = 0.5f);
@@ -114,7 +122,7 @@ extern(C) @nogc nothrow
     alias da_igBeginGroup                   = void              function();
     alias da_igEndGroup                 = void              function();
     alias da_igSeparator                    = void              function();
-    alias da_igSameLine                     = void              function(float pos_x = 0.0f, float spacing_w = -1.0f);
+    alias da_igSameLine                     = void              function(float local_pos_x = 0.0f, float spacing_w = -1.0f);
     alias da_igSpacing                      = void              function();
     alias da_igDummy                       = void              function(const ImVec2* size);
     alias da_igIndent                       = void              function();
@@ -129,7 +137,7 @@ extern(C) @nogc nothrow
     alias da_igGetCursorPos             = void          function(ImVec2* pOut);
     alias da_igGetCursorPosX                = float         function();
     alias da_igGetCursorPosY                = float         function();
-    alias da_igSetCursorPos             = void              function(const ImVec2 pos);
+    alias da_igSetCursorPos             = void              function(const ImVec2 locl_pos);
     alias da_igSetCursorPosX                = void              function(float x);
     alias da_igSetCursorPosY                = void              function(float y);
     alias da_igGetCursorStartPos           = void function(ImVec2* pOut);
@@ -299,10 +307,11 @@ extern(C) @nogc nothrow
     alias da_igIsMouseReleased             = bool              function(int button);
     alias da_igIsMouseHoveringWindow        = bool              function();
     alias da_igIsMouseHoveringAnyWindow = bool              function();
-    alias da_igIsMouseHoveringRect          = bool              function(const ImVec2 rect_min, const ImVec2 rect_max);
+    alias da_igIsMouseHoveringRect          = bool              function(const ImVec2 pos_min, const ImVec2 pos_max);
     alias da_igIsMouseDragging              = bool              function(int button = 0, float lock_threshold = -1.0f);
     alias da_igIsPosHoveringAnyWindow       = bool              function(const ImVec2 pos);
     alias da_igGetMousePos                  = void function(ImVec2* pOut);
+    alias da_igGetMousePosOnOpeningCurrentPopup = void function(ImVec2* pOut);
     alias da_igGetMouseDragDelta            = void function(ImVec2* pOut, int button = 0, float lock_threshold = -1.0f);
     alias da_igResetMouseDragDelta         = void function(int button=0);
     alias da_igGetMouseCursor               = ImGuiMouseCursor function();
@@ -317,6 +326,7 @@ extern(C) @nogc nothrow
     alias da_igBeginChildFrame              = bool              function(ImGuiID id, const ImVec2 size);
     alias da_igEndChildFrame                = void              function();
 
+    alias da_igColorConvertU32ToFloat4      = void function(ImVec4* pOut);
     alias da_igColorConvertFloat4ToU32      = ImU32 function(const ImVec4 in_);
     alias da_igColorConvertRGBtoHSV     = void function(float r, float g, float b, float* out_h, float* out_s, float* out_v);
     alias da_igColorConvertHSVtoRGB     = void function(float h, float s, float v, float* out_r, float* out_g, float* out_b);
@@ -380,8 +390,10 @@ __gshared
     da_igEndChild igEndChild;
     da_igGetContentRegionMax igGetContentRegionMax;
 	da_igGetContentRegionAvail igGetContentRegionAvail;
+    da_igGetContentRegionAvailWidth igGetContentRegionAvailWidth;
     da_igGetWindowContentRegionMin igGetWindowContentRegionMin;
     da_igGetWindowContentRegionMax igGetWindowContentRegionMax;
+    da_igGetWindowContentRegionWidth igGetWindowContentRegionWidth;
     da_igGetWindowDrawList igGetWindowDrawList;
     da_igGetWindowFont igGetWindowFont;
     da_igGetWindowFontSize igGetWindowFontSize;
@@ -389,6 +401,7 @@ __gshared
     da_igGetWindowPos igGetWindowPos;
     da_igGetWindowSize igGetWindowSize;
     da_igGetWindowWidth igGetWindowWidth;
+    da_igGetWindowHeight igGetWindowHeight;
     da_igIsWindowCollapsed igIsWindowCollapsed;
 
     da_igSetNextWindowPos igSetNextWindowPos;
@@ -398,15 +411,20 @@ __gshared
     da_igSetNextWindowFocus igSetNextWindowFocus;
     da_igSetWindowPos igSetWindowPos;
     da_igSetWindowSize igSetWindowSize;
+    da_igSetNextWindowContentSize igSetNextWindowContentSize;
+    da_igSetNextWindowContentWidth igSetNextWindowContentWidth;
     da_igSetWindowCollapsed igSetWindowCollapsed;
     da_igSetWindowFocus igSetWindowFocus;
     da_igSetWindowPosByName igSetWindowPosByName;
     da_igSetWindowSize2 igSetWindowSize2;
     da_igSetWindowCollapsed2 igSetWindowCollapsed2;
     da_igSetWindowFocus2 igSetWindowFocus2;
-    
+
+    da_igGetScrollX igGetScrollX;
     da_igGetScrollY igGetScrollY;
+    da_igGetScrollMaxX igGetScrollMaxX;
     da_igGetScrollMaxY igGetScrollMaxY;
+    da_igSetScrollX igSetScrollX;
     da_igSetScrollY igSetScrollY;
     da_igSetScrollHere igSetScrollHere;
     da_igSetScrollFromPosY igSetScrollFromPosY;
@@ -622,6 +640,7 @@ __gshared
     da_igIsMouseDragging igIsMouseDragging;
     da_igIsPosHoveringAnyWindow igIsPosHoveringAnyWindow;
     da_igGetMousePos igGetMousePos;
+    da_igGetMousePosOnOpeningCurrentPopup igGetMousePosOnOpeningCurrentPopup;
     da_igGetMouseDragDelta igGetMouseDragDelta;
     da_igResetMouseDragDelta igResetMouseDragDelta;
     da_igGetMouseCursor igGetMouseCursor;
@@ -636,6 +655,7 @@ __gshared
     da_igBeginChildFrame igBeginChildFrame;
     da_igEndChildFrame igEndChildFrame;
 
+    da_igColorConvertU32ToFloat4 igColorConvertU32ToFloat4;
     da_igColorConvertFloat4ToU32 igColorConvertFloat4ToU32;
     da_igColorConvertRGBtoHSV igColorConvertRGBtoHSV;
     da_igColorConvertHSVtoRGB igColorConvertHSVtoRGB;

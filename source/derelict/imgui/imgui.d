@@ -91,8 +91,10 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igEndChild, "igEndChild");
                 bindFunc(cast(void**)&igGetContentRegionMax, "igGetContentRegionMax");
 				bindFunc(cast(void**)&igGetContentRegionAvail, "igGetContentRegionAvail");
+                bindFunc(cast(void**)&igGetContentRegionAvailWidth, "igGetContentRegionAvailWidth");
                 bindFunc(cast(void**)&igGetWindowContentRegionMin, "igGetWindowContentRegionMin");
                 bindFunc(cast(void**)&igGetWindowContentRegionMax, "igGetWindowContentRegionMax");
+                bindFunc(cast(void**)&igGetWindowContentRegionWidth, "igGetWindowContentRegionWidth");
                 bindFunc(cast(void**)&igGetWindowDrawList, "igGetWindowDrawList");
                 bindFunc(cast(void**)&igGetWindowFont, "igGetWindowFont");
                 bindFunc(cast(void**)&igGetWindowFontSize, "igGetWindowFontSize");
@@ -100,6 +102,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igGetWindowPos, "igGetWindowPos");
                 bindFunc(cast(void**)&igGetWindowSize, "igGetWindowSize");
                 bindFunc(cast(void**)&igGetWindowWidth, "igGetWindowWidth");
+                bindFunc(cast(void**)&igGetWindowHeight, "igGetWindowHeight");
                 bindFunc(cast(void**)&igIsWindowCollapsed, "igIsWindowCollapsed");
 
                 bindFunc(cast(void**)&igSetNextWindowPos, "igSetNextWindowPos");
@@ -109,15 +112,20 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igSetNextWindowFocus, "igSetNextWindowFocus");
                 bindFunc(cast(void**)&igSetWindowPos, "igSetWindowPos");
                 bindFunc(cast(void**)&igSetWindowSize, "igSetWindowSize");
+                bindFunc(cast(void**)&igSetNextWindowContentSize, "igSetNextWindowContentSize");
+                bindFunc(cast(void**)&igSetNextWindowContentWidth, "igSetNextWindowContentWidth");
                 bindFunc(cast(void**)&igSetWindowCollapsed, "igSetWindowCollapsed");
                 bindFunc(cast(void**)&igSetWindowFocus, "igSetWindowFocus");
                 bindFunc(cast(void**)&igSetWindowPosByName, "igSetWindowPosByName");
                 bindFunc(cast(void**)&igSetWindowSize2, "igSetWindowSize2");
                 bindFunc(cast(void**)&igSetWindowCollapsed2, "igSetWindowCollapsed2");
                 bindFunc(cast(void**)&igSetWindowFocus2, "igSetWindowFocus2");
-                
+
+                bindFunc(cast(void**)&igGetScrollX, "igGetScrollX");
                 bindFunc(cast(void**)&igGetScrollY, "igGetScrollY");
+                bindFunc(cast(void**)&igGetScrollMaxX, "igGetScrollMaxX");
                 bindFunc(cast(void**)&igGetScrollMaxY, "igGetScrollMaxY");
+                bindFunc(cast(void**)&igSetScrollX, "igSetScrollX");
                 bindFunc(cast(void**)&igSetScrollY, "igSetScrollY");
                 bindFunc(cast(void**)&igSetScrollHere, "igSetScrollHere");
                 bindFunc(cast(void**)&igSetScrollFromPosY, "igSetScrollFromPosY");
@@ -332,6 +340,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igIsMouseDragging, "igIsMouseDragging");
                 bindFunc(cast(void**)&igIsPosHoveringAnyWindow, "igIsPosHoveringAnyWindow");
                 bindFunc(cast(void**)&igGetMousePos, "igGetMousePos");
+                bindFunc(cast(void**)&igGetMousePosOnOpeningCurrentPopup, "igGetMousePosOnOpeningCurrentPopup");
                 bindFunc(cast(void**)&igGetMouseDragDelta, "igGetMouseDragDelta");
                 bindFunc(cast(void**)&igResetMouseDragDelta, "igResetMouseDragDelta");
                 bindFunc(cast(void**)&igGetMouseCursor, "igGetMouseCursor");
@@ -346,6 +355,8 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igBeginChildFrame, "igBeginChildFrame");
                 bindFunc(cast(void**)&igEndChildFrame, "igEndChildFrame");
 
+
+                bindFunc(cast(void**)&igColorConvertU32ToFloat4, "igColorConvertU32ToFloat4");
                 bindFunc(cast(void**)&igColorConvertFloat4ToU32, "igColorConvertFloat4ToU32");
                 bindFunc(cast(void**)&igColorConvertRGBtoHSV, "igColorConvertRGBtoHSV");
                 bindFunc(cast(void**)&igColorConvertHSVtoRGB, "igColorConvertHSVtoRGB");
