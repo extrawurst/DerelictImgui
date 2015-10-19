@@ -42,6 +42,7 @@ extern(C) @nogc nothrow
 {
     alias da_igGetIO                        = ImGuiIO* function();
     alias da_igGetStyle                     = ImGuiStyle* function();
+    alias da_igGetDrawData                  = ImDrawData* function();
     alias da_igNewFrame                     = void function();
     alias da_igRender                       = void function();
     alias da_igShutdown                     = void function();
@@ -307,7 +308,7 @@ extern(C) @nogc nothrow
     alias da_igIsMouseReleased             = bool              function(int button);
     alias da_igIsMouseHoveringWindow        = bool              function();
     alias da_igIsMouseHoveringAnyWindow = bool              function();
-    alias da_igIsMouseHoveringRect          = bool              function(const ImVec2 pos_min, const ImVec2 pos_max);
+    alias da_igIsMouseHoveringRect          = bool              function(const ImVec2 pos_min, const ImVec2 pos_max, bool clip = true);
     alias da_igIsMouseDragging              = bool              function(int button = 0, float lock_threshold = -1.0f);
     alias da_igIsPosHoveringAnyWindow       = bool              function(const ImVec2 pos);
     alias da_igGetMousePos                  = void function(ImVec2* pOut);
@@ -316,6 +317,12 @@ extern(C) @nogc nothrow
     alias da_igResetMouseDragDelta         = void function(int button=0);
     alias da_igGetMouseCursor               = ImGuiMouseCursor function();
     alias da_igSetMouseCursor               = void              function(ImGuiMouseCursor type);
+
+    alias da_igMemAlloc                     = void* function(size_t sz);
+    alias da_igMemFree                      = void function(void* ptr);
+    alias da_igGetClipboardText             = const(char)* function();
+    alias da_igSetClipboardText             = void function(const(char)* text);
+
     alias da_igGetTime                      = float         function();
     alias da_igGetFrameCount                = int               function();
     alias da_igGetStyleColName             = const(char)*       function(ImGuiCol idx);
@@ -323,7 +330,7 @@ extern(C) @nogc nothrow
     alias da_igCalcTextSize             = void function(ImVec2* pOut, const char* text, const char* text_end = null, bool hide_text_after_double_hash = false, float wrap_width = -1.0f);
     alias da_igCalcListClipping         = void              function(int items_count, float items_height, int* out_items_display_start, int* out_items_display_end);
 
-    alias da_igBeginChildFrame              = bool              function(ImGuiID id, const ImVec2 size);
+    alias da_igBeginChildFrame              = bool              function(ImGuiID id, const ImVec2 size, ImGuiWindowFlags extra_flags = 0);
     alias da_igEndChildFrame                = void              function();
 
     alias da_igColorConvertU32ToFloat4      = void function(ImVec4* pOut);
@@ -374,6 +381,7 @@ __gshared
 {
     da_igGetIO igGetIO;
     da_igGetStyle igGetStyle;
+    da_igGetDrawData igGetDrawData;
     da_igNewFrame igNewFrame;
     da_igRender igRender;
     da_igShutdown igShutdown;
@@ -645,6 +653,12 @@ __gshared
     da_igResetMouseDragDelta igResetMouseDragDelta;
     da_igGetMouseCursor igGetMouseCursor;
     da_igSetMouseCursor igSetMouseCursor;
+
+    da_igMemAlloc igMemAlloc;
+    da_igMemFree igMemFree;
+    da_igGetClipboardText igGetClipboardText;
+    da_igSetClipboardText igSetClipboardText;
+
     da_igGetTime igGetTime;
     da_igGetFrameCount igGetFrameCount;
     da_igGetStyleColName igGetStyleColName;

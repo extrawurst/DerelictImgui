@@ -74,6 +74,7 @@ final class DerelictImguiLoader : SharedLibLoader
             
                 bindFunc(cast(void**)&igGetIO, "igGetIO");
                 bindFunc(cast(void**)&igGetStyle, "igGetStyle");
+                bindFunc(cast(void**)&igGetDrawData, "igGetDrawData");
                 bindFunc(cast(void**)&igNewFrame, "igNewFrame");
                 bindFunc(cast(void**)&igRender, "igRender");
                 bindFunc(cast(void**)&igShutdown, "igShutdown");
@@ -345,6 +346,12 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igResetMouseDragDelta, "igResetMouseDragDelta");
                 bindFunc(cast(void**)&igGetMouseCursor, "igGetMouseCursor");
                 bindFunc(cast(void**)&igSetMouseCursor, "igSetMouseCursor");
+
+                bindFunc(cast(void**)&igMemAlloc, "igMemAlloc");
+                bindFunc(cast(void**)&igMemFree, "igMemFree");
+                bindFunc(cast(void**)&igGetClipboardText, "igGetClipboardText");
+                bindFunc(cast(void**)&igSetClipboardText, "igSetClipboardText");
+
                 bindFunc(cast(void**)&igGetTime, "igGetTime");
                 bindFunc(cast(void**)&igGetFrameCount, "igGetFrameCount");
                 bindFunc(cast(void**)&igGetStyleColName, "igGetStyleColName");
