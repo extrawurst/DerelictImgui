@@ -346,6 +346,8 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igResetMouseDragDelta, "igResetMouseDragDelta");
                 bindFunc(cast(void**)&igGetMouseCursor, "igGetMouseCursor");
                 bindFunc(cast(void**)&igSetMouseCursor, "igSetMouseCursor");
+                bindFunc(cast(void**)&igCaptureKeyboardFromApp, "igCaptureKeyboardFromApp");
+                bindFunc(cast(void**)&igCaptureMouseFromApp, "igCaptureMouseFromApp");
 
                 bindFunc(cast(void**)&igMemAlloc, "igMemAlloc");
                 bindFunc(cast(void**)&igMemFree, "igMemFree");

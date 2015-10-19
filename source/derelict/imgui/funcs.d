@@ -317,6 +317,9 @@ extern(C) @nogc nothrow
     alias da_igResetMouseDragDelta         = void function(int button=0);
     alias da_igGetMouseCursor               = ImGuiMouseCursor function();
     alias da_igSetMouseCursor               = void              function(ImGuiMouseCursor type);
+    alias da_igCaptureKeyboardFromApp       = void function();
+    alias da_igCaptureMouseFromApp          = void function();
+
 
     alias da_igMemAlloc                     = void* function(size_t sz);
     alias da_igMemFree                      = void function(void* ptr);
@@ -653,6 +656,9 @@ __gshared
     da_igResetMouseDragDelta igResetMouseDragDelta;
     da_igGetMouseCursor igGetMouseCursor;
     da_igSetMouseCursor igSetMouseCursor;
+    da_igCaptureKeyboardFromApp igCaptureKeyboardFromApp;
+    da_igCaptureMouseFromApp igCaptureMouseFromApp;
+
 
     da_igMemAlloc igMemAlloc;
     da_igMemFree igMemFree;
