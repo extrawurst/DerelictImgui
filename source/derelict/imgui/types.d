@@ -107,7 +107,7 @@ enum
     ImGuiInputTextFlags_Multiline           = 1 << 20   // For internal use by InputTextMultiline()
 }
 
-enum ImGuiSelectableFlags_
+enum
 {
     // Default: 0
     ImGuiSelectableFlags_DontClosePopups    = 1 << 0,   // Clicking this don't close parent popup window
@@ -185,7 +185,7 @@ enum
 	ImGuiStyleVar_GrabMinSize          // float
 }
 
-enum 
+enum
 {
     ImGuiAlign_Left     = 1 << 0,
     ImGuiAlign_Center   = 1 << 1,
@@ -298,68 +298,68 @@ align(1) struct ImGuiIO
     float         KeyRepeatDelay;           // = 0.250f             // When holding a key/button, time before it starts repeating, in seconds. (for actions where 'repeat' is active)
     float         KeyRepeatRate;            // = 0.020f             // When holding a key/button, rate at which it repeats, in seconds.
 	void*         UserData;                 // = NULL               // Store your own data for retrieval by callbacks.
-	
+
 	ImFontAtlas*  Fonts;                    // <auto>               // Load and assemble one or more fonts into a single tightly packed texture. Output to Fonts array.
 	float         FontGlobalScale;          // = 1.0f               // Global scale all fonts
 	bool          FontAllowUserScaling;     // = false              // Allow user scaling text of individual window with CTRL+Wheel.
     ImVec2        DisplayFramebufferScale;  // = (1.0f,1.0f)        // For retina display or other situations where window coordinates are different from framebuffer coordinates. User storage only, presently not used by ImGui.
 	ImVec2        DisplayVisibleMin;        // <unset> (0.0f,0.0f)  // If you use DisplaySize as a virtual space larger than your screen, set DisplayVisibleMin/Max to the visible area.
 	ImVec2        DisplayVisibleMax;        // <unset> (0.0f,0.0f)  // If the values are the same, we defaults to Min=(0.0f) and Max=DisplaySize
-	
+
 	//------------------------------------------------------------------
 	// User Functions
 	//------------------------------------------------------------------
-	
-	// REQUIRED: rendering function. 
+
+	// REQUIRED: rendering function.
 	// See example code if you are unsure of how to implement this.
     RenderDrawListFunc RenderDrawListsFn;
-	
+
 	// Optional: access OS clipboard
 	// (default to use native Win32 clipboard on Windows, otherwise uses a private clipboard. Override to access OS clipboard on other architectures)
     GetClipboardTextFunc GetClipboardTextFn;
     SetClipboardTextFunc SetClipboardTextFn;
-	
+
 	// Optional: override memory allocations. MemFreeFn() may be called with a NULL pointer.
 	// (default to posix malloc/free)
 	MemAllocFunc MemAllocFn;
     MemFreeFunc MemFreeFn;
-	
+
 	// Optional: notify OS Input Method Editor of the screen position of your cursor for text input position (e.g. when using Japanese/Chinese IME in Windows)
 	// (default to use native imm32 api on Windows)
     ImeSetInputScreenPosFunc ImeSetInputScreenPosFn;
 	void*       ImeWindowHandle;            // (Windows) Set this to your HWND to get automatic IME cursor positioning.
-	
+
 	//------------------------------------------------------------------
 	// Input - Fill before calling NewFrame()
 	//------------------------------------------------------------------
 
 	ImVec2      	MousePos;                   // Mouse position, in pixels (set to -1,-1 if no mouse / on another screen, etc.)
 	bool[5]     	MouseDown;        		    // Mouse buttons. ImGui itself only uses button 0 (left button). Others buttons allows to track if mouse is being used by your application + available to user as a convenience via IsMouse** API.
-	float       	MouseWheel;                 // Mouse wheel: 1 unit scrolls about 5 lines text. 
+	float       	MouseWheel;                 // Mouse wheel: 1 unit scrolls about 5 lines text.
 	bool        	MouseDrawCursor;            // Request ImGui to draw a mouse cursor for you (if you are on a platform without a mouse cursor).
 	bool        	KeyCtrl;                    // Keyboard modifier pressed: Control
 	bool        	KeyShift;                   // Keyboard modifier pressed: Shift
 	bool        	KeyAlt;                     // Keyboard modifier pressed: Alt
 	bool[512]   	KeysDown;              // Keyboard keys that are pressed (in whatever storage order you naturally have access to keyboard data)
 	ImWchar[16+1]   InputCharacters;      // List of characters input (translated by user from keypress+keyboard state). Fill using AddInputCharacter() helper.
-	
+
 	//------------------------------------------------------------------
 	// Output - Retrieve after calling NewFrame(), you can use them to discard inputs or hide them from the rest of your application
 	//------------------------------------------------------------------
-	
+
 	bool        WantCaptureMouse;           // Mouse is hovering a window or widget is active (= ImGui will use your mouse input)
 	bool        WantCaptureKeyboard;        // Widget is active (= ImGui will use your keyboard input)
     bool        WantTextInput;              // Some text input widget is active, which will read input characters from the InputCharacters array.
 	float       Framerate;                  // Framerate estimation, in frame per second. Rolling average estimation based on IO.DeltaTime over 120 frames
     int         MetricsAllocs;              // Number of active memory allocations
     int         MetricsRenderVertices;      // Vertices processed during last call to Render()
-    int         MetricsRenderIndices;       // 
+    int         MetricsRenderIndices;       //
     int         MetricsActiveWindows;       // Number of visible windows (exclude child windows)
-	
+
 	//------------------------------------------------------------------
 	// [Internal] ImGui will maintain those fields for you
 	//------------------------------------------------------------------
-	
+
 	ImVec2      MousePosPrev;               // Previous mouse position
 	ImVec2      MouseDelta;                 // Mouse delta. Note that this is zero if either current or previous position are negative to allow mouse enabling/disabling.
 	bool[5]     MouseClicked;            // Mouse button went from !Down to Down
@@ -438,15 +438,45 @@ align(1) struct ImFontConfig
     int             FontDataSize;
     bool            FontDataOwnedByAtlas=true;
     int             FontNo=0;
-    float           SizePixels=0.0f; 
+    float           SizePixels=0.0f;
     int             OversampleH=3, OversampleV=1;
     bool            PixelSnapH=false;
     ImVec2          GlyphExtraSpacing;
     const ImWchar*  GlyphRanges;
     bool            MergeMode=false;
     bool            MergeGlyphCenterV=false;
-    
+
     // [Internal]
     char[32]        Name;
     ImFont*         DstFont;
 }
+
+align(1) struct ImColor
+{
+	union {
+	    ImVec4 Value;
+	    ImU32 asImU32;
+	}
+	alias asImU32 this;
+
+    this(int r, int g, int b, int a = 255) {
+		float sc = 1.0f/255.0f;
+		Value.x = cast(float)r * sc;
+		Value.y = cast(float)g * sc;
+		Value.z = cast(float)b * sc;
+		Value.w = cast(float)a * sc;
+	}
+    this(ImU32 rgba) {
+		float sc = 1.0f/255.0f;
+		Value.x = cast(float)(rgba&0xFF) * sc;
+		Value.y = cast(float)((rgba>>8)&0xFF) * sc;
+		Value.z = cast(float)((rgba>>16)&0xFF) * sc;
+		Value.w = cast(float)(rgba >> 24) * sc;
+	}
+    this(float r, float g, float b, float a = 1.0f) {
+		Value.x = r;
+		Value.y = g;
+		Value.z = b;
+		Value.w = a;
+	}
+};

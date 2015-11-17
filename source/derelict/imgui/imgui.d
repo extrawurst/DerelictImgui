@@ -53,7 +53,7 @@ private
     import derelict.util.system;
 
     static if(Derelict_OS_Windows)
-        enum libNames = "cimgui.dll";    
+        enum libNames = "cimgui.dll";
     else static if (Derelict_OS_Mac)
         enum libNames = "cimgui.dylib";
     else static if (Derelict_OS_Linux)
@@ -71,7 +71,7 @@ final class DerelictImguiLoader : SharedLibLoader
             {
                 //search: (ig\S+)
                 //replace: bindFunc\(cast\(void**\)&$1, "$1"\);
-            
+
                 bindFunc(cast(void**)&igGetIO, "igGetIO");
                 bindFunc(cast(void**)&igGetStyle, "igGetStyle");
                 bindFunc(cast(void**)&igGetDrawData, "igGetDrawData");
@@ -273,7 +273,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igInputInt2, "igInputInt2");
                 bindFunc(cast(void**)&igInputInt3, "igInputInt3");
                 bindFunc(cast(void**)&igInputInt4, "igInputInt4");
-            
+
                 bindFunc(cast(void**)&igTreeNode, "igTreeNode");
                 bindFunc(cast(void**)&igTreeNodeStr, "igTreeNodeStr");
                 bindFunc(cast(void**)&igTreeNodePtr, "igTreeNodePtr");
@@ -396,6 +396,49 @@ final class DerelictImguiLoader : SharedLibLoader
             bindFunc(cast(void**)&ImDrawList_GetIndexPtr, "ImDrawList_GetIndexPtr");
             bindFunc(cast(void**)&ImDrawList_GetCmdSize, "ImDrawList_GetCmdSize");
             bindFunc(cast(void**)&ImDrawList_GetCmdPtr, "ImDrawList_GetCmdPtr");
+
+			bindFunc(cast(void**)&ImDrawList_Clear, "ImDrawList_Clear");
+			bindFunc(cast(void**)&ImDrawList_ClearFreeMemory, "ImDrawList_ClearFreeMemory");
+			bindFunc(cast(void**)&ImDrawList_PushClipRect, "ImDrawList_PushClipRect");
+			bindFunc(cast(void**)&ImDrawList_PushClipRectFullScreen, "ImDrawList_PushClipRectFullScreen");
+			bindFunc(cast(void**)&ImDrawList_PopClipRect, "ImDrawList_PopClipRect");
+			bindFunc(cast(void**)&ImDrawList_PushTextureID, "ImDrawList_PushTextureID");
+			bindFunc(cast(void**)&ImDrawList_PopTextureID, "ImDrawList_PopTextureID");
+			bindFunc(cast(void**)&ImDrawList_AddLine, "ImDrawList_AddLine");
+			bindFunc(cast(void**)&ImDrawList_AddRect, "ImDrawList_AddRect");
+			bindFunc(cast(void**)&ImDrawList_AddRectFilled, "ImDrawList_AddRectFilled");
+			bindFunc(cast(void**)&ImDrawList_AddRectFilledMultiColor, "ImDrawList_AddRectFilledMultiColor");
+			bindFunc(cast(void**)&ImDrawList_AddTriangleFilled, "ImDrawList_AddTriangleFilled");
+			bindFunc(cast(void**)&ImDrawList_AddCircle, "ImDrawList_AddCircle");
+			bindFunc(cast(void**)&ImDrawList_AddCircleFilled, "ImDrawList_AddCircleFilled");
+			bindFunc(cast(void**)&ImDrawList_AddText, "ImDrawList_AddText");
+			bindFunc(cast(void**)&ImDrawList_AddTextExt, "ImDrawList_AddTextExt");
+			bindFunc(cast(void**)&ImDrawList_AddImage, "ImDrawList_AddImage");
+			bindFunc(cast(void**)&ImDrawList_AddPolyline, "ImDrawList_AddPolyline");
+			bindFunc(cast(void**)&ImDrawList_AddConvexPolyFilled, "ImDrawList_AddConvexPolyFilled");
+			bindFunc(cast(void**)&ImDrawList_AddBezierCurve, "ImDrawList_AddBezierCurve");
+			bindFunc(cast(void**)&ImDrawList_PathClear, "ImDrawList_PathClear");
+			bindFunc(cast(void**)&ImDrawList_PathLineTo, "ImDrawList_PathLineTo");
+			bindFunc(cast(void**)&ImDrawList_PathLineToMergeDuplicate, "ImDrawList_PathLineToMergeDuplicate");
+			bindFunc(cast(void**)&ImDrawList_PathFill, "ImDrawList_PathFill");
+			bindFunc(cast(void**)&ImDrawList_PathStroke, "ImDrawList_PathStroke");
+			bindFunc(cast(void**)&ImDrawList_PathArcTo, "ImDrawList_PathArcTo");
+			bindFunc(cast(void**)&ImDrawList_PathArcToFast, "ImDrawList_PathArcToFast");
+			bindFunc(cast(void**)&ImDrawList_PathBezierCurveTo, "ImDrawList_PathBezierCurveTo");
+			bindFunc(cast(void**)&ImDrawList_PathRect, "ImDrawList_PathRect");
+			bindFunc(cast(void**)&ImDrawList_ChannelsSplit, "ImDrawList_ChannelsSplit");
+			bindFunc(cast(void**)&ImDrawList_ChannelsMerge, "ImDrawList_ChannelsMerge");
+			bindFunc(cast(void**)&ImDrawList_ChannelsSetCurrent, "ImDrawList_ChannelsSetCurrent");
+			bindFunc(cast(void**)&ImDrawList_AddCallback, "ImDrawList_AddCallback");
+			bindFunc(cast(void**)&ImDrawList_AddDrawCmd, "ImDrawList_AddDrawCmd");
+			bindFunc(cast(void**)&ImDrawList_PrimReserve, "ImDrawList_PrimReserve");
+			bindFunc(cast(void**)&ImDrawList_PrimRect, "ImDrawList_PrimRect");
+			bindFunc(cast(void**)&ImDrawList_PrimRectUV, "ImDrawList_PrimRectUV");
+			bindFunc(cast(void**)&ImDrawList_PrimVtx, "ImDrawList_PrimVtx");
+			bindFunc(cast(void**)&ImDrawList_PrimWriteVtx, "ImDrawList_PrimWriteVtx");
+			bindFunc(cast(void**)&ImDrawList_PrimWriteIdx, "ImDrawList_PrimWriteIdx");
+			bindFunc(cast(void**)&ImDrawList_UpdateClipRect, "ImDrawList_UpdateClipRect");
+			bindFunc(cast(void**)&ImDrawList_UpdateTextureID, "ImDrawList_UpdateTextureID");
 
             bindFunc(cast(void**)&ImGuiIO_AddInputCharacter, "ImGuiIO_AddInputCharacter");
             bindFunc(cast(void**)&ImGuiIO_AddInputCharactersUTF8, "ImGuiIO_AddInputCharactersUTF8");
