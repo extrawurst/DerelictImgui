@@ -453,30 +453,29 @@ align(1) struct ImFontConfig
 
 align(1) struct ImColor
 {
-	union {
-	    ImVec4 Value;
-	    ImU32 asImU32;
-	}
-	alias asImU32 this;
+    ImU32 value;
+    alias value this;
 
-    this(int r, int g, int b, int a = 255) {
-		float sc = 1.0f/255.0f;
-		Value.x = cast(float)r * sc;
-		Value.y = cast(float)g * sc;
-		Value.z = cast(float)b * sc;
-		Value.w = cast(float)a * sc;
-	}
-    this(ImU32 rgba) {
-		float sc = 1.0f/255.0f;
-		Value.x = cast(float)(rgba&0xFF) * sc;
-		Value.y = cast(float)((rgba>>8)&0xFF) * sc;
-		Value.z = cast(float)((rgba>>16)&0xFF) * sc;
-		Value.w = cast(float)(rgba >> 24) * sc;
-	}
-    this(float r, float g, float b, float a = 1.0f) {
-		Value.x = r;
-		Value.y = g;
-		Value.z = b;
-		Value.w = a;
-	}
-};
+    this(ubyte r, ubyte g, ubyte b, ubyte a = 255)
+    {
+        value = r | (g<<8) | (b<<16) | (a<<24);
+    }
+
+    this(float r, float g, float b, float a = 1.0f)
+    {
+        static float imSaturate(float f)
+        {
+            return (f < 0.0f) ? 0.0f : (f > 1.0f) ? 1.0f : f;
+        }
+        value  = (cast(ImU32)(imSaturate(r)*255));
+        value |= (cast(ImU32)(imSaturate(g)*255) << 8);
+        value |= (cast(ImU32)(imSaturate(b)*255) << 16);
+        value |= (cast(ImU32)(imSaturate(a)*255) << 24);
+    }
+
+    ImVec4 asImVec4() @property
+    {
+        float s = 1.0f/255.0f;
+        return ImVec4((value & 0xFF) * s, ((value >> 8) & 0xFF) * s, ((value >> 16) & 0xFF) * s, (value >> 24) * s);
+    }
+}
