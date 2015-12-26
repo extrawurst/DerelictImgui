@@ -47,14 +47,14 @@ extern(C) @nogc nothrow
     alias da_igRender                       = void function();
     alias da_igShutdown                     = void function();
     alias da_igShowUserGuide                = void function();
-    alias da_igShowStyleEditor          = void function(ImGuiStyle* ref_);
+    alias da_igShowStyleEditor              = void function(ImGuiStyle* ref_);
     alias da_igShowTestWindow               = void function(bool* opened = null);
     alias da_igShowMetricsWindow            = void function(bool* opened = null);
 
     // Window
     alias da_igBegin                        = bool function(const char* name, bool* p_opened = null, ImGuiWindowFlags flags = 0);
     alias da_igBegin2                       = bool function(const char* name, bool* p_opened, const ImVec2 size_on_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0);
-    alias da_igEnd                      = void function();
+    alias da_igEnd                          = void function();
     alias da_igBeginChild                   = bool function(const char* str_id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
     alias da_igBeginChildEx                 = bool function(ImGuiID id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
     alias da_igEndChild                     = void function();
@@ -109,6 +109,9 @@ extern(C) @nogc nothrow
     alias da_igPushStyleVar             = void              function(ImGuiStyleVar idx, float val);
     alias da_igPushStyleVarVec              = void              function(ImGuiStyleVar idx, const ImVec2 val);
     alias da_igPopStyleVar                  = void              function(int count = 1);
+    alias da_igGetColorU32                  = ImU32             function(ImGuiCol idx, float alpha_mul = 1.0f);
+    alias da_igGetColorU32Vec               = ImU32             function(const ImVec4* col);
+
 
     alias da_igPushItemWidth                = void              function(float item_width);
     alias da_igPopItemWidth             = void              function();
@@ -193,6 +196,7 @@ extern(C) @nogc nothrow
     alias da_igPlotLines2                   = void              function(const char* label, float function(void* data, int idx) values_getter, void* data, int values_count, int values_offset = 0, const char* overlay_text = null, float scale_min = float.max, float scale_max = float.max, ImVec2 graph_size = ImVec2(0, 0));
     alias da_igPlotHistogram                = void              function(const char* label, const float* values, int values_count, int values_offset = 0, const char* overlay_text = null, float scale_min = float.max, float scale_max = float.max, ImVec2 graph_size = ImVec2(0, 0), size_t stride = float.sizeof);
     alias da_igPlotHistogram2               = void              function(const char* label, float function(void* data, int idx) values_getter, void* data, int values_count, int values_offset = 0, const char* overlay_text = null, float scale_min = float.max, float scale_max = float.max, ImVec2 graph_size = ImVec2(0, 0));
+    alias da_igProgressBar                  = void              function(float fraction, const ImVec2* size_arg /+= ImVec2(-1,0)+/, const(char)* overlay = null);
 
     alias da_igSliderFloat                  = bool              function(const char* label, float* v, float v_min, float v_max, const char* display_format = "%.3f", float power = 1.0f);
     alias da_igSliderFloat2             = bool              function(const char* label, ref float[2] v, float v_min, float v_max, const char* display_format = "%.3f", float power = 1.0f);
@@ -251,8 +255,8 @@ extern(C) @nogc nothrow
     alias da_igValueInt        = void              function(const char* prefix, int v);
     alias da_igValueUInt       = void              function(const char* prefix, uint v);
     alias da_igValueFloat      = void              function(const char* prefix, float v, const char* float_format = null);
-    alias da_igColor           = void              function(const char* prefix, const ImVec4 v);
-    alias da_igColor2          = void              function(const char* prefix, uint v);
+    alias da_igValueColor           = void              function(const char* prefix, const ImVec4 v);
+    alias da_igValueColor2          = void              function(const char* prefix, uint v);
 
     alias da_igSetTooltip                  = void              function(const(char)* fmt, ...);
     alias da_igSetTooltipV                 = void              function(const(char)* fmt, va_list args);
@@ -378,6 +382,7 @@ extern(C) @nogc nothrow
 
     alias da_ImGuiIO_AddInputCharacter = void function(ushort c);
     alias da_ImGuiIO_AddInputCharactersUTF8 = void function(const(char*) utf8_chars);
+    alias da_ImGuiIO_ClearInputCharacters = void function();
 
     //---------------------------------------------------
 	alias da_ImDrawList_Clear = void function(ImDrawList* list);
@@ -494,6 +499,8 @@ __gshared
     da_igPushStyleVar igPushStyleVar;
     da_igPushStyleVarVec igPushStyleVarVec;
     da_igPopStyleVar igPopStyleVar;
+    da_igGetColorU32 igGetColorU32;
+    da_igGetColorU32Vec igGetColorU32Vec;
 
     da_igPushItemWidth igPushItemWidth;
     da_igPopItemWidth igPopItemWidth;
@@ -592,6 +599,8 @@ __gshared
     da_igPlotLines2 igPlotLines2;
     da_igPlotHistogram igPlotHistogram;
     da_igPlotHistogram2 igPlotHistogram2;
+    da_igProgressBar igProgressBar;
+
 
     da_igSliderFloat igSliderFloat;
     da_igSliderFloat2 igSliderFloat2;
@@ -658,8 +667,8 @@ __gshared
     da_igValueInt igValueInt;
     da_igValueUInt igValueUInt;
     da_igValueFloat igValueFloat;
-    da_igColor igColor;
-    da_igColor2 igColor2;
+    da_igValueColor igValueColor;
+    da_igValueColor2 igValueColor2;
 
     da_igLogToTTY igLogToTTY;
     da_igLogToFile igLogToFile;
@@ -802,4 +811,5 @@ __gshared
 
     da_ImGuiIO_AddInputCharacter ImGuiIO_AddInputCharacter;
     da_ImGuiIO_AddInputCharactersUTF8 ImGuiIO_AddInputCharactersUTF8;
+    da_ImGuiIO_ClearInputCharacters ImGuiIO_ClearInputCharacters;
 }

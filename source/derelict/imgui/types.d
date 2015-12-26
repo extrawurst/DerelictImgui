@@ -103,6 +103,7 @@ enum
     ImGuiInputTextFlags_NoHorizontalScroll  = 1 << 12,  // Disable following the cursor horizontally
     ImGuiInputTextFlags_AlwaysInsertMode    = 1 << 13,  // Insert mode
     ImGuiInputTextFlags_ReadOnly            = 1 << 14,  // Read-only mode
+    ImGuiInputTextFlags_Password            = 1 << 15,  // Password mode, display all characters as '*'
     // [Internal]
     ImGuiInputTextFlags_Multiline           = 1 << 20   // For internal use by InputTextMultiline()
 }
@@ -477,5 +478,13 @@ align(1) struct ImColor
     {
         float s = 1.0f/255.0f;
         return ImVec4((value & 0xFF) * s, ((value >> 8) & 0xFF) * s, ((value >> 16) & 0xFF) * s, (value >> 24) * s);
+    }
+
+    void SetHSV(float h, float s, float v, float a = 1.0f)
+    {
+        import derelict.imgui.funcs;
+        float r,g,b;
+        igColorConvertHSVtoRGB(h, s, v, &r, &g, &b);
+        this = ImColor(r,g,b,a);
     }
 }

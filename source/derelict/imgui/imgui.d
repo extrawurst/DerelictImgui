@@ -141,6 +141,8 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igPushStyleVar, "igPushStyleVar");
                 bindFunc(cast(void**)&igPushStyleVarVec, "igPushStyleVarVec");
                 bindFunc(cast(void**)&igPopStyleVar, "igPopStyleVar");
+                bindFunc(cast(void**)&igGetColorU32, "igGetColorU32");
+                bindFunc(cast(void**)&igGetColorU32Vec, "igGetColorU32Vec");
 
                 bindFunc(cast(void**)&igPushItemWidth, "igPushItemWidth");
                 bindFunc(cast(void**)&igPopItemWidth, "igPopItemWidth");
@@ -239,6 +241,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igPlotLines2, "igPlotLines2");
                 bindFunc(cast(void**)&igPlotHistogram, "igPlotHistogram");
                 bindFunc(cast(void**)&igPlotHistogram2, "igPlotHistogram2");
+                bindFunc(cast(void**)&igProgressBar, "igProgressBar");
 
                 bindFunc(cast(void**)&igSliderFloat, "igSliderFloat");
                 bindFunc(cast(void**)&igSliderFloat2, "igSliderFloat2");
@@ -305,8 +308,8 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igValueInt, "igValueInt");
                 bindFunc(cast(void**)&igValueUInt, "igValueUInt");
                 bindFunc(cast(void**)&igValueFloat, "igValueFloat");
-                bindFunc(cast(void**)&igColor, "igColor");
-                bindFunc(cast(void**)&igColor2, "igColor2");
+                bindFunc(cast(void**)&igValueColor, "igValueColor");
+                bindFunc(cast(void**)&igValueColor2, "igValueColor2");
 
                 bindFunc(cast(void**)&igLogToTTY, "igLogToTTY");
                 bindFunc(cast(void**)&igLogToFile, "igLogToFile");
@@ -442,6 +445,7 @@ final class DerelictImguiLoader : SharedLibLoader
 
             bindFunc(cast(void**)&ImGuiIO_AddInputCharacter, "ImGuiIO_AddInputCharacter");
             bindFunc(cast(void**)&ImGuiIO_AddInputCharactersUTF8, "ImGuiIO_AddInputCharactersUTF8");
+            bindFunc(cast(void**)&ImGuiIO_ClearInputCharacters, "ImGuiIO_ClearInputCharacters");
         }
     }
 
