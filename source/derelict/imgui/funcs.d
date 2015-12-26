@@ -303,10 +303,12 @@ extern(C) @nogc nothrow
     alias da_igIsRootWindowFocused          = bool              function();
     alias da_igIsRootWindowOrAnyChildFocused    = bool              function();
     alias da_igIsRectVisible                    = bool              function(const ImVec2 item_size);
-    alias da_igIsKeyDown                   = bool              function(int key_index);
-    alias da_igIsKeyPressed             = bool              function(int key_index, bool repeat = true);
-    alias da_igIsKeyReleased               = bool              function(int key_index);
-    alias da_igIsMouseDown                 = bool              function(int button);
+
+    alias da_igGetKeyIndex                  = int               function(ImGuiKey key);
+    alias da_igIsKeyDown                    = bool              function(int key_index);
+    alias da_igIsKeyPressed                 = bool              function(int key_index, bool repeat = true);
+    alias da_igIsKeyReleased                = bool              function(int key_index);
+    alias da_igIsMouseDown                  = bool              function(int button);
     alias da_igIsMouseClicked               = bool              function(int button, bool repeat = false);
     alias da_igIsMouseDoubleClicked     = bool              function(int button);
     alias da_igIsMouseReleased             = bool              function(int button);
@@ -691,6 +693,8 @@ __gshared
     da_igIsRootWindowFocused igIsRootWindowFocused;
     da_igIsRootWindowOrAnyChildFocused igIsRootWindowOrAnyChildFocused;
     da_igIsRectVisible igIsRectVisible;
+
+    da_igGetKeyIndex igGetKeyIndex;
     da_igIsKeyDown igIsKeyDown;
     da_igIsKeyPressed igIsKeyPressed;
     da_igIsKeyReleased igIsKeyReleased;
