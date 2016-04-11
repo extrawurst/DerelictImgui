@@ -397,12 +397,12 @@ extern(C) @nogc nothrow
 	alias da_ImDrawList_PushTextureID = void function(ImDrawList* list, const ImTextureID texture_id);
 	alias da_ImDrawList_PopTextureID = void function(ImDrawList* list);
 	alias da_ImDrawList_AddLine = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float thickness = 1.0f);
-	alias da_ImDrawList_AddRect = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding = 0.0f, int rounding_corners = 0x0F, float thickness);
+	alias da_ImDrawList_AddRect = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding, int rounding_corners, float thickness);
 	alias da_ImDrawList_AddRectFilled = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding = 0.0f, int rounding_corners = 0x0F);
 	alias da_ImDrawList_AddRectFilledMultiColor = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col_upr_left, ImU32 col_upr_right, ImU32 col_bot_right, ImU32 col_bot_left);
 	alias da_ImDrawList_AddTriangle = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, const ImVec2 c, ImU32 col, float thickness);
 	alias da_ImDrawList_AddTriangleFilled = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, const ImVec2 c, ImU32 col);
-	alias da_ImDrawList_AddCircle = void function(ImDrawList* list, const ImVec2 centre, float radius, ImU32 col, int num_segments = 12, float thickness);
+	alias da_ImDrawList_AddCircle = void function(ImDrawList* list, const ImVec2 centre, float radius, ImU32 col, int num_segments, float thickness);
 	alias da_ImDrawList_AddCircleFilled = void function(ImDrawList* list, const ImVec2 centre, float radius, ImU32 col, int num_segments = 12);
 	alias da_ImDrawList_AddText = void function(ImDrawList* list, const ImVec2 pos, ImU32 col, const char* text_begin, const char* text_end = null);
 	alias da_ImDrawList_AddTextExt = void function(ImDrawList* list, const ImFont* font, float font_size, const ImVec2 pos, ImU32 col, const char* text_begin, const char* text_end = null, float wrap_width = 0.0f, const ImVec4* cpu_fine_clip_rect = null);
