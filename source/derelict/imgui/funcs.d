@@ -65,17 +65,15 @@ extern(C) @nogc nothrow
     alias da_igGetWindowContentRegionMax    = void function(ImVec2* outParam);
     alias da_igGetWindowContentRegionWidth  = float function();
     alias da_igGetWindowDrawList            = ImDrawList* function();
-    alias da_igGetWindowFont                = ImFont* function();
-    alias da_igGetWindowFontSize            = float function();
-    alias da_igSetWindowFontScale           = void function(float scale);
     alias da_igGetWindowPos                 = void function(ImVec2* outParam);
     alias da_igGetWindowSize                = void function(ImVec2* outParam);
     alias da_igGetWindowWidth               = float function();
     alias da_igGetWindowHeight              = float function();
     alias da_igIsWindowCollapsed            = bool function();
 
+    alias da_igSetWindowFontScale           = void function(float scale);
     alias da_igSetNextWindowPos             = void function(const ImVec2 pos, ImGuiSetCond cond = 0);
-    alias da_igSetNextWindowPosCenter      = void function(ImGuiSetCond cond = 0);
+    alias da_igSetNextWindowPosCenter       = void function(ImGuiSetCond cond = 0);
     alias da_igSetNextWindowSize            = void function(const ImVec2 size, ImGuiSetCond cond = 0);
     alias da_igSetNextWindowCollapsed       = void function(bool collapsed, ImGuiSetCond cond = 0);
     alias da_igSetNextWindowFocus           = void function();
@@ -109,6 +107,9 @@ extern(C) @nogc nothrow
     alias da_igPushStyleVar             = void              function(ImGuiStyleVar idx, float val);
     alias da_igPushStyleVarVec              = void              function(ImGuiStyleVar idx, const ImVec2 val);
     alias da_igPopStyleVar                  = void              function(int count = 1);
+    alias da_igGetFont                      = ImFont*           function();
+    alias da_igGetFontSize                  = float             function()
+    alias da_igGetFontTexUvWhitePixel       = void              function(ImVec2* pOut);
     alias da_igGetColorU32                  = ImU32             function(ImGuiCol idx, float alpha_mul = 1.0f);
     alias da_igGetColorU32Vec               = ImU32             function(const ImVec4* col);
 
@@ -126,18 +127,11 @@ extern(C) @nogc nothrow
     alias da_igBeginGroup                   = void              function();
     alias da_igEndGroup                 = void              function();
     alias da_igSeparator                    = void              function();
-    alias da_igSameLine                     = void              function(float local_pos_x = 0.0f, float spacing_w = -1.0f);
+    alias da_igSameLine                     = void              function(float pos_x = 0.0f, float spacing_w = -1.0f);
     alias da_igSpacing                      = void              function();
     alias da_igDummy                       = void              function(const ImVec2* size);
     alias da_igIndent                       = void              function();
     alias da_igUnindent                 = void              function();
-    alias da_igColumns                      = void              function(int count = 1, const char* id = null, bool border = true);
-    alias da_igNextColumn                   = void              function();
-    alias da_igGetColumnIndex               = int               function();
-    alias da_igGetColumnOffset              = float         function(int column_index = -1);
-    alias da_igSetColumnOffset              = void              function(int column_index, float offset_x);
-    alias da_igGetColumnWidth               = float         function(int column_index = -1);
-    alias da_igGetColumnsCount              = int               function();
     alias da_igGetCursorPos             = void          function(ImVec2* pOut);
     alias da_igGetCursorPosX                = float         function();
     alias da_igGetCursorPosY                = float         function();
@@ -151,6 +145,13 @@ extern(C) @nogc nothrow
     alias da_igGetTextLineHeight            = float         function();
     alias da_igGetTextLineHeightWithSpacing = float         function();
     alias da_igGetItemsLineHeightWithSpacing    = float         function();
+    alias da_igColumns                      = void              function(int count = 1, const char* id = null, bool border = true);
+    alias da_igNextColumn                   = void              function();
+    alias da_igGetColumnIndex               = int               function();
+    alias da_igGetColumnOffset              = float         function(int column_index = -1);
+    alias da_igSetColumnOffset              = void              function(int column_index, float offset_x);
+    alias da_igGetColumnWidth               = float         function(int column_index = -1);
+    alias da_igGetColumnsCount              = int               function();
 
     alias da_igPushIdStr                    = void              function(const char* str_id);
     alias da_igPushIdStrRange              = void              function(const char* str_begin, const char* str_end);
@@ -298,6 +299,7 @@ extern(C) @nogc nothrow
     alias da_igGetItemRectMin               = void function(ImVec2* pOut);
     alias da_igGetItemRectMax               = void function(ImVec2* pOut);
     alias da_igGetItemRectSize              = void function(ImVec2* pOut);
+    alias da_igSetItemAllowOverlap          = void function();
     alias da_igIsWindowHovered             = bool              function();
     alias da_igIsWindowFocused              = bool              function();
     alias da_igIsRootWindowFocused          = bool              function();
@@ -314,7 +316,7 @@ extern(C) @nogc nothrow
     alias da_igIsMouseReleased             = bool              function(int button);
     alias da_igIsMouseHoveringWindow        = bool              function();
     alias da_igIsMouseHoveringAnyWindow = bool              function();
-    alias da_igIsMouseHoveringRect          = bool              function(const ImVec2 pos_min, const ImVec2 pos_max, bool clip = true);
+    alias da_igIsMouseHoveringRect          = bool              function(const ImVec2 r_min, const ImVec2 r_max, bool clip = true);
     alias da_igIsMouseDragging              = bool              function(int button = 0, float lock_threshold = -1.0f);
     alias da_igIsPosHoveringAnyWindow       = bool              function(const ImVec2 pos);
     alias da_igGetMousePos                  = void function(ImVec2* pOut);
@@ -323,8 +325,8 @@ extern(C) @nogc nothrow
     alias da_igResetMouseDragDelta         = void function(int button=0);
     alias da_igGetMouseCursor               = ImGuiMouseCursor function();
     alias da_igSetMouseCursor               = void              function(ImGuiMouseCursor type);
-    alias da_igCaptureKeyboardFromApp       = void function();
-    alias da_igCaptureMouseFromApp          = void function();
+    alias da_igCaptureKeyboardFromApp       = void function(bool capture);
+    alias da_igCaptureMouseFromApp          = void function(bool capture);
 
 
     alias da_igMemAlloc                     = void* function(size_t sz);
@@ -395,11 +397,12 @@ extern(C) @nogc nothrow
 	alias da_ImDrawList_PushTextureID = void function(ImDrawList* list, const ImTextureID texture_id);
 	alias da_ImDrawList_PopTextureID = void function(ImDrawList* list);
 	alias da_ImDrawList_AddLine = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float thickness = 1.0f);
-	alias da_ImDrawList_AddRect = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding = 0.0f, int rounding_corners = 0x0F);
+	alias da_ImDrawList_AddRect = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding = 0.0f, int rounding_corners = 0x0F, float thickness);
 	alias da_ImDrawList_AddRectFilled = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding = 0.0f, int rounding_corners = 0x0F);
 	alias da_ImDrawList_AddRectFilledMultiColor = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col_upr_left, ImU32 col_upr_right, ImU32 col_bot_right, ImU32 col_bot_left);
+	alias da_ImDrawList_AddTriangle = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, const ImVec2 c, ImU32 col, float thickness);
 	alias da_ImDrawList_AddTriangleFilled = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, const ImVec2 c, ImU32 col);
-	alias da_ImDrawList_AddCircle = void function(ImDrawList* list, const ImVec2 centre, float radius, ImU32 col, int num_segments = 12);
+	alias da_ImDrawList_AddCircle = void function(ImDrawList* list, const ImVec2 centre, float radius, ImU32 col, int num_segments = 12, float thickness);
 	alias da_ImDrawList_AddCircleFilled = void function(ImDrawList* list, const ImVec2 centre, float radius, ImU32 col, int num_segments = 12);
 	alias da_ImDrawList_AddText = void function(ImDrawList* list, const ImVec2 pos, ImU32 col, const char* text_begin, const char* text_end = null);
 	alias da_ImDrawList_AddTextExt = void function(ImDrawList* list, const ImFont* font, float font_size, const ImVec2 pos, ImU32 col, const char* text_begin, const char* text_end = null, float wrap_width = 0.0f, const ImVec4* cpu_fine_clip_rect = null);
@@ -424,6 +427,7 @@ extern(C) @nogc nothrow
 	alias da_ImDrawList_PrimReserve = void function(ImDrawList* list, int idx_count, int vtx_count);
 	alias da_ImDrawList_PrimRect = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col);
 	alias da_ImDrawList_PrimRectUV = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, const ImVec2 uv_a, const ImVec2 uv_b, ImU32 col);
+	alias da_ImDrawList_PrimQuadUV = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, const ImVec2 c, const ImVec2 d, const ImVec2 uv_a, const ImVec2 uv_b, const ImVec2 uv_c, const ImVec2 uv_d, ImU32 col);
 	alias da_ImDrawList_PrimVtx = void function(ImDrawList* list, const ImVec2 pos, const ImVec2 uv, ImU32 col);
 	alias da_ImDrawList_PrimWriteVtx = void function(ImDrawList* list, const ImVec2 pos, const ImVec2 uv, ImU32 col);
 	alias da_ImDrawList_PrimWriteIdx = void function(ImDrawList* list, ImDrawIdx idx);
@@ -457,15 +461,13 @@ __gshared
     da_igGetWindowContentRegionMax igGetWindowContentRegionMax;
     da_igGetWindowContentRegionWidth igGetWindowContentRegionWidth;
     da_igGetWindowDrawList igGetWindowDrawList;
-    da_igGetWindowFont igGetWindowFont;
-    da_igGetWindowFontSize igGetWindowFontSize;
-    da_igSetWindowFontScale igSetWindowFontScale;
     da_igGetWindowPos igGetWindowPos;
     da_igGetWindowSize igGetWindowSize;
     da_igGetWindowWidth igGetWindowWidth;
     da_igGetWindowHeight igGetWindowHeight;
     da_igIsWindowCollapsed igIsWindowCollapsed;
 
+    da_igSetWindowFontScale igSetWindowFontScale;
     da_igSetNextWindowPos igSetNextWindowPos;
     da_igSetNextWindowPosCenter igSetNextWindowPosCenter;
     da_igSetNextWindowSize igSetNextWindowSize;
@@ -501,6 +503,9 @@ __gshared
     da_igPushStyleVar igPushStyleVar;
     da_igPushStyleVarVec igPushStyleVarVec;
     da_igPopStyleVar igPopStyleVar;
+    da_igGetFont igGetFont;
+    da_igGetFontSize igGetFontSize;
+    da_igGetFontTexUvWhitePixel igGetFontTexUvWhitePixel;
     da_igGetColorU32 igGetColorU32;
     da_igGetColorU32Vec igGetColorU32Vec;
 
@@ -688,6 +693,7 @@ __gshared
     da_igGetItemRectMin igGetItemRectMin;
     da_igGetItemRectMax igGetItemRectMax;
     da_igGetItemRectSize igGetItemRectSize;
+    da_igSetItemAllowOverlap igSetItemAllowOverlap;
     da_igIsWindowHovered igIsWindowHovered;
     da_igIsWindowFocused igIsWindowFocused;
     da_igIsRootWindowFocused igIsRootWindowFocused;
@@ -781,6 +787,7 @@ __gshared
 	da_ImDrawList_AddRect ImDrawList_AddRect;
 	da_ImDrawList_AddRectFilled ImDrawList_AddRectFilled;
 	da_ImDrawList_AddRectFilledMultiColor ImDrawList_AddRectFilledMultiColor;
+	da_ImDrawList_AddTriangle ImDrawList_AddTriangle;
 	da_ImDrawList_AddTriangleFilled ImDrawList_AddTriangleFilled;
 	da_ImDrawList_AddCircle ImDrawList_AddCircle;
 	da_ImDrawList_AddCircleFilled ImDrawList_AddCircleFilled;
@@ -807,6 +814,7 @@ __gshared
 	da_ImDrawList_PrimReserve ImDrawList_PrimReserve;
 	da_ImDrawList_PrimRect ImDrawList_PrimRect;
 	da_ImDrawList_PrimRectUV ImDrawList_PrimRectUV;
+	da_ImDrawList_PrimQuadUV ImDrawList_PrimQuadUV;
 	da_ImDrawList_PrimVtx ImDrawList_PrimVtx;
 	da_ImDrawList_PrimWriteVtx ImDrawList_PrimWriteVtx;
 	da_ImDrawList_PrimWriteIdx ImDrawList_PrimWriteIdx;
