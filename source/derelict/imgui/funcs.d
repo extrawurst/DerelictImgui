@@ -108,7 +108,7 @@ extern(C) @nogc nothrow
     alias da_igPushStyleVarVec              = void              function(ImGuiStyleVar idx, const ImVec2 val);
     alias da_igPopStyleVar                  = void              function(int count = 1);
     alias da_igGetFont                      = ImFont*           function();
-    alias da_igGetFontSize                  = float             function()
+    alias da_igGetFontSize                  = float             function();
     alias da_igGetFontTexUvWhitePixel       = void              function(ImVec2* pOut);
     alias da_igGetColorU32                  = ImU32             function(ImGuiCol idx, float alpha_mul = 1.0f);
     alias da_igGetColorU32Vec               = ImU32             function(const ImVec4* col);
