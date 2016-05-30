@@ -494,3 +494,30 @@ align(1) struct ImColor
         this = ImColor(r,g,b,a);
     }
 }
+
+align(1) struct ImGuiListClipper {
+	import derelict.imgui.funcs : igCalcListClipping, igGetCursorPosY, igSetCursorPosY;
+	
+	float itemsHeight = 0f;
+	int itemsCount = -1, displayStart = -1, displayEnd = -1;
+	
+	this(int count, float height) {
+		itemsCount = -1;
+		Begin(count, height);
+	}
+	
+	void Begin(int count, float height) {
+		assert(itemsCount == -1);
+		itemsCount = count;
+		itemsHeight = height;
+		igCalcListClipping(itemsCount, itemsHeight, &displayStart, &displayEnd);
+		igSetCursorPosY(igGetCursorPosY() + displayStart * itemsHeight);
+	}
+	
+	void End() {
+		assert(itemsCount >= 0);
+		igSetCursorPosY(igGetCursorPosY() + (itemsCount - displayEnd) * itemsHeight);
+		itemsCount = -1;
+	}
+}
+
