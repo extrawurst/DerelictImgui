@@ -284,6 +284,8 @@ align(1) struct ImGuiTextEditCallbackData
     // NB: calling those function loses selection.
     //void DeleteChars(int pos, int bytes_count);
     //void InsertChars(int pos, const char* text, const char* text_end = NULL);
+
+    bool                HasSelection() const        { return SelectionStart != SelectionEnd; }
 };
 
 align(1) struct ImGuiIO
