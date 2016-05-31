@@ -350,6 +350,7 @@ align(1) struct ImGuiIO
 	bool        	KeyCtrl;                    // Keyboard modifier pressed: Control
 	bool        	KeyShift;                   // Keyboard modifier pressed: Shift
 	bool        	KeyAlt;                     // Keyboard modifier pressed: Alt
+	bool        	KeySuper;                   // Keyboard modifier pressed: Cmd/Super/Windows
 	bool[512]   	KeysDown;              // Keyboard keys that are pressed (in whatever storage order you naturally have access to keyboard data)
 	ImWchar[16+1]   InputCharacters;      // List of characters input (translated by user from keypress+keyboard state). Fill using AddInputCharacter() helper.
 
