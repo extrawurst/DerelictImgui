@@ -284,6 +284,8 @@ align(1) struct ImGuiTextEditCallbackData
     // NB: calling those function loses selection.
     //void DeleteChars(int pos, int bytes_count);
     //void InsertChars(int pos, const char* text, const char* text_end = NULL);
+
+    bool                HasSelection() const        { return SelectionStart != SelectionEnd; }
 };
 
 align(1) struct ImGuiIO
@@ -348,6 +350,7 @@ align(1) struct ImGuiIO
 	bool        	KeyCtrl;                    // Keyboard modifier pressed: Control
 	bool        	KeyShift;                   // Keyboard modifier pressed: Shift
 	bool        	KeyAlt;                     // Keyboard modifier pressed: Alt
+	bool        	KeySuper;                   // Keyboard modifier pressed: Cmd/Super/Windows
 	bool[512]   	KeysDown;              // Keyboard keys that are pressed (in whatever storage order you naturally have access to keyboard data)
 	ImWchar[16+1]   InputCharacters;      // List of characters input (translated by user from keypress+keyboard state). Fill using AddInputCharacter() helper.
 
@@ -494,3 +497,30 @@ align(1) struct ImColor
         this = ImColor(r,g,b,a);
     }
 }
+
+align(1) struct ImGuiListClipper {
+	import derelict.imgui.funcs : igCalcListClipping, igGetCursorPosY, igSetCursorPosY;
+	
+	float itemsHeight = 0f;
+	int itemsCount = -1, displayStart = -1, displayEnd = -1;
+	
+	this(int count, float height) {
+		itemsCount = -1;
+		Begin(count, height);
+	}
+	
+	void Begin(int count, float height) {
+		assert(itemsCount == -1);
+		itemsCount = count;
+		itemsHeight = height;
+		igCalcListClipping(itemsCount, itemsHeight, &displayStart, &displayEnd);
+		igSetCursorPosY(igGetCursorPosY() + displayStart * itemsHeight);
+	}
+	
+	void End() {
+		assert(itemsCount >= 0);
+		igSetCursorPosY(igGetCursorPosY() + (itemsCount - displayEnd) * itemsHeight);
+		itemsCount = -1;
+	}
+}
+
