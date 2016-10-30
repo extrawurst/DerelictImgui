@@ -472,6 +472,10 @@ final class DerelictImguiLoader : SharedLibLoader
             bindFunc(cast(void**)&ImGuiIO_AddInputCharacter, "ImGuiIO_AddInputCharacter");
             bindFunc(cast(void**)&ImGuiIO_AddInputCharactersUTF8, "ImGuiIO_AddInputCharactersUTF8");
             bindFunc(cast(void**)&ImGuiIO_ClearInputCharacters, "ImGuiIO_ClearInputCharacters");
+
+            bindFunc(cast(void**)&ImGuiListClipper_Begin, "ImGuiListClipper_Begin");
+            bindFunc(cast(void**)&ImGuiListClipper_End, "ImGuiListClipper_End");
+            bindFunc(cast(void**)&ImGuiListClipper_Step, "ImGuiListClipper_Step");
         }
     }
 

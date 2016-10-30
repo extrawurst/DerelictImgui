@@ -453,6 +453,14 @@ extern(C) @nogc nothrow
 	alias da_ImDrawList_UpdateTextureID = void function(ImDrawList* list);
 }
 
+// ImGuiListClipper methods
+extern(C) @nogc nothrow
+{
+    alias da_ImGuiListClipper_Begin = void function(ImGuiListClipper* clipper, int items_count, float items_height = -1.0f);
+    alias da_ImGuiListClipper_End = void function(ImGuiListClipper* clipper);
+    alias da_ImGuiListClipper_Step = bool function(ImGuiListClipper* clipper);
+}
+
 __gshared
 {
     da_igGetIO igGetIO;
@@ -860,4 +868,11 @@ __gshared
     da_ImGuiIO_AddInputCharacter ImGuiIO_AddInputCharacter;
     da_ImGuiIO_AddInputCharactersUTF8 ImGuiIO_AddInputCharactersUTF8;
     da_ImGuiIO_ClearInputCharacters ImGuiIO_ClearInputCharacters;
+}
+
+__gshared
+{
+    da_ImGuiListClipper_Begin ImGuiListClipper_Begin;
+    da_ImGuiListClipper_End ImGuiListClipper_End;
+    da_ImGuiListClipper_Step ImGuiListClipper_Step;
 }

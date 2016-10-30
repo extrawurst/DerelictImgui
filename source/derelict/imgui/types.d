@@ -527,28 +527,28 @@ align(1) struct ImColor
 }
 
 align(1) struct ImGuiListClipper {
-    import derelict.imgui.funcs : igCalcListClipping, igGetCursorPosY, igSetCursorPosY;
-    
-    float itemsHeight = 0f;
-    int itemsCount = -1, displayStart = -1, displayEnd = -1;
-    
-    this(int count, float height) {
-        itemsCount = -1;
-        Begin(count, height);
+	import derelict.imgui.funcs : ImGuiListClipper_Begin, ImGuiListClipper_End, ImGuiListClipper_Step;
+	
+	float StartPosY;
+    float ItemsHeight;
+	int ItemsCount, StepNo, DisplayStart, DisplayEnd;
+	
+	this(int items_count = -1, float items_height = -1.0f)
+    {
+		ImGuiListClipper_Begin(&this, items_count, items_height);
+	}
+
+    ~this()
+    {
+        assert(ItemsCount == -1);
     }
-    
-    void Begin(int count, float height) {
-        assert(itemsCount == -1);
-        itemsCount = count;
-        itemsHeight = height;
-        igCalcListClipping(itemsCount, itemsHeight, &displayStart, &displayEnd);
-        igSetCursorPosY(igGetCursorPosY() + displayStart * itemsHeight);
+
+    void Begin(int items_count, float items_height = -1.0f)
+    {
+        ImGuiListClipper_Begin(&this, items_count, items_height);
     }
-    
-    void End() {
-        assert(itemsCount >= 0);
-        igSetCursorPosY(igGetCursorPosY() + (itemsCount - displayEnd) * itemsHeight);
-        itemsCount = -1;
-    }
+
+    void End() { ImGuiListClipper_End(&this); }
+    bool Step() { return ImGuiListClipper_Step(&this); }
 }
 
