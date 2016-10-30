@@ -247,6 +247,8 @@ extern(C) @nogc nothrow
     alias da_igTreePushStr                  = void              function(const char* str_id = null);
     alias da_igTreePushPtr                  = void              function(const void* ptr_id = null);
     alias da_igTreePop                      = void              function();
+    alias da_igTreeAdvanceToLabelPos        = void              function();
+    alias da_igGetTreeNodeToLabelSpacing    = float             function();
     alias da_igSetNextTreeNodeOpened        = void              function(bool opened, ImGuiSetCond cond = 0);
 
     alias da_igSelectable                   = bool              function(const char* label, bool selected = false, ImGuiSelectableFlags flags = 0, const ImVec2 size = ImVec2(0, 0));
@@ -667,6 +669,8 @@ __gshared
     da_igTreePushStr igTreePushStr;
     da_igTreePushPtr igTreePushPtr;
     da_igTreePop igTreePop;
+    da_igTreeAdvanceToLabelPos igTreeAdvanceToLabelPos;
+    da_igGetTreeNodeToLabelSpacing igGetTreeNodeToLabelSpacing;
     da_igSetNextTreeNodeOpened igSetNextTreeNodeOpened;
 
     da_igSelectable igSelectable;
