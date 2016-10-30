@@ -375,6 +375,12 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igGetClipboardText, "igGetClipboardText");
                 bindFunc(cast(void**)&igSetClipboardText, "igSetClipboardText");
 
+                bindFunc(cast(void**)&igGetVersion, "igGetVersion");
+                bindFunc(cast(void**)&igCreateContext, "igCreateContext");
+                bindFunc(cast(void**)&igDestroyContext, "igDestroyContext");
+                bindFunc(cast(void**)&igGetCurrentContext, "igGetCurrentContext");
+                bindFunc(cast(void**)&igSetCurrentContext, "igSetCurrentContext");
+
                 bindFunc(cast(void**)&igGetTime, "igGetTime");
                 bindFunc(cast(void**)&igGetFrameCount, "igGetFrameCount");
                 bindFunc(cast(void**)&igGetStyleColName, "igGetStyleColName");
@@ -390,11 +396,6 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igColorConvertFloat4ToU32, "igColorConvertFloat4ToU32");
                 bindFunc(cast(void**)&igColorConvertRGBtoHSV, "igColorConvertRGBtoHSV");
                 bindFunc(cast(void**)&igColorConvertHSVtoRGB, "igColorConvertHSVtoRGB");
-
-                bindFunc(cast(void**)&igGetVersion, "igGetVersion");
-                bindFunc(cast(void**)&igGetInternalState, "igGetInternalState");
-                bindFunc(cast(void**)&igGetInternalStateSize, "igGetInternalStateSize");
-                bindFunc(cast(void**)&igSetInternalState, "igSetInternalState");
             }
 
             {

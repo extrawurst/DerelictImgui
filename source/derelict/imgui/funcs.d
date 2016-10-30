@@ -346,6 +346,12 @@ extern(C) @nogc nothrow
     alias da_igGetClipboardText             = const(char)* function();
     alias da_igSetClipboardText             = void function(const(char)* text);
 
+    alias da_igGetVersion                   = const(char)*      function();
+    alias da_igCreateContext                = ImGuiContext*    function(void* function(size_t) malloc_fn = null, void function(void*) free_fn = null);
+    alias da_igDestroyContext               = void                    function(ImGuiContext* ctx);
+    alias da_igGetCurrentContext            = ImGuiContext*    function();
+    alias da_igSetCurrentContext            = void                    function(ImGuiContext* ctx);
+
     alias da_igGetTime                      = float         function();
     alias da_igGetFrameCount                = int               function();
     alias da_igGetStyleColName             = const(char)*       function(ImGuiCol idx);
@@ -360,11 +366,6 @@ extern(C) @nogc nothrow
     alias da_igColorConvertFloat4ToU32      = ImU32 function(const ImVec4 in_);
     alias da_igColorConvertRGBtoHSV     = void function(float r, float g, float b, float* out_h, float* out_s, float* out_v);
     alias da_igColorConvertHSVtoRGB     = void function(float h, float s, float v, float* out_r, float* out_g, float* out_b);
-
-    alias da_igGetVersion                   = const(char)*      function();
-    alias da_igGetInternalState         = void*         function();
-    alias da_igGetInternalStateSize     = size_t            function();
-    alias da_igSetInternalState         = void              function(void* state, bool construct = false);
 }
 
 // ImFontAtlas Methods
@@ -752,6 +753,12 @@ __gshared
     da_igGetClipboardText igGetClipboardText;
     da_igSetClipboardText igSetClipboardText;
 
+    da_igGetVersion igGetVersion;
+    da_igCreateContext igCreateContext;
+    da_igDestroyContext igDestroyContext;
+    da_igGetCurrentContext igGetCurrentContext;
+    da_igSetCurrentContext igSetCurrentContext;
+
     da_igGetTime igGetTime;
     da_igGetFrameCount igGetFrameCount;
     da_igGetStyleColName igGetStyleColName;
@@ -766,11 +773,6 @@ __gshared
     da_igColorConvertFloat4ToU32 igColorConvertFloat4ToU32;
     da_igColorConvertRGBtoHSV igColorConvertRGBtoHSV;
     da_igColorConvertHSVtoRGB igColorConvertHSVtoRGB;
-
-    da_igGetVersion igGetVersion;
-    da_igGetInternalState igGetInternalState;
-    da_igGetInternalStateSize igGetInternalStateSize;
-    da_igSetInternalState igSetInternalState;
 }
 
 __gshared

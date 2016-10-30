@@ -253,6 +253,7 @@ struct ImFont{}
 struct ImFontAtlas{}
 struct ImDrawList{}
 struct ImGuiStorage{}
+struct ImGuiContext{}
 
 alias uint ImU32;
 alias ushort ImWchar;     // character for display
