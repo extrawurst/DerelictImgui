@@ -175,6 +175,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igEndGroup, "igEndGroup");
                 bindFunc(cast(void**)&igSeparator, "igSeparator");
                 bindFunc(cast(void**)&igSameLine, "igSameLine");
+                bindFunc(cast(void**)&igNewLine, "igNewLine");
                 bindFunc(cast(void**)&igSpacing, "igSpacing");
                 bindFunc(cast(void**)&igDummy, "igDummy");
                 bindFunc(cast(void**)&igIndent, "igIndent");

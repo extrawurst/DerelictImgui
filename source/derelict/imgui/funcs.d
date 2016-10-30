@@ -129,6 +129,7 @@ extern(C) @nogc nothrow
     alias da_igEndGroup                 = void              function();
     alias da_igSeparator                    = void              function();
     alias da_igSameLine                     = void              function(float pos_x = 0.0f, float spacing_w = -1.0f);
+    alias da_igNewLine                      = void              function();
     alias da_igSpacing                      = void              function();
     alias da_igDummy                       = void              function(const ImVec2* size);
     alias da_igIndent                       = void              function();
@@ -551,6 +552,7 @@ __gshared
     da_igEndGroup igEndGroup;
     da_igSeparator igSeparator;
     da_igSameLine igSameLine;
+    da_igNewLine igNewLine;
     da_igSpacing igSpacing;
     da_igDummy igDummy;
     da_igIndent igIndent;
