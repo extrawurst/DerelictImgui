@@ -322,6 +322,9 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igLogButtons, "igLogButtons");
                 bindFunc(cast(void**)&igLogText, "igLogText");
 
+                bindFunc(cast(void**)&igPushClipRect, "igPushClipRect");
+                bindFunc(cast(void**)&igPopClipRect, "igPopClipRect");
+
                 bindFunc(cast(void**)&igIsItemHovered, "igIsItemHovered");
                 bindFunc(cast(void**)&igIsItemHoveredRect, "igIsItemHoveredRect");
                 bindFunc(cast(void**)&igIsItemActive, "igIsItemActive");

@@ -291,6 +291,9 @@ extern(C) @nogc nothrow
     alias da_igLogButtons       = void              function();
     alias da_igLogText          = void              function(const char* fmt, ...);
 
+    alias da_igPushClipRect     = void             function(const ImVec2 clip_rect_min, const ImVec2 clip_rect_max, bool intersect_with_current_clip_rect);
+    alias da_igPopClipRect      = void             function();
+
     alias da_igIsItemHovered                = bool              function();
     alias da_igIsItemHoveredRect            = bool              function();
     alias da_igIsItemActive             = bool              function();
@@ -392,7 +395,7 @@ extern(C) @nogc nothrow
     //---------------------------------------------------
 	alias da_ImDrawList_Clear = void function(ImDrawList* list);
 	alias da_ImDrawList_ClearFreeMemory = void function(ImDrawList* list);
-	alias da_ImDrawList_PushClipRect = void function(ImDrawList* list, const ImVec4 clip_rect);
+	alias da_ImDrawList_PushClipRect = void function(ImDrawList* list, ImVec2 clip_rect_min, ImVec2 clip_rect_max, bool intersect_with_current_clip_rect);
 	alias da_ImDrawList_PushClipRectFullScreen = void function(ImDrawList* list);
 	alias da_ImDrawList_PopClipRect = void function(ImDrawList* list);
 	alias da_ImDrawList_PushTextureID = void function(ImDrawList* list, const ImTextureID texture_id);
@@ -685,6 +688,9 @@ __gshared
     da_igLogFinish igLogFinish;
     da_igLogButtons igLogButtons;
     da_igLogText igLogText;
+
+    da_igPushClipRect igPushClipRect;
+    da_igPopClipRect igPopClipRect;
 
     da_igIsItemHovered igIsItemHovered;
     da_igIsItemHoveredRect igIsItemHoveredRect;
