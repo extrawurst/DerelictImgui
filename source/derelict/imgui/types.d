@@ -526,89 +526,29 @@ align(1) struct ImColor
     }
 }
 
-private void SetCursorPosYAndSetupDummyPrevLine(float pos_y, float line_height)
-{
-    igSetCursorPosY(pos_y);
-    ImGuiWindow* window = igGetCurrentWindow();
-    window.DC.CursorPosPrevLine.y = window.DC.CursorPos.y - line_height;
-    window.DC.PrevLineHeight = (line_height - igGetCurrentContext().Style.ItemSpacing.y);
-}
-
 align(1) struct ImGuiListClipper {
-	import derelict.imgui.funcs : igCalcListClipping, igGetCursorPosY, igSetCursorPosY;
-	
-	float startPosY;
-    float itemsHeight;
-	int itemsCount, stepNo, displayStart, displayEnd;
-	
-	this(int items_count = -1, float items_height = -1.0f) {
-		Begin(items_count, items_height);
-	}
-
-    ~this() {
-        assert(itemsCount == -1);
-    }
-
-    bool Step() {
-        if (itemsCount == 0 || igGetCurrentContext().CurrentWindow.SkipItems)
-        {
-            itemsCount = -1;
-            return false;
-        }
-        if (stepNo == 0)
-        {
-            displayStart = 0;
-            displayEnd = 1;
-            startPosY = igGetCursorPosY();
-            stepNo = 1;
-            return true;
-        }
-        if (stepNo == 1)
-        {
-            if (itemsCount == 1) {
-                itemsCount = -1;
-                return false;
-            }
-            float items_height = igGetCursorPosY() - startPosY;
-            assert(items_height > 0.0f);
-            igSetCursorPosY(startPosY);
-            Begin(itemsCount, items_height);
-            stepNo = 3;
-            return true;
-        }
-        if (stepNo == 2)
-        {
-            assert(displayStart >= 0 && displayEnd >= 0);
-            stepNo = 3;
-            return true;
-        }
-        if (stepNo == 3)
-            End();
-        return false;
-    }
-	
-	void Begin(int items_count, float items_height = -1.0f) {
-        startPosY = igGetCursorPosY();
-        itemsHeight = items_height;
-        itemsCount = items_count;
-        stepNo = 0;
-        displayEnd = displayStart = -1;
-        if (itemsHeight > 0.0f)
-        {
-            igCalcListClipping(itemsCount, itemsHeight, &displayStart, &displayEnd);
-            if (displayStart > 0)
-                SetCursorPosYAndSetupDummyPrevLine(startPosY + displayStart * itemsHeight, itemsHeight);
-            stepNo = 2;
-        }
-	}
-	
-	void End() {
-		if (itemsCount < 0)
-            return;
-        if (itemsCount < int.max)
-            SetCursorPosYAndSetupDummyPrevLine(startPosY + itemsCount * itemsHeight, itemsHeight);
+    import derelict.imgui.funcs : igCalcListClipping, igGetCursorPosY, igSetCursorPosY;
+    
+    float itemsHeight = 0f;
+    int itemsCount = -1, displayStart = -1, displayEnd = -1;
+    
+    this(int count, float height) {
         itemsCount = -1;
-        stepNo = 3;
-	}
+        Begin(count, height);
+    }
+    
+    void Begin(int count, float height) {
+        assert(itemsCount == -1);
+        itemsCount = count;
+        itemsHeight = height;
+        igCalcListClipping(itemsCount, itemsHeight, &displayStart, &displayEnd);
+        igSetCursorPosY(igGetCursorPosY() + displayStart * itemsHeight);
+    }
+    
+    void End() {
+        assert(itemsCount >= 0);
+        igSetCursorPosY(igGetCursorPosY() + (itemsCount - displayEnd) * itemsHeight);
+        itemsCount = -1;
+    }
 }
 
