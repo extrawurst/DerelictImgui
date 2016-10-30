@@ -305,6 +305,7 @@ extern(C) @nogc nothrow
     alias da_igIsItemHovered                = bool              function();
     alias da_igIsItemHoveredRect            = bool              function();
     alias da_igIsItemActive             = bool              function();
+    alias da_igIsItemClicked            = bool             function(int mouse_button);
     alias da_igIsItemVisible               = bool              function();
     alias da_igIsAnyItemHovered            = bool              function();
     alias da_igIsAnyItemActive             = bool              function();
@@ -713,6 +714,7 @@ __gshared
     da_igIsItemHovered igIsItemHovered;
     da_igIsItemHoveredRect igIsItemHoveredRect;
     da_igIsItemActive igIsItemActive;
+    da_igIsItemClicked igIsItemClicked;
     da_igIsItemVisible igIsItemVisible;
     da_igIsAnyItemHovered igIsAnyItemHovered;
     da_igIsAnyItemActive igIsAnyItemActive;

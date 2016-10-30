@@ -336,6 +336,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igIsItemHovered, "igIsItemHovered");
                 bindFunc(cast(void**)&igIsItemHoveredRect, "igIsItemHoveredRect");
                 bindFunc(cast(void**)&igIsItemActive, "igIsItemActive");
+                bindFunc(cast(void**)&igIsItemActive, "igIsItemClicked");
                 bindFunc(cast(void**)&igIsItemVisible, "igIsItemVisible");
                 bindFunc(cast(void**)&igIsAnyItemHovered, "igIsAnyItemHovered");
                 bindFunc(cast(void**)&igIsAnyItemActive, "igIsAnyItemActive");
