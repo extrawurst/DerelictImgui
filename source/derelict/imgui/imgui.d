@@ -230,7 +230,6 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igInvisibleButton, "igInvisibleButton");
                 bindFunc(cast(void**)&igImage, "igImage");
                 bindFunc(cast(void**)&igImageButton, "igImageButton");
-                bindFunc(cast(void**)&igCollapsingHeader, "igCollapsingHeader");
                 bindFunc(cast(void**)&igCheckbox, "igCheckbox");
                 bindFunc(cast(void**)&igCheckboxFlags, "igCheckboxFlags");
                 bindFunc(cast(void**)&igRadioButtonBool, "igRadioButtonBool");
@@ -298,6 +297,8 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igTreeAdvanceToLabelPos, "igTreeAdvanceToLabelPos");
                 bindFunc(cast(void**)&igGetTreeNodeToLabelSpacing, "igGetTreeNodeToLabelSpacing");
                 bindFunc(cast(void**)&igSetNextTreeNodeOpened, "igSetNextTreeNodeOpened");
+                bindFunc(cast(void**)&igCollapsingHeader, "igCollapsingHeader");
+                bindFunc(cast(void**)&igCollapsingHeaderEx, "igCollapsingHeaderEx");
 
                 bindFunc(cast(void**)&igSelectable, "igSelectable");
                 bindFunc(cast(void**)&igSelectableEx, "igSelectableEx");

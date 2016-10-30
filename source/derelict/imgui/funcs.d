@@ -183,7 +183,6 @@ extern(C) @nogc nothrow
     alias da_igInvisibleButton              = bool              function(const char* str_id, const ImVec2 size);
     alias da_igImage                        = void              function(ImTextureID user_texture_id, const ImVec2 size, const ImVec2 uv0 = ImVec2(0, 0), const ImVec2 uv1 = ImVec2(1, 1), const ImVec4 tint_col = ImVec4(1, 1, 1, 1), const ImVec4 border_col = ImVec4(0, 0, 0, 0));
     alias da_igImageButton                  = bool              function(ImTextureID user_texture_id, const ImVec2 size, const ImVec2 uv0 = ImVec2(0, 0), const ImVec2 uv1 = ImVec2(1, 1), int frame_padding = -1, const ImVec4 bg_col = ImVec4(0, 0, 0, 0), const ImVec4 tint_col = ImVec4(1, 1, 1, 1));
-    alias da_igCollapsingHeader         = bool              function(const char* label, const char* str_id = null, bool display_frame = true, bool default_open = false);
     alias da_igCheckbox                 = bool              function(const char* label, bool* v);
     alias da_igCheckboxFlags                = bool              function(const char* label, uint* flags, uint flags_value);
     alias da_igRadioButtonBool                  = bool              function(const char* label, bool active);
@@ -251,6 +250,8 @@ extern(C) @nogc nothrow
     alias da_igTreeAdvanceToLabelPos        = void              function();
     alias da_igGetTreeNodeToLabelSpacing    = float             function();
     alias da_igSetNextTreeNodeOpened        = void              function(bool opened, ImGuiSetCond cond = 0);
+    alias da_igCollapsingHeader             = bool             function(const char* label, ImGuiTreeNodeFlags flags = 0);
+    alias da_igCollapsingHeaderEx           = bool             function(const char* label, bool* p_open, ImGuiTreeNodeFlags flags = 0);
 
     alias da_igSelectable                   = bool              function(const char* label, bool selected = false, ImGuiSelectableFlags flags = 0, const ImVec2 size = ImVec2(0, 0));
     alias da_igSelectableEx             = bool              function(const char* label, bool* p_selected, ImGuiSelectableFlags flags = 0, const ImVec2 size = ImVec2(0, 0));
@@ -607,7 +608,6 @@ __gshared
     da_igInvisibleButton igInvisibleButton;
     da_igImage igImage;
     da_igImageButton igImageButton;
-    da_igCollapsingHeader igCollapsingHeader;
     da_igCheckbox igCheckbox;
     da_igCheckboxFlags igCheckboxFlags;
     da_igRadioButtonBool igRadioButtonBool;
@@ -676,6 +676,8 @@ __gshared
     da_igTreeAdvanceToLabelPos igTreeAdvanceToLabelPos;
     da_igGetTreeNodeToLabelSpacing igGetTreeNodeToLabelSpacing;
     da_igSetNextTreeNodeOpened igSetNextTreeNodeOpened;
+    da_igCollapsingHeader igCollapsingHeader;
+    da_igCollapsingHeaderEx igCollapsingHeaderEx;
 
     da_igSelectable igSelectable;
     da_igSelectableEx igSelectableEx;
