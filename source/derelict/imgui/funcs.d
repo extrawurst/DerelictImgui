@@ -132,8 +132,8 @@ extern(C) @nogc nothrow
     alias da_igNewLine                      = void              function();
     alias da_igSpacing                      = void              function();
     alias da_igDummy                       = void              function(const ImVec2* size);
-    alias da_igIndent                       = void              function();
-    alias da_igUnindent                 = void              function();
+    alias da_igIndent                       = void              function(float indent_w);
+    alias da_igUnindent                 = void              function(float indent_w);
     alias da_igGetCursorPos             = void          function(ImVec2* pOut);
     alias da_igGetCursorPosX                = float         function();
     alias da_igGetCursorPosY                = float         function();
