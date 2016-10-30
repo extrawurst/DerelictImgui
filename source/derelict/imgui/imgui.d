@@ -339,6 +339,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igIsWindowFocused, "igIsWindowFocused");
                 bindFunc(cast(void**)&igIsRootWindowFocused, "igIsRootWindowFocused");
                 bindFunc(cast(void**)&igIsRootWindowOrAnyChildFocused, "igIsRootWindowOrAnyChildFocused");
+                bindFunc(cast(void**)&igIsRootWindowOrAnyChildHovered, "igIsRootWindowOrAnyChildHovered");
                 bindFunc(cast(void**)&igIsRectVisible, "igIsRectVisible");
 
                 bindFunc(cast(void**)&igGetKeyIndex, "igGetKeyIndex");

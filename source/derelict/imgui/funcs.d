@@ -308,6 +308,7 @@ extern(C) @nogc nothrow
     alias da_igIsWindowFocused              = bool              function();
     alias da_igIsRootWindowFocused          = bool              function();
     alias da_igIsRootWindowOrAnyChildFocused    = bool              function();
+    alias da_igIsRootWindowOrAnyChildHovered    = bool              function();
     alias da_igIsRectVisible                    = bool              function(const ImVec2 item_size);
 
     alias da_igGetKeyIndex                  = int               function(ImGuiKey key);
@@ -706,6 +707,7 @@ __gshared
     da_igIsWindowFocused igIsWindowFocused;
     da_igIsRootWindowFocused igIsRootWindowFocused;
     da_igIsRootWindowOrAnyChildFocused igIsRootWindowOrAnyChildFocused;
+    da_igIsRootWindowOrAnyChildHovered igIsRootWindowOrAnyChildHovered;
     da_igIsRectVisible igIsRectVisible;
 
     da_igGetKeyIndex igGetKeyIndex;
