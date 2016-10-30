@@ -75,6 +75,7 @@ extern(C) @nogc nothrow
     alias da_igSetNextWindowPos             = void function(const ImVec2 pos, ImGuiSetCond cond = 0);
     alias da_igSetNextWindowPosCenter       = void function(ImGuiSetCond cond = 0);
     alias da_igSetNextWindowSize            = void function(const ImVec2 size, ImGuiSetCond cond = 0);
+    alias da_igSetNextWindowSizeConstraints = void function(const ImVec2 size_min, const ImVec2 size_max, ImGuiSizeConstraintCallback custom_callback = null, void* custom_callback_data = null);
     alias da_igSetNextWindowCollapsed       = void function(bool collapsed, ImGuiSetCond cond = 0);
     alias da_igSetNextWindowFocus           = void function();
     alias da_igSetWindowPos                 = void function(const ImVec2 pos, ImGuiSetCond cond = 0);
@@ -471,6 +472,7 @@ __gshared
     da_igSetNextWindowPos igSetNextWindowPos;
     da_igSetNextWindowPosCenter igSetNextWindowPosCenter;
     da_igSetNextWindowSize igSetNextWindowSize;
+    da_igSetNextWindowSizeConstraints igSetNextWindowSizeConstraints;
     da_igSetNextWindowCollapsed igSetNextWindowCollapsed;
     da_igSetNextWindowFocus igSetNextWindowFocus;
     da_igSetWindowPos igSetWindowPos;

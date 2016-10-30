@@ -108,6 +108,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igSetNextWindowPos, "igSetNextWindowPos");
                 bindFunc(cast(void**)&igSetNextWindowPosCenter, "igSetNextWindowPosCenter");
                 bindFunc(cast(void**)&igSetNextWindowSize, "igSetNextWindowSize");
+                bindFunc(cast(void**)&igSetNextWindowSizeConstraints, "igSetNextWindowSizeConstraints");
                 bindFunc(cast(void**)&igSetNextWindowCollapsed, "igSetNextWindowCollapsed");
                 bindFunc(cast(void**)&igSetNextWindowFocus, "igSetNextWindowFocus");
                 bindFunc(cast(void**)&igSetWindowPos, "igSetWindowPos");

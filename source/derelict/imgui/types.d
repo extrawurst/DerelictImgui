@@ -252,6 +252,7 @@ alias int ImGuiSetCond;           // enum ImGuiSetCond_
 alias int ImGuiInputTextFlags;    // enum ImGuiInputTextFlags_
 alias int ImGuiSelectableFlags;   // enum ImGuiSelectableFlags_
 alias int function(ImGuiTextEditCallbackData *data) ImGuiTextEditCallback;
+alias void function(ImGuiSizeConstraintCallbackData *data) ImGuiSizeConstraintCallback;
 
 extern(C) nothrow {
     alias RenderDrawListFunc = void function(ImDrawData* data);
@@ -459,6 +460,14 @@ align(1) struct ImFontConfig
     // [Internal]
     char[32]        Name;
     ImFont*         DstFont;
+}
+
+align(1) struct ImGuiSizeConstraintCallbackData
+{
+    void*           UserData;
+    ImVec2          Pos;
+    ImVec2          CurrentSize;
+    ImVec2          DesiredSize;
 }
 
 align(1) struct ImColor
