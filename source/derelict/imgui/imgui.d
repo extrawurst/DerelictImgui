@@ -433,6 +433,8 @@ final class DerelictImguiLoader : SharedLibLoader
 			bindFunc(cast(void**)&ImDrawList_AddRect, "ImDrawList_AddRect");
 			bindFunc(cast(void**)&ImDrawList_AddRectFilled, "ImDrawList_AddRectFilled");
 			bindFunc(cast(void**)&ImDrawList_AddRectFilledMultiColor, "ImDrawList_AddRectFilledMultiColor");
+            bindFunc(cast(void**)&ImDrawList_AddQuad, "ImDrawList_AddQuad");
+            bindFunc(cast(void**)&ImDrawList_AddQuadFilled, "ImDrawList_AddQuadFilled");
 			bindFunc(cast(void**)&ImDrawList_AddTriangleFilled, "ImDrawList_AddTriangleFilled");
 			bindFunc(cast(void**)&ImDrawList_AddTriangle, "ImDrawList_AddTriangle");
 			bindFunc(cast(void**)&ImDrawList_AddCircle, "ImDrawList_AddCircle");
