@@ -249,7 +249,7 @@ extern(C) @nogc nothrow
     alias da_igTreePop                      = void              function();
     alias da_igTreeAdvanceToLabelPos        = void              function();
     alias da_igGetTreeNodeToLabelSpacing    = float             function();
-    alias da_igSetNextTreeNodeOpened        = void              function(bool opened, ImGuiSetCond cond = 0);
+    alias da_igSetNextTreeNodeOpen        = void              function(bool opened, ImGuiSetCond cond = 0);
     alias da_igCollapsingHeader             = bool             function(const char* label, ImGuiTreeNodeFlags flags = 0);
     alias da_igCollapsingHeaderEx           = bool             function(const char* label, bool* p_open, ImGuiTreeNodeFlags flags = 0);
 
@@ -677,7 +677,7 @@ __gshared
     da_igTreePop igTreePop;
     da_igTreeAdvanceToLabelPos igTreeAdvanceToLabelPos;
     da_igGetTreeNodeToLabelSpacing igGetTreeNodeToLabelSpacing;
-    da_igSetNextTreeNodeOpened igSetNextTreeNodeOpened;
+    da_igSetNextTreeNodeOpen igSetNextTreeNodeOpen;
     da_igCollapsingHeader igCollapsingHeader;
     da_igCollapsingHeaderEx igCollapsingHeaderEx;
 

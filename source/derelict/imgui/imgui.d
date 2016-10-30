@@ -296,7 +296,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igTreePop, "igTreePop");
                 bindFunc(cast(void**)&igTreeAdvanceToLabelPos, "igTreeAdvanceToLabelPos");
                 bindFunc(cast(void**)&igGetTreeNodeToLabelSpacing, "igGetTreeNodeToLabelSpacing");
-                bindFunc(cast(void**)&igSetNextTreeNodeOpened, "igSetNextTreeNodeOpened");
+                bindFunc(cast(void**)&igSetNextTreeNodeOpen, "igSetNextTreeNodeOpen");
                 bindFunc(cast(void**)&igCollapsingHeader, "igCollapsingHeader");
                 bindFunc(cast(void**)&igCollapsingHeaderEx, "igCollapsingHeaderEx");
 
