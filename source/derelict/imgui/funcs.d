@@ -239,6 +239,11 @@ extern(C) @nogc nothrow
     alias da_igTreeNodePtr                  = bool              function(const void* ptr_id, const char* fmt, ...);
     alias da_igTreeNodeStrV                 = bool              function(const char* str_id, const char* fmt, va_list args);
     alias da_igTreeNodePtrV                 = bool              function(const void* ptr_id, const char* fmt, va_list args);
+    alias da_igTreeNodeEx                   = bool              function(const char* label, ImGuiTreeNodeFlags flags);
+    alias da_igTreeNodeExStr                = bool              function(const char* str_id, ImGuiTreeNodeFlags flags, const char* fmt, ...);
+    alias da_igTreeNodeExPtr                = bool              function(const void* ptr_id, ImGuiTreeNodeFlags flags, const char* fmt, ...);
+    alias da_igTreeNodeExV                  = bool              function(const char* str_id, ImGuiTreeNodeFlags flags, const char* fmt, va_list args);
+    alias da_igTreeNodeExVPtr               = bool              function(const void* ptr_id, ImGuiTreeNodeFlags flags, const char* fmt, va_list args);
     alias da_igTreePushStr                  = void              function(const char* str_id = null);
     alias da_igTreePushPtr                  = void              function(const void* ptr_id = null);
     alias da_igTreePop                      = void              function();
@@ -654,6 +659,11 @@ __gshared
     da_igTreeNodePtr igTreeNodePtr;
     da_igTreeNodeStrV igTreeNodeStrV;
     da_igTreeNodePtrV igTreeNodePtrV;
+    da_igTreeNodeEx igTreeNodeEx;
+    da_igTreeNodeExStr igTreeNodeExStr;
+    da_igTreeNodeExPtr igTreeNodeExPtr;
+    da_igTreeNodeExV igTreeNodeExV;
+    da_igTreeNodeExVPtr igTreeNodeExVPtr;
     da_igTreePushStr igTreePushStr;
     da_igTreePushPtr igTreePushPtr;
     da_igTreePop igTreePop;

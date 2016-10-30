@@ -286,6 +286,11 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igTreeNodePtr, "igTreeNodePtr");
                 bindFunc(cast(void**)&igTreeNodeStrV, "igTreeNodeStrV");
                 bindFunc(cast(void**)&igTreeNodePtrV, "igTreeNodePtrV");
+                bindFunc(cast(void**)&igTreeNodeEx, "igTreeNodeEx");
+                bindFunc(cast(void**)&igTreeNodeExStr, "igTreeNodeExStr");
+                bindFunc(cast(void**)&igTreeNodeExPtr, "igTreeNodeExPtr");
+                bindFunc(cast(void**)&igTreeNodeExV, "igTreeNodeExV");
+                bindFunc(cast(void**)&igTreeNodeExVPtr, "igTreeNodeExVPtr");
                 bindFunc(cast(void**)&igTreePushStr, "igTreePushStr");
                 bindFunc(cast(void**)&igTreePushPtr, "igTreePushPtr");
                 bindFunc(cast(void**)&igTreePop, "igTreePop");
