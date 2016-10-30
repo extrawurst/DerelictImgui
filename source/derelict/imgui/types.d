@@ -269,6 +269,7 @@ alias int ImGuiWindowFlags;       // enum ImGuiWindowFlags_
 alias int ImGuiSetCond;           // enum ImGuiSetCond_
 alias int ImGuiInputTextFlags;    // enum ImGuiInputTextFlags_
 alias int ImGuiSelectableFlags;   // enum ImGuiSelectableFlags_
+alias int ImGuiTreeNodeFlags;     // enum ImGuiTreeNodeFlags_
 alias int function(ImGuiTextEditCallbackData *data) ImGuiTextEditCallback;
 alias void function(ImGuiSizeConstraintCallbackData *data) ImGuiSizeConstraintCallback;
 
