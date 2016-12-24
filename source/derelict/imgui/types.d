@@ -268,6 +268,7 @@ align(1) struct ImGuiTextEditCallbackData
     ImGuiInputTextFlags EventFlag;      // One of ImGuiInputTextFlags_Callback* // Read-only
     ImGuiInputTextFlags Flags;          // What user passed to InputText()      // Read-only
     void*               UserData;       // What user passed to InputText()      // Read-only
+    bool                ReadOnly;       // Read-only mode                       // Read-only
 
     // CharFilter event:
     ImWchar             EventChar;      // Character input                      // Read-write (replace character or set to zero)
@@ -275,6 +276,7 @@ align(1) struct ImGuiTextEditCallbackData
     // Completion,History,Always events:
     ImGuiKey            EventKey;       // Key pressed (Up/Down/TAB)            // Read-only
     char*               Buf;            // Current text                         // Read-write (pointed data only)
+    int                 BufTextLen;     // Current text length in bytes         // Read-write
     size_t              BufSize;        //                                      // Read-only
     bool                BufDirty;       // Set if you modify Buf directly       // Write
     int                 CursorPos;      //                                      // Read-write
