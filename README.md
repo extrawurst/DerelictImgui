@@ -2,7 +2,7 @@
 
 Dynamic bindings to the [cimgui](https://github.com/Extrawurst/cimgui) library (a c-api for [IMGUI](https://github.com/ocornut/imgui)) for the D programming language
 
-![screenshot](https://raw.github.com/extrawurst/DerelictImgui/master/Screen Shot 2015-04-09.png)
+![screenshot](https://raw.github.com/extrawurst/DerelictImgui/master/Screen%20Shot%202015-04-09.png)
 
 Notes: 
 * See imgui_d_test for a usage example using D: https://github.com/Extrawurst/imgui_d_test
