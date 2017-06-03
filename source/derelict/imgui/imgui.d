@@ -108,6 +108,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igSetNextWindowPos, "igSetNextWindowPos");
                 bindFunc(cast(void**)&igSetNextWindowPosCenter, "igSetNextWindowPosCenter");
                 bindFunc(cast(void**)&igSetNextWindowSize, "igSetNextWindowSize");
+                bindFunc(cast(void**)&igSetNextWindowSizeConstraints, "igSetNextWindowSizeConstraints");
                 bindFunc(cast(void**)&igSetNextWindowCollapsed, "igSetNextWindowCollapsed");
                 bindFunc(cast(void**)&igSetNextWindowFocus, "igSetNextWindowFocus");
                 bindFunc(cast(void**)&igSetWindowPos, "igSetWindowPos");
@@ -174,6 +175,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igEndGroup, "igEndGroup");
                 bindFunc(cast(void**)&igSeparator, "igSeparator");
                 bindFunc(cast(void**)&igSameLine, "igSameLine");
+                bindFunc(cast(void**)&igNewLine, "igNewLine");
                 bindFunc(cast(void**)&igSpacing, "igSpacing");
                 bindFunc(cast(void**)&igDummy, "igDummy");
                 bindFunc(cast(void**)&igIndent, "igIndent");
@@ -228,7 +230,6 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igInvisibleButton, "igInvisibleButton");
                 bindFunc(cast(void**)&igImage, "igImage");
                 bindFunc(cast(void**)&igImageButton, "igImageButton");
-                bindFunc(cast(void**)&igCollapsingHeader, "igCollapsingHeader");
                 bindFunc(cast(void**)&igCheckbox, "igCheckbox");
                 bindFunc(cast(void**)&igCheckboxFlags, "igCheckboxFlags");
                 bindFunc(cast(void**)&igRadioButtonBool, "igRadioButtonBool");
@@ -285,10 +286,19 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igTreeNodePtr, "igTreeNodePtr");
                 bindFunc(cast(void**)&igTreeNodeStrV, "igTreeNodeStrV");
                 bindFunc(cast(void**)&igTreeNodePtrV, "igTreeNodePtrV");
+                bindFunc(cast(void**)&igTreeNodeEx, "igTreeNodeEx");
+                bindFunc(cast(void**)&igTreeNodeExStr, "igTreeNodeExStr");
+                bindFunc(cast(void**)&igTreeNodeExPtr, "igTreeNodeExPtr");
+                bindFunc(cast(void**)&igTreeNodeExV, "igTreeNodeExV");
+                bindFunc(cast(void**)&igTreeNodeExVPtr, "igTreeNodeExVPtr");
                 bindFunc(cast(void**)&igTreePushStr, "igTreePushStr");
                 bindFunc(cast(void**)&igTreePushPtr, "igTreePushPtr");
                 bindFunc(cast(void**)&igTreePop, "igTreePop");
-                bindFunc(cast(void**)&igSetNextTreeNodeOpened, "igSetNextTreeNodeOpened");
+                bindFunc(cast(void**)&igTreeAdvanceToLabelPos, "igTreeAdvanceToLabelPos");
+                bindFunc(cast(void**)&igGetTreeNodeToLabelSpacing, "igGetTreeNodeToLabelSpacing");
+                bindFunc(cast(void**)&igSetNextTreeNodeOpen, "igSetNextTreeNodeOpen");
+                bindFunc(cast(void**)&igCollapsingHeader, "igCollapsingHeader");
+                bindFunc(cast(void**)&igCollapsingHeaderEx, "igCollapsingHeaderEx");
 
                 bindFunc(cast(void**)&igSelectable, "igSelectable");
                 bindFunc(cast(void**)&igSelectableEx, "igSelectableEx");
@@ -321,9 +331,13 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igLogButtons, "igLogButtons");
                 bindFunc(cast(void**)&igLogText, "igLogText");
 
+                bindFunc(cast(void**)&igPushClipRect, "igPushClipRect");
+                bindFunc(cast(void**)&igPopClipRect, "igPopClipRect");
+
                 bindFunc(cast(void**)&igIsItemHovered, "igIsItemHovered");
                 bindFunc(cast(void**)&igIsItemHoveredRect, "igIsItemHoveredRect");
                 bindFunc(cast(void**)&igIsItemActive, "igIsItemActive");
+                bindFunc(cast(void**)&igIsItemActive, "igIsItemClicked");
                 bindFunc(cast(void**)&igIsItemVisible, "igIsItemVisible");
                 bindFunc(cast(void**)&igIsAnyItemHovered, "igIsAnyItemHovered");
                 bindFunc(cast(void**)&igIsAnyItemActive, "igIsAnyItemActive");
@@ -335,6 +349,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igIsWindowFocused, "igIsWindowFocused");
                 bindFunc(cast(void**)&igIsRootWindowFocused, "igIsRootWindowFocused");
                 bindFunc(cast(void**)&igIsRootWindowOrAnyChildFocused, "igIsRootWindowOrAnyChildFocused");
+                bindFunc(cast(void**)&igIsRootWindowOrAnyChildHovered, "igIsRootWindowOrAnyChildHovered");
                 bindFunc(cast(void**)&igIsRectVisible, "igIsRectVisible");
 
                 bindFunc(cast(void**)&igGetKeyIndex, "igGetKeyIndex");
@@ -363,6 +378,12 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igGetClipboardText, "igGetClipboardText");
                 bindFunc(cast(void**)&igSetClipboardText, "igSetClipboardText");
 
+                bindFunc(cast(void**)&igGetVersion, "igGetVersion");
+                bindFunc(cast(void**)&igCreateContext, "igCreateContext");
+                bindFunc(cast(void**)&igDestroyContext, "igDestroyContext");
+                bindFunc(cast(void**)&igGetCurrentContext, "igGetCurrentContext");
+                bindFunc(cast(void**)&igSetCurrentContext, "igSetCurrentContext");
+
                 bindFunc(cast(void**)&igGetTime, "igGetTime");
                 bindFunc(cast(void**)&igGetFrameCount, "igGetFrameCount");
                 bindFunc(cast(void**)&igGetStyleColName, "igGetStyleColName");
@@ -378,11 +399,6 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igColorConvertFloat4ToU32, "igColorConvertFloat4ToU32");
                 bindFunc(cast(void**)&igColorConvertRGBtoHSV, "igColorConvertRGBtoHSV");
                 bindFunc(cast(void**)&igColorConvertHSVtoRGB, "igColorConvertHSVtoRGB");
-
-                bindFunc(cast(void**)&igGetVersion, "igGetVersion");
-                bindFunc(cast(void**)&igGetInternalState, "igGetInternalState");
-                bindFunc(cast(void**)&igGetInternalStateSize, "igGetInternalStateSize");
-                bindFunc(cast(void**)&igSetInternalState, "igSetInternalState");
             }
 
             {
@@ -417,6 +433,8 @@ final class DerelictImguiLoader : SharedLibLoader
 			bindFunc(cast(void**)&ImDrawList_AddRect, "ImDrawList_AddRect");
 			bindFunc(cast(void**)&ImDrawList_AddRectFilled, "ImDrawList_AddRectFilled");
 			bindFunc(cast(void**)&ImDrawList_AddRectFilledMultiColor, "ImDrawList_AddRectFilledMultiColor");
+            bindFunc(cast(void**)&ImDrawList_AddQuad, "ImDrawList_AddQuad");
+            bindFunc(cast(void**)&ImDrawList_AddQuadFilled, "ImDrawList_AddQuadFilled");
 			bindFunc(cast(void**)&ImDrawList_AddTriangleFilled, "ImDrawList_AddTriangleFilled");
 			bindFunc(cast(void**)&ImDrawList_AddTriangle, "ImDrawList_AddTriangle");
 			bindFunc(cast(void**)&ImDrawList_AddCircle, "ImDrawList_AddCircle");
@@ -454,6 +472,10 @@ final class DerelictImguiLoader : SharedLibLoader
             bindFunc(cast(void**)&ImGuiIO_AddInputCharacter, "ImGuiIO_AddInputCharacter");
             bindFunc(cast(void**)&ImGuiIO_AddInputCharactersUTF8, "ImGuiIO_AddInputCharactersUTF8");
             bindFunc(cast(void**)&ImGuiIO_ClearInputCharacters, "ImGuiIO_ClearInputCharacters");
+
+            bindFunc(cast(void**)&ImGuiListClipper_Begin, "ImGuiListClipper_Begin");
+            bindFunc(cast(void**)&ImGuiListClipper_End, "ImGuiListClipper_End");
+            bindFunc(cast(void**)&ImGuiListClipper_Step, "ImGuiListClipper_Step");
         }
     }
 

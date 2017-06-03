@@ -110,6 +110,23 @@ enum
 
 enum
 {
+    ImGuiTreeNodeFlags_Selected             = 1 << 0,   // Draw as selected
+    ImGuiTreeNodeFlags_Framed               = 1 << 1,   // Full colored frame (e.g. for CollapsingHeader)
+    ImGuiTreeNodeFlags_AllowOverlapMode     = 1 << 2,   // Hit testing to allow subsequent widgets to overlap this one
+    ImGuiTreeNodeFlags_NoTreePushOnOpen     = 1 << 3,   // Don't do a TreePush() when open (e.g. for CollapsingHeader) = no extra indent nor pushing on ID stack
+    ImGuiTreeNodeFlags_NoAutoOpenOnLog      = 1 << 4,   // Don't automatically and temporarily open node when Logging is active (by default logging will automatically open tree nodes)
+    ImGuiTreeNodeFlags_DefaultOpen          = 1 << 5,   // Default node to be open
+    ImGuiTreeNodeFlags_OpenOnDoubleClick    = 1 << 6,   // Need double-click to open node
+    ImGuiTreeNodeFlags_OpenOnArrow          = 1 << 7,   // Only open when clicking on the arrow part. If ImGuiTreeNodeFlags_OpenOnDoubleClick is also set, single-click arrow or double-click all box to open.
+    ImGuiTreeNodeFlags_Leaf                 = 1 << 8,   // No collapsing, no arrow (use as a convenience for leaf nodes). 
+    ImGuiTreeNodeFlags_Bullet               = 1 << 9,   // Display a bullet instead of arrow
+    //ImGuITreeNodeFlags_SpanAllAvailWidth  = 1 << 10,  // FIXME: TODO: Extend hit box horizontally even if not framed
+    //ImGuiTreeNodeFlags_NoScrollOnOpen     = 1 << 11,  // FIXME: TODO: Disable automatic scroll on TreePop() if node got just open and contents is not visible
+    ImGuiTreeNodeFlags_CollapsingHeader     = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_NoAutoOpenOnLog
+}
+
+enum
+{
     // Default: 0
     ImGuiSelectableFlags_DontClosePopups    = 1 << 0,   // Clicking this don't close parent popup window
     ImGuiSelectableFlags_SpanAllColumns     = 1 << 1,    // Selectable frame can span all columns (text will still fit in current column)
@@ -236,6 +253,7 @@ struct ImFont{}
 struct ImFontAtlas{}
 struct ImDrawList{}
 struct ImGuiStorage{}
+struct ImGuiContext{}
 
 alias uint ImU32;
 alias ushort ImWchar;     // character for display
@@ -251,7 +269,9 @@ alias int ImGuiWindowFlags;       // enum ImGuiWindowFlags_
 alias int ImGuiSetCond;           // enum ImGuiSetCond_
 alias int ImGuiInputTextFlags;    // enum ImGuiInputTextFlags_
 alias int ImGuiSelectableFlags;   // enum ImGuiSelectableFlags_
+alias int ImGuiTreeNodeFlags;     // enum ImGuiTreeNodeFlags_
 alias int function(ImGuiTextEditCallbackData *data) ImGuiTextEditCallback;
+alias void function(ImGuiSizeConstraintCallbackData *data) ImGuiSizeConstraintCallback;
 
 extern(C) nothrow {
     alias RenderDrawListFunc = void function(ImDrawData* data);
@@ -463,6 +483,14 @@ align(1) struct ImFontConfig
     ImFont*         DstFont;
 }
 
+align(1) struct ImGuiSizeConstraintCallbackData
+{
+    void*           UserData;
+    ImVec2          Pos;
+    ImVec2          CurrentSize;
+    ImVec2          DesiredSize;
+}
+
 align(1) struct ImColor
 {
     ImU32 value;
@@ -501,28 +529,28 @@ align(1) struct ImColor
 }
 
 align(1) struct ImGuiListClipper {
-	import derelict.imgui.funcs : igCalcListClipping, igGetCursorPosY, igSetCursorPosY;
+	import derelict.imgui.funcs : ImGuiListClipper_Begin, ImGuiListClipper_End, ImGuiListClipper_Step;
 	
-	float itemsHeight = 0f;
-	int itemsCount = -1, displayStart = -1, displayEnd = -1;
+	float StartPosY;
+    float ItemsHeight;
+	int ItemsCount, StepNo, DisplayStart, DisplayEnd;
 	
-	this(int count, float height) {
-		itemsCount = -1;
-		Begin(count, height);
+	this(int items_count = -1, float items_height = -1.0f)
+    {
+		ImGuiListClipper_Begin(&this, items_count, items_height);
 	}
-	
-	void Begin(int count, float height) {
-		assert(itemsCount == -1);
-		itemsCount = count;
-		itemsHeight = height;
-		igCalcListClipping(itemsCount, itemsHeight, &displayStart, &displayEnd);
-		igSetCursorPosY(igGetCursorPosY() + displayStart * itemsHeight);
-	}
-	
-	void End() {
-		assert(itemsCount >= 0);
-		igSetCursorPosY(igGetCursorPosY() + (itemsCount - displayEnd) * itemsHeight);
-		itemsCount = -1;
-	}
+
+    ~this()
+    {
+        assert(ItemsCount == -1);
+    }
+
+    void Begin(int items_count, float items_height = -1.0f)
+    {
+        ImGuiListClipper_Begin(&this, items_count, items_height);
+    }
+
+    void End() { ImGuiListClipper_End(&this); }
+    bool Step() { return ImGuiListClipper_Step(&this); }
 }
 
