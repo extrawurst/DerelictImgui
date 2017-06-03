@@ -351,6 +351,7 @@ final class DerelictImguiLoader : SharedLibLoader
                 bindFunc(cast(void**)&igIsRootWindowOrAnyChildFocused, "igIsRootWindowOrAnyChildFocused");
                 bindFunc(cast(void**)&igIsRootWindowOrAnyChildHovered, "igIsRootWindowOrAnyChildHovered");
                 bindFunc(cast(void**)&igIsRectVisible, "igIsRectVisible");
+                bindFunc(cast(void**)&igIsRectVisible2, "igIsRectVisible2");
 
                 bindFunc(cast(void**)&igGetKeyIndex, "igGetKeyIndex");
                 bindFunc(cast(void**)&igIsKeyDown, "igIsKeyDown");
@@ -413,6 +414,13 @@ final class DerelictImguiLoader : SharedLibLoader
 				bindFunc(cast(void**)&ImFontAtlas_AddFontFromMemoryCompressedBase85TTF, "ImFontAtlas_AddFontFromMemoryCompressedBase85TTF");
                 bindFunc(cast(void**)&ImFontAtlas_ClearTexData, "ImFontAtlas_ClearTexData");
                 bindFunc(cast(void**)&ImFontAtlas_Clear, "ImFontAtlas_Clear");
+
+                bindFunc(cast(void**)&ImFontAtlas_GetGlyphRangesDefault, "ImFontAtlas_GetGlyphRangesDefault");
+                bindFunc(cast(void**)&ImFontAtlas_GetGlyphRangesKorean, "ImFontAtlas_GetGlyphRangesKorean");
+                bindFunc(cast(void**)&ImFontAtlas_GetGlyphRangesJapanese, "ImFontAtlas_GetGlyphRangesJapanese");
+                bindFunc(cast(void**)&ImFontAtlas_GetGlyphRangesChinese, "ImFontAtlas_GetGlyphRangesChinese");
+                bindFunc(cast(void**)&ImFontAtlas_GetGlyphRangesCyrillic, "ImFontAtlas_GetGlyphRangesCyrillic");
+                bindFunc(cast(void**)&ImFontAtlas_GetGlyphRangesThai, "ImFontAtlas_GetGlyphRangesThai");
             }
 
             bindFunc(cast(void**)&ImDrawList_GetVertexBufferSize, "ImDrawList_GetVertexBufferSize");
@@ -442,13 +450,14 @@ final class DerelictImguiLoader : SharedLibLoader
 			bindFunc(cast(void**)&ImDrawList_AddText, "ImDrawList_AddText");
 			bindFunc(cast(void**)&ImDrawList_AddTextExt, "ImDrawList_AddTextExt");
 			bindFunc(cast(void**)&ImDrawList_AddImage, "ImDrawList_AddImage");
+			bindFunc(cast(void**)&ImDrawList_AddImageQuad, "ImDrawList_AddImageQuad");
 			bindFunc(cast(void**)&ImDrawList_AddPolyline, "ImDrawList_AddPolyline");
 			bindFunc(cast(void**)&ImDrawList_AddConvexPolyFilled, "ImDrawList_AddConvexPolyFilled");
 			bindFunc(cast(void**)&ImDrawList_AddBezierCurve, "ImDrawList_AddBezierCurve");
 			bindFunc(cast(void**)&ImDrawList_PathClear, "ImDrawList_PathClear");
 			bindFunc(cast(void**)&ImDrawList_PathLineTo, "ImDrawList_PathLineTo");
 			bindFunc(cast(void**)&ImDrawList_PathLineToMergeDuplicate, "ImDrawList_PathLineToMergeDuplicate");
-			bindFunc(cast(void**)&ImDrawList_PathFill, "ImDrawList_PathFill");
+			bindFunc(cast(void**)&ImDrawList_PathFillConvex, "ImDrawList_PathFillConvex");
 			bindFunc(cast(void**)&ImDrawList_PathStroke, "ImDrawList_PathStroke");
 			bindFunc(cast(void**)&ImDrawList_PathArcTo, "ImDrawList_PathArcTo");
 			bindFunc(cast(void**)&ImDrawList_PathArcToFast, "ImDrawList_PathArcToFast");

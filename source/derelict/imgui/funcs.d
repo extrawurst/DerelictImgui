@@ -267,7 +267,7 @@ extern(C) @nogc nothrow
     alias da_igValueUInt       = void              function(const char* prefix, uint v);
     alias da_igValueFloat      = void              function(const char* prefix, float v, const char* float_format = null);
     alias da_igValueColor           = void              function(const char* prefix, const ImVec4 v);
-    alias da_igValueColor2          = void              function(const char* prefix, uint v);
+    alias da_igValueColor2          = void              function(const char* prefix, ImU32 v);
 
     alias da_igSetTooltip                  = void              function(const(char)* fmt, ...);
     alias da_igSetTooltipV                 = void              function(const(char)* fmt, va_list args);
@@ -320,11 +320,12 @@ extern(C) @nogc nothrow
     alias da_igIsRootWindowOrAnyChildFocused    = bool              function();
     alias da_igIsRootWindowOrAnyChildHovered    = bool              function();
     alias da_igIsRectVisible                    = bool              function(const ImVec2 item_size);
+    alias da_igIsRectVisible2                   = bool              function(const ImVec2 rect_min, const ImVec2 rect_max);
 
-    alias da_igGetKeyIndex                  = int               function(ImGuiKey key);
-    alias da_igIsKeyDown                    = bool              function(int key_index);
-    alias da_igIsKeyPressed                 = bool              function(int key_index, bool repeat = true);
-    alias da_igIsKeyReleased                = bool              function(int key_index);
+    alias da_igGetKeyIndex                  = int               function(ImGuiKey imgui_key);
+    alias da_igIsKeyDown                    = bool              function(int user_key_index);
+    alias da_igIsKeyPressed                 = bool              function(int user_key_index, bool repeat = true);
+    alias da_igIsKeyReleased                = bool              function(int user_key_index);
     alias da_igIsMouseDown                  = bool              function(int button);
     alias da_igIsMouseClicked               = bool              function(int button, bool repeat = false);
     alias da_igIsMouseDoubleClicked     = bool              function(int button);
@@ -376,7 +377,7 @@ extern(C) @nogc nothrow
 {
     alias da_ImFontAtlas_GetTexDataAsRGBA32   = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
     alias da_ImFontAtlas_GetTexDataAsAlpha8   = void function(ImFontAtlas* atlas,ubyte** out_pixels,int* out_width,int* out_height,int* out_bytes_per_pixel);
-    alias da_ImFontAtlas_SetTexID             = void function(ImFontAtlas* atlas, void* id);
+    alias da_ImFontAtlas_SetTexID             = void function(ImFontAtlas* atlas, ImTextureID id);
     alias da_ImFontAtlas_AddFont       = ImFont* function(ImFontAtlas* atlas, const ImFontConfig* font_cfg);
     alias da_ImFontAtlas_AddFontDefault       = ImFont* function(ImFontAtlas* atlas, const ImFontConfig* font_cfg);
     alias da_ImFontAtlas_AddFontFromFileTTF   = ImFont* function(ImFontAtlas* atlas, const char* filename, float size_pixels, const ImFontConfig* font_cfg, const ImWchar* glyph_ranges = null);
@@ -386,6 +387,13 @@ extern(C) @nogc nothrow
 
     alias da_ImFontAtlas_ClearTexData         = void function(ImFontAtlas* atlas, void* id);
     alias da_ImFontAtlas_Clear                = void function(ImFontAtlas* atlas, void* id);
+
+    alias da_ImFontAtlas_GetGlyphRangesDefault = const(ImWchar)* function(ImFontAtlas* atlas);
+    alias da_ImFontAtlas_GetGlyphRangesKorean = const(ImWchar)* function(ImFontAtlas* atlas);
+    alias da_ImFontAtlas_GetGlyphRangesJapanese = const(ImWchar)* function(ImFontAtlas* atlas);
+    alias da_ImFontAtlas_GetGlyphRangesChinese = const(ImWchar)* function(ImFontAtlas* atlas);
+    alias da_ImFontAtlas_GetGlyphRangesCyrillic = const(ImWchar)* function(ImFontAtlas* atlas);
+    alias da_ImFontAtlas_GetGlyphRangesThai = const(ImWchar)* function(ImFontAtlas* atlas);
 }
 
 //TODO: rework
@@ -413,8 +421,8 @@ extern(C) @nogc nothrow
 	alias da_ImDrawList_PushTextureID = void function(ImDrawList* list, const ImTextureID texture_id);
 	alias da_ImDrawList_PopTextureID = void function(ImDrawList* list);
 	alias da_ImDrawList_AddLine = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float thickness = 1.0f);
-	alias da_ImDrawList_AddRect = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding, int rounding_corners, float thickness = 1.0f);
-	alias da_ImDrawList_AddRectFilled = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding = 0.0f, int rounding_corners = 0x0F);
+	alias da_ImDrawList_AddRect = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding, int rounding_corners_flags, float thickness = 1.0f);
+	alias da_ImDrawList_AddRectFilled = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col, float rounding = 0.0f, int rounding_corners_flags = 0x0F);
 	alias da_ImDrawList_AddRectFilledMultiColor = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, ImU32 col_upr_left, ImU32 col_upr_right, ImU32 col_bot_right, ImU32 col_bot_left);
 	alias da_ImDrawList_AddQuad = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, const ImVec2 c, const ImVec2 d, ImU32 col, float thickness = 1.0f);
     alias da_ImDrawList_AddQuadFilled = void function(ImDrawList* list, const ImVec2 a, const ImVec2 b, const ImVec2 c, const ImVec2 d, ImU32 col);
@@ -424,19 +432,20 @@ extern(C) @nogc nothrow
 	alias da_ImDrawList_AddCircleFilled = void function(ImDrawList* list, const ImVec2 centre, float radius, ImU32 col, int num_segments = 12);
 	alias da_ImDrawList_AddText = void function(ImDrawList* list, const ImVec2 pos, ImU32 col, const char* text_begin, const char* text_end = null);
 	alias da_ImDrawList_AddTextExt = void function(ImDrawList* list, const ImFont* font, float font_size, const ImVec2 pos, ImU32 col, const char* text_begin, const char* text_end = null, float wrap_width = 0.0f, const ImVec4* cpu_fine_clip_rect = null);
-	alias da_ImDrawList_AddImage = void function(ImDrawList* list, ImTextureID user_texture_id, const ImVec2 a, const ImVec2 b, const ImVec2 uv0, const ImVec2 uv1, ImU32 col = 0xFFFFFFFF);
+	alias da_ImDrawList_AddImage = void function(ImDrawList* list, ImTextureID user_texture_id, const ImVec2 a, const ImVec2 b, const ImVec2 uv_a, const ImVec2 uv_b, ImU32 col = 0xFFFFFFFF);
+    alias da_ImDrawList_AddImageQuad = void function(ImDrawList* list, ImTextureID user_texture_id, const ImVec2 a, const ImVec2 b, const ImVec2 c, const ImVec2 d, const ImVec2 uv_a = ImVec2(0,0), const ImVec2 uv_b = ImVec2(1,0), const ImVec2 uv_c = ImVec2(1,1), const ImVec2 uv_d = ImVec2(0,1), ImU32 col = 0xFFFFFFFF);
 	alias da_ImDrawList_AddPolyline = void function(ImDrawList* list, const ImVec2* points, const int num_points, ImU32 col, bool closed, float thickness, bool anti_aliased);
 	alias da_ImDrawList_AddConvexPolyFilled = void function(ImDrawList* list, const ImVec2* points, const int num_points, ImU32 col, bool anti_aliased);
 	alias da_ImDrawList_AddBezierCurve = void function(ImDrawList* list, const ImVec2 pos0, const ImVec2 cp0, const ImVec2 cp1, const ImVec2 pos1, ImU32 col, float thickness, int num_segments = 0);
 	alias da_ImDrawList_PathClear = void function(ImDrawList* list);
 	alias da_ImDrawList_PathLineTo = void function(ImDrawList* list, const ImVec2 pos);
 	alias da_ImDrawList_PathLineToMergeDuplicate = void function(ImDrawList* list, const ImVec2 pos);
-	alias da_ImDrawList_PathFill = void function(ImDrawList* list, ImU32 col);
+	alias da_ImDrawList_PathFillConvex = void function(ImDrawList* list, ImU32 col);
 	alias da_ImDrawList_PathStroke = void function(ImDrawList* list, ImU32 col, bool closed, float thickness = 1.0f);
 	alias da_ImDrawList_PathArcTo = void function(ImDrawList* list, const ImVec2 centre, float radius, float a_min, float a_max, int num_segments = 10);
 	alias da_ImDrawList_PathArcToFast = void function(ImDrawList* list, const ImVec2 centre, float radius, int a_min_of_12, int a_max_of_12);
 	alias da_ImDrawList_PathBezierCurveTo = void function(ImDrawList* list, const ImVec2 p1, const ImVec2 p2, const ImVec2 p3, int num_segments = 0);
-	alias da_ImDrawList_PathRect = void function(ImDrawList* list, const ImVec2 rect_min, const ImVec2 rect_max, float rounding = 0.0f, int rounding_corners = 0x0F);
+	alias da_ImDrawList_PathRect = void function(ImDrawList* list, const ImVec2 rect_min, const ImVec2 rect_max, float rounding = 0.0f, int rounding_corners_flags = 0x0F);
 	alias da_ImDrawList_ChannelsSplit = void function(ImDrawList* list, int channels_count);
 	alias da_ImDrawList_ChannelsMerge = void function(ImDrawList* list);
 	alias da_ImDrawList_ChannelsSetCurrent = void function(ImDrawList* list, int channel_index);
@@ -740,6 +749,7 @@ __gshared
     da_igIsRootWindowOrAnyChildFocused igIsRootWindowOrAnyChildFocused;
     da_igIsRootWindowOrAnyChildHovered igIsRootWindowOrAnyChildHovered;
     da_igIsRectVisible igIsRectVisible;
+    da_igIsRectVisible2 igIsRectVisible2;
 
     da_igGetKeyIndex igGetKeyIndex;
     da_igIsKeyDown igIsKeyDown;
@@ -804,6 +814,12 @@ __gshared
 	da_ImFontAtlas_AddFontFromMemoryCompressedBase85TTF ImFontAtlas_AddFontFromMemoryCompressedBase85TTF;
     da_ImFontAtlas_ClearTexData             ImFontAtlas_ClearTexData;
     da_ImFontAtlas_Clear                    ImFontAtlas_Clear;
+    da_ImFontAtlas_GetGlyphRangesDefault    ImFontAtlas_GetGlyphRangesDefault;
+    da_ImFontAtlas_GetGlyphRangesKorean     ImFontAtlas_GetGlyphRangesKorean;
+    da_ImFontAtlas_GetGlyphRangesJapanese   ImFontAtlas_GetGlyphRangesJapanese;
+    da_ImFontAtlas_GetGlyphRangesChinese    ImFontAtlas_GetGlyphRangesChinese;
+    da_ImFontAtlas_GetGlyphRangesCyrillic   ImFontAtlas_GetGlyphRangesCyrillic;
+    da_ImFontAtlas_GetGlyphRangesThai       ImFontAtlas_GetGlyphRangesThai;
 }
 
 //TODO: rework
@@ -838,13 +854,14 @@ __gshared
 	da_ImDrawList_AddText ImDrawList_AddText;
 	da_ImDrawList_AddTextExt ImDrawList_AddTextExt;
 	da_ImDrawList_AddImage ImDrawList_AddImage;
+    da_ImDrawList_AddImageQuad ImDrawList_AddImageQuad;
 	da_ImDrawList_AddPolyline ImDrawList_AddPolyline;
 	da_ImDrawList_AddConvexPolyFilled ImDrawList_AddConvexPolyFilled;
 	da_ImDrawList_AddBezierCurve ImDrawList_AddBezierCurve;
 	da_ImDrawList_PathClear ImDrawList_PathClear;
 	da_ImDrawList_PathLineTo ImDrawList_PathLineTo;
 	da_ImDrawList_PathLineToMergeDuplicate ImDrawList_PathLineToMergeDuplicate;
-	da_ImDrawList_PathFill ImDrawList_PathFill;
+	da_ImDrawList_PathFillConvex ImDrawList_PathFillConvex;
 	da_ImDrawList_PathStroke ImDrawList_PathStroke;
 	da_ImDrawList_PathArcTo ImDrawList_PathArcTo;
 	da_ImDrawList_PathArcToFast ImDrawList_PathArcToFast;

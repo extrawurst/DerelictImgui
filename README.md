@@ -5,5 +5,6 @@ Dynamic bindings to the [cimgui](https://github.com/Extrawurst/cimgui) library (
 ![screenshot](https://raw.github.com/extrawurst/DerelictImgui/master/Screen%20Shot%202015-04-09.png)
 
 Notes: 
+* (c)imgui version 1.50
 * See imgui_d_test for a usage example using D: https://github.com/Extrawurst/imgui_d_test
 * See official examples in imgui project for reference: https://github.com/ocornut/imgui/tree/master/examples
