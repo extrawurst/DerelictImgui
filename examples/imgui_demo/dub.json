@@ -1,0 +1,21 @@
+{
+	"name": "imgui_demo",
+	"description": "D port of dear imgui, v1.51 demo",
+	"license": "MIT",
+	"authors": [ "Akihiro Yoshikawa" ],
+
+    "targetPath": "bin",
+    "targetType": "executable",
+    "targetName": "imgui_demo",
+    
+    "libs-x86": ["libs/windows/x86/cimgui"],
+    "copyFiles-x86": ["../../libs/windows/x86/glfw3.dll", "../../libs/windows/x86/cimgui.dll"],
+
+    "dependencies": {
+        "derelict-imgui": {"path": "../../"},
+        "derelict-util": "~>2.0.0",
+        "derelict-gl3": "~>1.0.18",
+        "derelict-glfw3": "~>3.1.3"
+    }
+
+}

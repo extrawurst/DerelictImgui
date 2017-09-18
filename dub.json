@@ -12,5 +12,10 @@
 
     "dependencies": {
         "derelict-util": "~>2.0.0"
-    }
+    },
+
+    "subPackages": [
+        "./examples/imgui_demo/"
+    ]
+
 }
