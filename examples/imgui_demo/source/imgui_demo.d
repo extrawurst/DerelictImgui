@@ -36,6 +36,7 @@ import core.stdc.ctype : toupper;
 import core.stdc.stdio : printf, snprintf, sprintf;
 import core.stdc.math : cosf, sinf, sqrtf;
 import core.stdc.stdarg : va_list, va_end, va_start;
+import core.vararg;
 
 // Play it nice with Windows users. Notepad in 2015 still doesn't display text data with Unix-style \n.
 version(Windows) {

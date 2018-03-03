@@ -32,6 +32,7 @@
 module derelict.imgui.types;
 
 import derelict.util.system;
+import core.vararg;
 
 // opaque pointer
 struct ImGuiTextFilter;
