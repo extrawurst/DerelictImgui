@@ -46,14 +46,15 @@ extern(C) @nogc nothrow
     alias da_igNewFrame                     = void function();
     alias da_igRender                       = void function();
     alias da_igShutdown                     = void function();
-    alias da_igShowTestWindow               = void function(bool* p_open = null);
+    alias da_igShowDemoWindow               = void function(bool* p_open = null);
     alias da_igShowMetricsWindow            = void function(bool* p_open = null);
     alias da_igShowStyleEditor              = void function(ImGuiStyle* ref_ = null);
+    alias da_igShowStyleSelector            = bool function(const char* label = null);
+    alias da_igShowFontSelector             = void function(const char* label = null);
     alias da_igShowUserGuide                = void function();
 
     // Window
     alias da_igBegin                        = bool function(const char* name, bool* p_opened = null, ImGuiWindowFlags flags = 0);
-    alias da_igBegin2                       = bool function(const char* name, bool* p_opened, const ImVec2 size_on_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0);
     alias da_igEnd                          = void function();
     alias da_igBeginChild                   = bool function(const char* str_id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
     alias da_igBeginChildEx                 = bool function(ImGuiID id, const ImVec2 size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0);
@@ -72,12 +73,10 @@ extern(C) @nogc nothrow
     alias da_igIsWindowCollapsed            = bool function();
     alias da_igSetWindowFontScale           = void function(float scale);
 
-    alias da_igSetNextWindowPos             = void function(const ImVec2 pos, ImGuiCond cond = 0);
-    alias da_igSetNextWindowPosCenter       = void function(ImGuiCond cond = 0);
+    alias da_igSetNextWindowPos             = void function(const ImVec2 pos, ImGuiCond cond = 0, const ImVec2 pivot = ImVec2(0,0));
     alias da_igSetNextWindowSize            = void function(const ImVec2 size, ImGuiCond cond = 0);
     alias da_igSetNextWindowSizeConstraints = void function(const ImVec2 size_min, const ImVec2 size_max, ImGuiSizeConstraintCallback custom_callback = null, void* custom_callback_data = null);
     alias da_igSetNextWindowContentSize     = void function(const ImVec2 size);
-    alias da_igSetNextWindowContentWidth    = void function(float width);
     alias da_igSetNextWindowCollapsed       = void function(bool collapsed, ImGuiCond cond = 0);
     alias da_igSetNextWindowFocus           = void function();
     alias da_igSetWindowPos                 = void function(const ImVec2 pos, ImGuiCond cond = 0);
@@ -109,7 +108,7 @@ extern(C) @nogc nothrow
     alias da_igPushStyleVar                 = void function(ImGuiStyleVar idx, float val);
     alias da_igPushStyleVarVec              = void function(ImGuiStyleVar idx, const ImVec2 val);
     alias da_igPopStyleVar                  = void function(int count = 1);
-    alias da_igGetStyleColorVec4            = const ImVec4* function(ImGuiCol idx);
+    alias da_igGetStyleColorVec4            = void function(ImVec4* pout, ImGuiCol idx);
     alias da_igGetFont                      = ImFont* function();
     alias da_igGetFontSize                  = float function();
     alias da_igGetFontTexUvWhitePixel       = void function(ImVec2* pOut);
@@ -124,8 +123,8 @@ extern(C) @nogc nothrow
     alias da_igPopTextWrapPos               = void function();
     alias da_igPushAllowKeyboardFocus       = void function(bool v);
     alias da_igPopAllowKeyboardFocus        = void function();
-    alias da_igPushButtonRepeat            = void function(bool repeat);
-    alias da_igPopButtonRepeat             = void function();
+    alias da_igPushButtonRepeat             = void function(bool repeat);
+    alias da_igPopButtonRepeat              = void function();
 
     alias da_igSeparator                    = void function();
     alias da_igSameLine                     = void function(float pos_x = 0.0f, float spacing_w = -1.0f);
@@ -145,10 +144,10 @@ extern(C) @nogc nothrow
     alias da_igGetCursorStartPos            = void function(ImVec2* pOut);
     alias da_igGetCursorScreenPos           = void function(ImVec2* pOut);
     alias da_igSetCursorScreenPos           = void function(const ImVec2 pos);
-    alias da_igAlignFirstTextHeightToWidgets = void function();
+    alias da_igAlignTextToFramePadding      = void function();
     alias da_igGetTextLineHeight            = float function();
     alias da_igGetTextLineHeightWithSpacing = float function();
-    alias da_igGetItemsLineHeightWithSpacing = float function();
+    alias da_igGetFrameHeightWithSpacing    = float function();
 
     alias da_igColumns                      = void function(int count = 1, const char* id = null, bool border = true);
     alias da_igNextColumn                   = void function();
@@ -308,8 +307,7 @@ extern(C) @nogc nothrow
     alias da_igPushClipRect                 = void function(const ImVec2 clip_rect_min, const ImVec2 clip_rect_max, bool intersect_with_current_clip_rect);
     alias da_igPopClipRect                  = void function();
 
-    alias da_igIsItemHovered                = bool function();
-    alias da_igIsItemRectHovered            = bool function();
+    alias da_igIsItemHovered                = bool function(ImGuiHoveredFlags flags = 0);
     alias da_igIsItemActive                 = bool function();
     alias da_igIsItemClicked                = bool function(int mouse_button = 0);
     alias da_igIsItemVisible                = bool function();
@@ -319,12 +317,8 @@ extern(C) @nogc nothrow
     alias da_igGetItemRectMax               = void function(ImVec2* pOut);
     alias da_igGetItemRectSize              = void function(ImVec2* pOut);
     alias da_igSetItemAllowOverlap          = void function();
-    alias da_igIsWindowFocused              = bool function();
-    alias da_igIsWindowHovered              = bool function();
-    alias da_igIsWindowRectHovered          = bool function();
-    alias da_igIsRootWindowFocused          = bool function();
-    alias da_igIsRootWindowOrAnyChildFocused = bool function();
-    alias da_igIsRootWindowOrAnyChildHovered = bool function();
+    alias da_igIsWindowFocused              = bool function(ImGuiFocusedFlags flags = 0);
+    alias da_igIsWindowHovered              = bool function(ImGuiHoveredFlags flags = 0);
     alias da_igIsAnyWindowHovered           = bool function();
     alias da_igIsRectVisible                = bool function(const ImVec2 item_size);
     alias da_igIsRectVisible2               = bool function(const ImVec2 rect_min, const ImVec2 rect_max);
@@ -354,6 +348,7 @@ extern(C) @nogc nothrow
     alias da_igIsMouseReleased              = bool function(int button);
     alias da_igIsMouseDragging              = bool function(int button = 0, float lock_threshold = -1.0f);
     alias da_igIsMouseHoveringRect          = bool function(const ImVec2 r_min, const ImVec2 r_max, bool clip = true);
+    alias da_igIsMousePosValid              = bool function(const ImVec2* mouse_pos = null);
     alias da_igGetMousePos                  = void function(ImVec2* pOut);
     alias da_igGetMousePosOnOpeningCurrentPopup = void function(ImVec2* pOut);
     alias da_igGetMouseDragDelta            = void function(ImVec2* pOut, int button = 0, float lock_threshold = -1.0f);
@@ -402,8 +397,8 @@ extern(C) @nogc nothrow
     alias da_ImGuiTextBuffer_empty          = bool function(ImGuiTextBuffer* buffer);
     alias da_ImGuiTextBuffer_clear          = void function(ImGuiTextBuffer* buffer);
     alias da_ImGuiTextBuffer_c_str          = const char* function(const(ImGuiTextBuffer)* buffer);
-    alias da_ImGuiTextBuffer_append         = void function(ImGuiTextBuffer* buffer, const(char)* fmt, ...);
-    alias da_ImGuiTextBuffer_appendv        = void  function(ImGuiTextBuffer* buffer, const(char)* fmt, va_list args);
+    alias da_ImGuiTextBuffer_appendf         = void function(ImGuiTextBuffer* buffer, const(char)* fmt, ...);
+    alias da_ImGuiTextBuffer_appendfv        = void  function(ImGuiTextBuffer* buffer, const(char)* fmt, va_list args);
 
     // ImGuiStorage
     alias da_ImGuiStorage_Create = ImGuiStorage* function();
@@ -465,7 +460,7 @@ extern(C) @nogc nothrow
     alias da_ImDrawList_AddTextExt          = void function(ImDrawList* list, const ImFont* font, float font_size, const ImVec2 pos, ImU32 col, const char* text_begin, const char* text_end = null, float wrap_width = 0.0f, const ImVec4* cpu_fine_clip_rect = null);
     alias da_ImDrawList_AddImage            = void function(ImDrawList* list, ImTextureID user_texture_id, const ImVec2 a, const ImVec2 b, const ImVec2 uv_a = ImVec2(0,0), const ImVec2 uv_b = ImVec2(1,1), ImU32 col = 0xFFFFFFFF);
     alias da_ImDrawList_AddImageQuad        = void function(ImDrawList* list, ImTextureID user_texture_id, const ImVec2 a, const ImVec2 b, const ImVec2 c, const ImVec2 d, const ImVec2 uv_a = ImVec2(0,0), const ImVec2 uv_b = ImVec2(1,0), const ImVec2 uv_c = ImVec2(1,1), const ImVec2 uv_d = ImVec2(0,1), ImU32 col = 0xFFFFFFFF);
-    alias da_ImDrawList_AddPolyline         = void function(ImDrawList* list, const ImVec2* points, const int num_points, ImU32 col, bool closed, float thickness, bool anti_aliased);
+    alias da_ImDrawList_AddPolyline         = void function(ImDrawList* list, const ImVec2* points, const int num_points, ImU32 col, bool closed, float thickness);
     alias da_ImDrawList_AddConvexPolyFilled = void function(ImDrawList* list, const ImVec2* points, const int num_points, ImU32 col, bool anti_aliased);
     alias da_ImDrawList_AddBezierCurve      = void function(ImDrawList* list, const ImVec2 pos0, const ImVec2 cp0, const ImVec2 cp1, const ImVec2 pos1, ImU32 col, float thickness, int num_segments = 0);
     alias da_ImDrawList_PathClear           = void function(ImDrawList* list);
@@ -542,7 +537,7 @@ extern(C) @nogc nothrow
     alias da_ImFont_GetDisplayOffset        = void function(const ImFont* font, ImVec2* pOut);
     alias da_ImFont_GetFallbackGlyph        = const ImFont_Glyph* function(const ImFont* font);
     alias da_ImFont_SetFallbackGlyph        = void function(ImFont* font, const ImFont_Glyph* FallbackGlyph_);
-    alias da_ImFont_GetFallbackXAdvance     = float function(const ImFont* font);
+    alias da_ImFont_GetFallbackAdvanceX     = float function(const ImFont* font);
     alias da_ImFont_GetFallbackChar         = ImWchar function(const ImFont* font);
     alias da_ImFont_GetConfigDataCount      = short function(const ImFont* font);
     alias da_ImFont_GetConfigData           = ImFontConfig* function(ImFont* font);
@@ -551,7 +546,7 @@ extern(C) @nogc nothrow
     alias da_ImFont_GetDescent              = float function(const ImFont* font);
     alias da_ImFont_GetMetricsTotalSurface  = int function(const ImFont* font);
 
-    alias da_ImFont_Clear                   =  void function(ImFont* font);
+    alias da_ImFont_ClearOutputData         = void function(const ImFont* font);
     alias da_ImFont_BuildLookupTable        = void function(ImFont* font);
     alias da_ImFont_FindGlyph               = const ImFont_Glyph* function(const ImFont* font, ImWchar c);
     alias da_ImFont_SetFallbackChar         = void function(ImFont* font, ImWchar c);
@@ -584,14 +579,15 @@ __gshared
     da_igNewFrame igNewFrame;
     da_igRender igRender;
     da_igShutdown igShutdown;
-    da_igShowTestWindow igShowTestWindow;
+    da_igShowDemoWindow igShowDemoWindow;
     da_igShowMetricsWindow igShowMetricsWindow;
     da_igShowStyleEditor igShowStyleEditor;
+    da_igShowStyleSelector igShowStyleSelector;
+    da_igShowFontSelector igShowFontSelector;
     da_igShowUserGuide igShowUserGuide;
 
     // Window
     da_igBegin igBegin;
-    da_igBegin2 igBegin2;
     da_igEnd igEnd;
     da_igBeginChild igBeginChild;
     da_igBeginChildEx igBeginChildEx;
@@ -611,11 +607,9 @@ __gshared
     da_igSetWindowFontScale igSetWindowFontScale;
 
     da_igSetNextWindowPos igSetNextWindowPos;
-    da_igSetNextWindowPosCenter igSetNextWindowPosCenter;
     da_igSetNextWindowSize igSetNextWindowSize;
     da_igSetNextWindowSizeConstraints igSetNextWindowSizeConstraints;
     da_igSetNextWindowContentSize igSetNextWindowContentSize;
-    da_igSetNextWindowContentWidth igSetNextWindowContentWidth;
     da_igSetNextWindowCollapsed igSetNextWindowCollapsed;
     da_igSetNextWindowFocus igSetNextWindowFocus;
     da_igSetWindowPos igSetWindowPos;
@@ -683,10 +677,10 @@ __gshared
     da_igGetCursorStartPos igGetCursorStartPos;
     da_igGetCursorScreenPos igGetCursorScreenPos;
     da_igSetCursorScreenPos igSetCursorScreenPos;
-    da_igAlignFirstTextHeightToWidgets igAlignFirstTextHeightToWidgets;
+    da_igAlignTextToFramePadding igAlignTextToFramePadding;
     da_igGetTextLineHeight igGetTextLineHeight;
     da_igGetTextLineHeightWithSpacing igGetTextLineHeightWithSpacing;
-    da_igGetItemsLineHeightWithSpacing igGetItemsLineHeightWithSpacing;
+    da_igGetFrameHeightWithSpacing igGetFrameHeightWithSpacing;
 
     da_igColumns igColumns;
     da_igNextColumn igNextColumn;
@@ -847,7 +841,6 @@ __gshared
     da_igPopClipRect igPopClipRect;
 
     da_igIsItemHovered igIsItemHovered;
-    da_igIsItemRectHovered igIsItemRectHovered;
     da_igIsItemActive igIsItemActive;
     da_igIsItemClicked igIsItemClicked;
     da_igIsItemVisible igIsItemVisible;
@@ -859,10 +852,6 @@ __gshared
     da_igSetItemAllowOverlap igSetItemAllowOverlap;
     da_igIsWindowFocused igIsWindowFocused;
     da_igIsWindowHovered igIsWindowHovered;
-    da_igIsWindowRectHovered igIsWindowRectHovered;
-    da_igIsRootWindowFocused igIsRootWindowFocused;
-    da_igIsRootWindowOrAnyChildFocused igIsRootWindowOrAnyChildFocused;
-    da_igIsRootWindowOrAnyChildHovered igIsRootWindowOrAnyChildHovered;
     da_igIsAnyWindowHovered igIsAnyWindowHovered;
     da_igIsRectVisible igIsRectVisible;
     da_igIsRectVisible2 igIsRectVisible2;
@@ -892,6 +881,7 @@ __gshared
     da_igIsMouseReleased igIsMouseReleased;
     da_igIsMouseDragging igIsMouseDragging;
     da_igIsMouseHoveringRect igIsMouseHoveringRect;
+    da_igIsMousePosValid igIsMousePosValid;
     da_igGetMousePos igGetMousePos;
     da_igGetMousePosOnOpeningCurrentPopup igGetMousePosOnOpeningCurrentPopup;
     da_igGetMouseDragDelta igGetMouseDragDelta;
@@ -940,8 +930,8 @@ __gshared
     da_ImGuiTextBuffer_empty ImGuiTextBuffer_empty;
     da_ImGuiTextBuffer_clear ImGuiTextBuffer_clear;
     da_ImGuiTextBuffer_c_str ImGuiTextBuffer_c_str;
-    da_ImGuiTextBuffer_append ImGuiTextBuffer_append;
-    da_ImGuiTextBuffer_appendv ImGuiTextBuffer_appendv;
+    da_ImGuiTextBuffer_appendf ImGuiTextBuffer_appendf;
+    da_ImGuiTextBuffer_appendfv ImGuiTextBuffer_appendfv;
 
     // ImGuiStorage
     da_ImGuiStorage_Create ImGuiStorage_Create;
@@ -1080,7 +1070,7 @@ __gshared
     da_ImFont_GetDisplayOffset              ImFont_GetDisplayOffset;
     da_ImFont_GetFallbackGlyph              ImFont_GetFallbackGlyph;
     da_ImFont_SetFallbackGlyph              ImFont_SetFallbackGlyph;
-    da_ImFont_GetFallbackXAdvance           ImFont_GetFallbackXAdvance;
+    da_ImFont_GetFallbackAdvanceX           ImFont_GetFallbackAdvanceX;
     da_ImFont_GetFallbackChar               ImFont_GetFallbackChar;
     da_ImFont_GetConfigDataCount            ImFont_GetConfigDataCount;
     da_ImFont_GetConfigData                 ImFont_GetConfigData;
@@ -1089,7 +1079,7 @@ __gshared
     da_ImFont_GetDescent                    ImFont_GetDescent;
     da_ImFont_GetMetricsTotalSurface        ImFont_GetMetricsTotalSurface;
 
-    da_ImFont_Clear                         ImFont_Clear;
+    da_ImFont_ClearOutputData               ImFont_ClearOutputData;
     da_ImFont_BuildLookupTable              ImFont_BuildLookupTable;
     da_ImFont_FindGlyph                     ImFont_FindGlyph;
     da_ImFont_SetFallbackChar               ImFont_SetFallbackChar;
