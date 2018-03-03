@@ -54,7 +54,9 @@ alias int ImGuiStyleVar;          // a variable identifier for styling    // enu
 alias int ImGuiKey;               // a key identifier (ImGui-side enum)   // enum ImGuiKey_
 alias int ImGuiColorEditFlags;    // color edit flags for Color*()        // enum ImGuiColorEditFlags_
 alias int ImGuiMouseCursor;       // a mouse cursor identifier            // enum ImGuiMouseCursor_
-alias int ImGuiWindowFlags;       // window flags for Begin*()            // enum ImGuiWindowFlags_
+alias int ImGuiWindowFlags;       // window flags for Begin()             // enum ImGuiWindowFlags_
+alias int ImGuiFocusedFlags;      // focus flags for IsWindowFocused()    // enum ImGuiFocusedFlags_
+alias int ImGuiHoveredFlags;      // flags: for IsItemHovered() etc.      // enum ImGuiHoveredFlags_
 alias int ImGuiCond;              // condition flags for Set*()           // enum ImGuiCond_
 alias int ImGuiColumnsFlags;      // flags for *Columns*()                // enum ImGuiColumnsFlags_
 alias int ImGuiInputTextFlags;    // flags for InputText*()               // enum ImGuiInputTextFlags_
@@ -113,6 +115,26 @@ enum
 
 enum
 {
+    ImGuiFocusedFlags_ChildWindows                  = 1 << 0,   // IsWindowFocused(): Return true if any children of the window is focused
+    ImGuiFocusedFlags_RootWindow                    = 1 << 1,   // IsWindowFocused(): Test from root window (top most parent of the current hierarchy)
+    ImGuiFocusedFlags_RootAndChildWindows           = ImGuiFocusedFlags_RootWindow | ImGuiFocusedFlags_ChildWindows
+}
+
+enum
+{
+    ImGuiHoveredFlags_Default                       = 0,        // Return true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
+    ImGuiHoveredFlags_ChildWindows                  = 1 << 0,   // IsWindowHovered() only: Return true if any children of the window is hovered
+    ImGuiHoveredFlags_RootWindow                    = 1 << 1,   // IsWindowHovered() only: Test from root window (top most parent of the current hierarchy)
+    ImGuiHoveredFlags_AllowWhenBlockedByPopup       = 1 << 2,   // Return true even if a popup window is normally blocking access to this item/window
+    //ImGuiHoveredFlags_AllowWhenBlockedByModal     = 1 << 3,   // Return true even if a modal popup window is normally blocking access to this item/window. FIXME-TODO: Unavailable yet.
+    ImGuiHoveredFlags_AllowWhenBlockedByActiveItem  = 1 << 4,   // Return true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
+    ImGuiHoveredFlags_AllowWhenOverlapped           = 1 << 5,   // Return true even if the position is overlapped by another window
+    ImGuiHoveredFlags_RectOnly                      = ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_AllowWhenOverlapped,
+    ImGuiHoveredFlags_RootAndChildWindows           = ImGuiHoveredFlags_RootWindow | ImGuiHoveredFlags_ChildWindows
+}
+
+enum
+{
     // Default: 0
     ImGuiInputTextFlags_CharsDecimal        = 1 << 0,   // Allow 0123456789.+-*/
     ImGuiInputTextFlags_CharsHexadecimal    = 1 << 1,   // Allow 0123456789ABCDEFabcdef
@@ -138,7 +160,7 @@ enum
 {
     ImGuiTreeNodeFlags_Selected             = 1 << 0,   // Draw as selected
     ImGuiTreeNodeFlags_Framed               = 1 << 1,   // Full colored frame (e.g. for CollapsingHeader)
-    ImGuiTreeNodeFlags_AllowOverlapMode     = 1 << 2,   // Hit testing to allow subsequent widgets to overlap this one
+    ImGuiTreeNodeFlags_AllowItemOverlap     = 1 << 2,   // Hit testing to allow subsequent widgets to overlap this one
     ImGuiTreeNodeFlags_NoTreePushOnOpen     = 1 << 3,   // Don't do a TreePush() when open (e.g. for CollapsingHeader) = no extra indent nor pushing on ID stack
     ImGuiTreeNodeFlags_NoAutoOpenOnLog      = 1 << 4,   // Don't automatically and temporarily open node when Logging is active (by default logging will automatically open tree nodes)
     ImGuiTreeNodeFlags_DefaultOpen          = 1 << 5,   // Default node to be open
@@ -187,23 +209,22 @@ enum
 {
     ImGuiCol_Text,
     ImGuiCol_TextDisabled,
-    ImGuiCol_WindowBg,
-    ImGuiCol_ChildWindowBg,
-    ImGuiCol_PopupBg,
+    ImGuiCol_WindowBg,              // Background of normal windows
+    ImGuiCol_ChildBg,               // Background of child windows
+    ImGuiCol_PopupBg,               // Background of popups, menus, tooltips windows
     ImGuiCol_Border,
     ImGuiCol_BorderShadow,
     ImGuiCol_FrameBg,               // Background of checkbox, radio button, plot, slider, text input
     ImGuiCol_FrameBgHovered,
     ImGuiCol_FrameBgActive,
     ImGuiCol_TitleBg,
-    ImGuiCol_TitleBgCollapsed,
     ImGuiCol_TitleBgActive,
+    ImGuiCol_TitleBgCollapsed,
     ImGuiCol_MenuBarBg,
     ImGuiCol_ScrollbarBg,
     ImGuiCol_ScrollbarGrab,
     ImGuiCol_ScrollbarGrabHovered,
     ImGuiCol_ScrollbarGrabActive,
-    ImGuiCol_ComboBg,
     ImGuiCol_CheckMark,
     ImGuiCol_SliderGrab,
     ImGuiCol_SliderGrabActive,
@@ -228,6 +249,7 @@ enum
     ImGuiCol_PlotHistogramHovered,
     ImGuiCol_TextSelectedBg,
     ImGuiCol_ModalWindowDarkening,  // darken entire screen when a modal window is active
+    ImGuiCol_DragDropTarget,
     ImGuiCol_COUNT
 }
 
@@ -236,10 +258,15 @@ enum
     ImGuiStyleVar_Alpha,               // float     Alpha
     ImGuiStyleVar_WindowPadding,       // ImVec2    WindowPadding
     ImGuiStyleVar_WindowRounding,      // float     WindowRounding
+    ImGuiStyleVar_WindowBorderSize,    // float     WindowBorderSize
     ImGuiStyleVar_WindowMinSize,       // ImVec2    WindowMinSize
-    ImGuiStyleVar_ChildWindowRounding, // float     ChildWindowRounding
+    ImGuiStyleVar_ChildRounding,       // float     ChildRounding
+    ImGuiStyleVar_ChildBorderSize,     // float     ChildBorderSize
+    ImGuiStyleVar_PopupRounding,       // float     PopupRounding
+    ImGuiStyleVar_PopupBorderSize,     // float     PopupBorderSize
     ImGuiStyleVar_FramePadding,        // ImVec2    FramePadding
     ImGuiStyleVar_FrameRounding,       // float     FrameRounding
+    ImGuiStyleVar_FrameBorderSize,     // float     FrameBorderSize
     ImGuiStyleVar_ItemSpacing,         // ImVec2    ItemSpacing
     ImGuiStyleVar_ItemInnerSpacing,    // ImVec2    ItemInnerSpacing
     ImGuiStyleVar_IndentSpacing,       // float     IndentSpacing
@@ -302,12 +329,17 @@ struct ImGuiStyle
 {
     float       Alpha = 1.0f;                         // Global alpha applies to everything in ImGui
     ImVec2      WindowPadding = ImVec2(8,8);          // Padding within a window
+    float       WindowRounding = 7.0f;                // Radius of window corners rounding. Set to 0.0f to have rectangular windows
+    float       WindowBorderSize = 0.0f;              // Thickness of border around windows. Generally set to 0.0f or 1.0f. (Other values are not well tested and more CPU/GPU costly)
     ImVec2      WindowMinSize = ImVec2(32,32);        // Minimum window size
-    float       WindowRounding = 9.0f;                // Radius of window corners rounding. Set to 0.0f to have rectangular windows
     ImVec2      WindowTitleAlign = ImVec2(0.0f,0.5f); // Alignment for title bar text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered.
-    float       ChildWindowRounding = 0.0f;           // Radius of child window corners rounding. Set to 0.0f to have rectangular windows
+    float       ChildRounding = 0.0f;                 // Radius of child window corners rounding. Set to 0.0f to have rectangular windows
+    float       ChildBorderSize = 1.0f;               // Thickness of border around child windows. Generally set to 0.0f or 1.0f. Other values not well tested.
+    float       PopupRounding = 0.0f;                 // Radius of popup window corners rounding. Set to 0.0f to have rectangular child windows
+    float       PopupBorderSize = 1.0f;               // Thickness of border around popup or tooltip windows. Generally set to 0.0f or 1.0f. Other values not well tested.
     ImVec2      FramePadding = ImVec2(4,3);           // Padding within a framed rectangle (used by most widgets)
     float       FrameRounding = 0.0f;                 // Radius of frame corners rounding. Set to 0.0f to have rectangular frame (used by most widgets).
+    float       FrameBorderSize = 0.0f;               // Thickness of border around frames. Generally set to 0.0f or 1.0f. Other values not well tested.
     ImVec2      ItemSpacing = ImVec2(8,4);            // Horizontal and vertical spacing between widgets/lines
     ImVec2      ItemInnerSpacing = ImVec2(4,4);       // Horizontal and vertical spacing between within elements of a composed widget (e.g. a slider and its label)
     ImVec2      TouchExtraPadding = ImVec2(0,0);      // Expand reactive bounding box for touch-based system where touch position is not accurate enough. Unfortunately we don't sort widgets so priority on overlap will always be given to the first widget. So don't grow this too much!
@@ -321,7 +353,7 @@ struct ImGuiStyle
     ImVec2      DisplayWindowPadding = ImVec2(22,22); // Window positions are clamped to be visible within the display area by at least this amount. Only covers regular windows.
     ImVec2      DisplaySafeAreaPadding = ImVec2(4,4); // If you cannot see the edge of your screen (e.g. on a TV) increase the safe area padding. Covers popups/tooltips as well regular windows.
     bool        AntiAliasedLines = true;              // Enable anti-aliasing on lines/borders. Disable if you are really tight on CPU/GPU.
-    bool        AntiAliasedShapes = true;             // Enable anti-aliasing on filled shapes (rounded rectangles, circles, etc.)
+    bool        AntiAliasedFill = true;             // Enable anti-aliasing on filled shapes (rounded rectangles, circles, etc.)
     float       CurveTessellationTol = 1.25f;         // Tessellation tolerance. Decrease for highly tessellated curves (higher quality, more polygons), increase to reduce quality.
     ImVec4[ImGuiCol_COUNT] Colors = [
         ImVec4(0.90f, 0.90f, 0.90f, 1.00f),
@@ -452,6 +484,7 @@ struct ImGuiIO
     bool        WantCaptureMouse;           // Mouse is hovering a window or widget is active (= ImGui will use your mouse input)
     bool        WantCaptureKeyboard;        // Widget is active (= ImGui will use your keyboard input)
     bool        WantTextInput;              // Some text input widget is active, which will read input characters from the InputCharacters array.
+    bool        WantMoveMouse;              // [BETA-NAV] MousePos has been altered, back-end should reposition mouse on next frame. Set only when 'NavMovesMouse=true'.
     float       Framerate;                  // Framerate estimation, in frame per second. Rolling average estimation based on IO.DeltaTime over 120 frames
     int         MetricsAllocs;              // Number of active memory allocations
     int         MetricsRenderVertices;      // Vertices processed during last call to Render()
@@ -518,7 +551,7 @@ extern(C):
         this(this) {
             auto s = ImGuiTextBuffer_c_str(buffer);
             buffer = ImGuiTextBuffer_Create();
-            ImGuiTextBuffer_append(buffer, "%s", s);
+            ImGuiTextBuffer_appendf(buffer, "%s", s);
         }
         ~this() { if(buffer) ImGuiTextBuffer_Destroy(buffer); }
         void init() { if(!buffer) buffer = ImGuiTextBuffer_Create(); }
@@ -528,17 +561,16 @@ extern(C):
         int size() const { if(!buffer) return 0; return ImGuiTextBuffer_size(buffer); }
         bool empty() { if(!buffer) return true; return ImGuiTextBuffer_empty(buffer); }
         void clear() { init(); return ImGuiTextBuffer_clear(buffer); }
-        const(char)* c_str() const { if(!buffer) return begin(); return ImGuiTextBuffer_c_str(buffer); }
-        void appendv(const(char)* fmt, va_list args) {
+        void appendfv(const(char)* fmt, va_list args) {
             init();
-            return ImGuiTextBuffer_appendv(buffer, fmt, args);
+            return ImGuiTextBuffer_appendfv(buffer, fmt, args);
         }
     }
 
-    void append(const(char)* fmt, ...) {
+    void appendf(const(char)* fmt, ...) {
         va_list args;
         va_start(args, fmt);
-        appendv(fmt, args);
+        appendfv(fmt, args);
         va_end(args);
     }
 }

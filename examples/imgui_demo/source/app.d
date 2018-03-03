@@ -11,8 +11,8 @@ import imgui_demo;
 
 GLFWwindow* window;
 float[3] clear_color = [0.3f, 0.4f, 0.8f];
-bool showDTestWindow;
-bool showOrgTestWindow;
+bool showDDemoWindow;
+bool showOrgDemoWindow;
 
 void main(string[] argv) {
 
@@ -33,15 +33,15 @@ void main(string[] argv) {
 		igImplGlfwGL3_NewFrame();
 
 		// contents
-		if(igButton("RUN imgui_demo (D-lang version)")) showDTestWindow = !showDTestWindow;
-		if(igButton("RUN imgui_demo (C++ version)")) showOrgTestWindow = !showOrgTestWindow;
-		if(showDTestWindow) {
+		if(igButton("RUN imgui_demo (D-lang version)")) showDDemoWindow = !showDDemoWindow;
+		if(igButton("RUN imgui_demo (C++ version)")) showOrgDemoWindow = !showOrgDemoWindow;
+		if(showDDemoWindow) {
 			igSetNextWindowPos(ImVec2(660, 30), ImGuiCond_FirstUseEver);
-			imgui_demo.igShowTestWindow(&showDTestWindow);
+			imgui_demo.igShowDemoWindow(&showDDemoWindow);
 		}
-		if(showOrgTestWindow) {
+		if(showOrgDemoWindow) {
 			igSetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
-			derelict.imgui.imgui.igShowTestWindow(&showOrgTestWindow);
+			derelict.imgui.imgui.igShowDemoWindow(&showOrgDemoWindow);
 		}
 
 		// Rendering

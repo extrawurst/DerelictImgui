@@ -5,8 +5,8 @@ module imgui_demo;
 
 // Message to the person tempted to delete this file when integrating ImGui into their code base:
 // Don't do it! Do NOT remove this file from your project! It is useful reference code that you and other users will want to refer to.
-// Everything in this file will be stripped out by the linker if you don't call igShowTestWindow().
-// During development, you can call igShowTestWindow() in your code to learn about various features of ImGui. Have it wired in a debug menu!
+// Everything in this file will be stripped out by the linker if you don't call igShowDemoWindow().
+// During development, you can call igShowDemoWindow() in your code to learn about various features of ImGui. Have it wired in a debug menu!
 // Removing this file from your project is hindering access to documentation for everyone in your team, likely leading you to poorer usage of the library.
 // Note that you can #define IMGUI_DISABLE_TEST_WINDOWS in imconfig.h for the same effect.
 // If you want to link core ImGui in your public builds but not those test windows, #define IMGUI_DISABLE_TEST_WINDOWS in imconfig.h and those functions will be empty.
@@ -23,6 +23,7 @@ module imgui_demo;
 import derelict.imgui.imgui;
 
 import std.string;
+import std.format;
 import std.conv : to;
 import std.algorithm : max;
 import std.algorithm.mutation : remove;
@@ -68,27 +69,27 @@ void ShowHelpMarker(string desc)
 void igShowUserGuide()
 {
     igBulletText("Double-click on title bar to collapse window.");
-    igBulletText("Click and drag on lower right corner to resize window.");
+    igBulletText("Click and drag on lower right corner to resize window\n(double-click to auto fit window to its contents).");
     igBulletText("Click and drag on any empty space to move window.");
-    igBulletText("Mouse Wheel to scroll.");
+    igBulletText("TAB/SHIFT+TAB to cycle through keyboard editable fields.");
+    igBulletText("CTRL+Click on a slider or drag box to input value as text.");
     if (igGetIO().FontAllowUserScaling)
         igBulletText("CTRL+Mouse Wheel to zoom window contents.");
-    igBulletText("TAB/SHIFT+TAB to cycle through keyboard editable fields.");
-    igBulletText("CTRL+Click on a slider or drag box to input text.");
-    igBulletText(
-        "While editing text:\n" ~
-        "- Hold SHIFT or use mouse to select text\n" ~
-        "- CTRL+Left/Right to word jump\n" ~
-        "- CTRL+A or double-click to select all\n" ~
-        "- CTRL+X,CTRL+C,CTRL+V clipboard\n" ~
-        "- CTRL+Z,CTRL+Y undo/redo\n" ~
-        "- ESCAPE to revert\n" ~
-        "- You can apply arithmetic operators +,*,/ on numerical values.\n" ~
-        "  Use +- to subtract.\n");
+    igBulletText("Mouse Wheel to scroll.");
+    igBulletText("While editing text:\n");
+    igIndent();
+    igBulletText("Hold SHIFT or use mouse to select text.");
+    igBulletText("CTRL+Left/Right to word jump.");
+    igBulletText("CTRL+A or double-click to select all.");
+    igBulletText("CTRL+X,CTRL+C,CTRL+V to use clipboard.");
+    igBulletText("CTRL+Z,CTRL+Y to undo/redo.");
+    igBulletText("ESCAPE to revert.");
+    igBulletText("You can apply arithmetic operators +,*,/ on numerical values.\nUse +- to subtract.");
+    igUnindent();
 }
 
 // Demonstrate most ImGui features (big function!)
-void igShowTestWindow(bool* p_open)
+void igShowDemoWindow(bool* p_open)
 {
     // Examples apps
     static bool show_app_main_menu_bar = false;
@@ -123,7 +124,7 @@ void igShowTestWindow(bool* p_open)
     if (show_app_style_editor) { igBegin("Style Editor", &show_app_style_editor); igShowStyleEditor(); igEnd(); }
     if (show_app_about)
     {
-        igBegin("About ImGui", &show_app_about, ImGuiWindowFlags_AlwaysAutoResize);
+        igBegin("About Dear ImGui", &show_app_about, ImGuiWindowFlags_AlwaysAutoResize);
         igText("dear imgui, %s", igGetVersion());
         igSeparator();
         igText("By Omar Cornut and all github contributors.");
@@ -138,6 +139,7 @@ void igShowTestWindow(bool* p_open)
     static bool no_scrollbar = false;
     static bool no_collapse = false;
     static bool no_menu = false;
+    static bool no_close = false;
 
     // Demonstrate the various window flags. Typically you would just use the default.
     ImGuiWindowFlags window_flags = 0;
@@ -148,6 +150,8 @@ void igShowTestWindow(bool* p_open)
     if (no_scrollbar) window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (no_collapse)  window_flags |= ImGuiWindowFlags_NoCollapse;
     if (!no_menu)     window_flags |= ImGuiWindowFlags_MenuBar;
+    if (no_close)     p_open = null;
+
     igSetNextWindowSize(ImVec2(550,680), ImGuiCond_FirstUseEver);
     if (!igBegin("[D]ImGui Demo", p_open, window_flags))
     {
@@ -197,19 +201,20 @@ void igShowTestWindow(bool* p_open)
     igSpacing();
     if (igCollapsingHeader("Help"))
     {
-        igTextWrapped("This window is being created by the ShowTestWindow() function. Please refer to the code for programming reference.\n\nUser Guide:");
+        igTextWrapped("This window is being created by the ShowDemoWindow() function. Please refer to the code in imgui_demo.d for programming reference.\n\n");
+        igText("USER GUIDE:");
         igShowUserGuide();
     }
 
     if (igCollapsingHeader("Window options"))
     {
         igCheckbox("No titlebar", &no_titlebar); igSameLine(150);
-        igCheckbox("No border", &no_border); igSameLine(300);
-        igCheckbox("No resize", &no_resize);
-        igCheckbox("No move", &no_move); igSameLine(150);
         igCheckbox("No scrollbar", &no_scrollbar); igSameLine(300);
-        igCheckbox("No collapse", &no_collapse);
         igCheckbox("No menu", &no_menu);
+        igCheckbox("No move", &no_move); igSameLine(150);
+        igCheckbox("No resize", &no_resize); igSameLine(300);
+        igCheckbox("No collapse", &no_collapse);
+        igCheckbox("No close", &no_close);
 
         if (igTreeNode("Style"))
         {
@@ -217,7 +222,7 @@ void igShowTestWindow(bool* p_open)
             igTreePop();
         }
 
-        if (igTreeNode("Logging"))
+        if (igTreeNode("Capture/Logging"))
         {
             igTextWrapped("The logging API redirects all text output so you can easily capture the content of a window or a block. Tree nodes can be automatically expanded. You can also call igLogText() to output directly to the log without a visual output.");
             igLogButtons();
@@ -421,14 +426,16 @@ void igShowTestWindow(bool* p_open)
         if (igTreeNode("Collapsing Headers"))
         {
             static bool closable_group = true;
+            igCheckbox("Enable extra group", &closable_group);
             if (igCollapsingHeader("Header"))
             {
-                igCheckbox("Enable extra group", &closable_group);
+                igText("IsItemHovered: %d", igIsItemHovered());
                 for (int i = 0; i < 5; i++)
                     igText("Some content %d", i);
             }
             if (igCollapsingHeaderEx("Header with a close button", &closable_group))
             {
+                igText("IsItemHovered: %d", igIsItemHovered());
                 for (int i = 0; i < 5; i++)
                     igText("More content %d", i);
             }
@@ -974,7 +981,7 @@ void igShowTestWindow(bool* p_open)
 
             igSameLine();
 
-            igPushStyleVar(ImGuiStyleVar_ChildWindowRounding, 5.0f);
+            igPushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
             igBeginChild("Sub2", ImVec2(0,300), true);
             igText("With border");
             igColumns(2);
@@ -1041,7 +1048,7 @@ void igShowTestWindow(bool* p_open)
             igTextColored(ImVec4(1,1,0,1), "Sailor");
 
             // Button
-            igAlignFirstTextHeightToWidgets();
+            igAlignTextToFramePadding();
             igText("Normal buttons"); igSameLine();
             igButton("Banana"); igSameLine();
             igButton("Apple"); igSameLine();
@@ -1168,7 +1175,7 @@ void igShowTestWindow(bool* p_open)
             igText("TEST"); igSameLine();
             igSmallButton("TEST##2");
 
-            igAlignFirstTextHeightToWidgets(); // If your line starts with text, call this to align it to upcoming widgets.
+            igAlignTextToFramePadding(); // If your line starts with text, call this to align it to upcoming widgets.
             igText("Text aligned to Widget"); igSameLine();
             igButton("Widget##1"); igSameLine();
             igText("Widget"); igSameLine();
@@ -1180,7 +1187,7 @@ void igShowTestWindow(bool* p_open)
             igSameLine(0.0f, spacing);
             if (igTreeNode("Node##1")) { for (int i = 0; i < 6; i++) igBulletText("Item %d..", i); igTreePop(); }    // Dummy tree data
 
-            igAlignFirstTextHeightToWidgets();         // Vertically align text node a bit lower so it'll be vertically centered with upcoming widget. Otherwise you can use SmallButton (smaller fit).
+            igAlignTextToFramePadding();         // Vertically align text node a bit lower so it'll be vertically centered with upcoming widget. Otherwise you can use SmallButton (smaller fit).
             bool node_open = igTreeNode("Node##2");  // Common mistake to avoid: if we want to SameLine after TreeNode we need to do it before we add child content.
             igSameLine(0.0f, spacing); igButton("Button##2");
             if (node_open) { for (int i = 0; i < 6; i++) igBulletText("Item %d..", i); igTreePop(); }   // Dummy tree data
@@ -1190,7 +1197,7 @@ void igShowTestWindow(bool* p_open)
             igSameLine(0.0f, spacing);
             igBulletText("Bullet text");
 
-            igAlignFirstTextHeightToWidgets();
+            igAlignTextToFramePadding();
             igBulletText("Node");
             igSameLine(0.0f, spacing); igButton("Button##4");
 
@@ -1249,7 +1256,7 @@ void igShowTestWindow(bool* p_open)
             igSliderInt("Lines", &lines, 1, 15);
             igPushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
             igPushStyleVarVec(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 1.0f));
-            igBeginChild("scrolling", ImVec2(0, igGetItemsLineHeightWithSpacing()*7 + 30), true, ImGuiWindowFlags_HorizontalScrollbar);
+            igBeginChild("scrolling", ImVec2(0, igGetFrameHeightWithSpacing()*7 + 30), true, ImGuiWindowFlags_HorizontalScrollbar);
             for (int line = 0; line < lines; line++)
             {
                 // Display random stuff (for the sake of this trivial demo we are using basic Button+SameLine. If you want to create your own time line for a real application you may be better off 
@@ -1372,22 +1379,6 @@ void igShowTestWindow(bool* p_open)
                 igEndPopup();
             }
 
-            igSpacing();
-            igTextWrapped("Below we are testing adding menu items to a regular window. It's rather unusual but should work!");
-            igSeparator();
-            // NB: As a quirk in this very specific example, we want to differentiate the parent of this menu from the parent of the various popup menus above.
-            // To do so we are encloding the items in a PushID()/PopID() block to make them two different menusets. If we don't, opening any popup above and hovering our menu here
-            // would open it. This is because once a menu is active, we allow to switch to a sibling menu by just hovering on it, which is the desired behavior for regular menus.
-            igPushIDStr("foo");
-            igMenuItem("Menu item", "CTRL+M");
-            if (igBeginMenu("Menu inside a regular window"))
-            {
-                ShowExampleMenuFile();
-                igEndMenu();
-            }
-            igPopID();
-            igSeparator();
-
             igTreePop();
         }
 
@@ -1467,6 +1458,25 @@ void igShowTestWindow(bool* p_open)
                 igEndPopup();
             }
 
+            igTreePop();
+        }
+
+        if (igTreeNode("Menus inside a regular window"))
+        {
+            igTextWrapped("Below we are testing adding menu items to a regular window. It's rather unusual but should work!");
+            igSeparator();
+            // NB: As a quirk in this very specific example, we want to differentiate the parent of this menu from the parent of the various popup menus above.
+            // To do so we are encloding the items in a PushID()/PopID() block to make them two different menusets. If we don't, opening any popup above and hovering our menu here
+            // would open it. This is because once a menu is active, we allow to switch to a sibling menu by just hovering on it, which is the desired behavior for regular menus.
+            igPushIDStr("foo");
+            igMenuItem("Menu item", "CTRL+M");
+            if (igBeginMenu("Menu inside a regular window"))
+            {
+                ShowExampleMenuFile();
+                igEndMenu();
+            }
+            igPopID();
+            igSeparator();
             igTreePop();
         }
     }
@@ -1616,15 +1626,20 @@ void igShowTestWindow(bool* p_open)
 
         if (igTreeNode("Horizontal Scrolling"))
         {
-            igSetNextWindowContentWidth(1500);
-            igBeginChild("##scrollingregion", ImVec2(0, 120), false, ImGuiWindowFlags_HorizontalScrollbar);
+            igSetNextWindowContentSize(ImVec2(1500, .0f));
+            igBeginChild("##ScrollingRegion", ImVec2(0, igGetFontSize() * 20), false, ImGuiWindowFlags_HorizontalScrollbar);
             igColumns(10);
-            for (int i = 0; i < 20; i++)
-                for (int j = 0; j < 10; j++)
-                {
-                    igText("Line %d Column %d...", i, j);
-                    igNextColumn();
-                }
+            int ITEMS_COUNT = 2000;
+            ImGuiListClipper clipper = ImGuiListClipper(ITEMS_COUNT);  // Also demonstrate using the clipper for large list
+            while (clipper.Step())
+            {
+                for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+                    for (int j = 0; j < 10; j++)
+                    {
+                        igText("Line %d Column %d...", i, j);
+                        igNextColumn();
+                    }
+            }
             igColumns(1);
             igEndChild();
             igTreePop();
@@ -1664,15 +1679,19 @@ void igShowTestWindow(bool* p_open)
     {
         auto io = igGetIO();
         igCheckbox("io.MouseDrawCursor", &io.MouseDrawCursor);
-        igSameLine(); ShowHelpMarker("Request ImGui to render a mouse cursor for you in software. Note that a mouse cursor rendered via regular GPU rendering will feel more laggy than hardware cursor, but will be more in sync with your other visuals.");
+        igSameLine(); ShowHelpMarker("Request ImGui to render a mouse cursor for you in software. Note that a mouse cursor rendered via your application GPU rendering path will feel more laggy than hardware cursor, but will be more in sync with your other visuals.\n\nSome desktop applications may use both kinds of cursors (e.g. enable software cursor only when resizing/dragging something).");
 
         igText("WantCaptureMouse: %d", io.WantCaptureMouse);
         igText("WantCaptureKeyboard: %d", io.WantCaptureKeyboard);
         igText("WantTextInput: %d", io.WantTextInput);
+        igText("WantMoveMouse: %d", io.WantMoveMouse);
 
         if (igTreeNode("Keyboard & Mouse State"))
         {
-            igText("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
+            if (igIsMousePosValid())
+                igText("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
+            else
+                igText("Mouse pos: <INVALID>");
             igText("Mouse down:");     for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (io.MouseDownDuration[i] >= 0.0f)   { igSameLine(); igText("b%d (%.02f secs)", i, io.MouseDownDuration[i]); }
             igText("Mouse clicked:");  for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (igIsMouseClicked(i))          { igSameLine(); igText("b%d", i); }
             igText("Mouse dbl-clicked:"); for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (igIsMouseDoubleClicked(i)) { igSameLine(); igText("b%d", i); }
@@ -1740,9 +1759,69 @@ void igShowTestWindow(bool* p_open)
             igTreePop();
         }
 
+        if (igTreeNode("Focused & Hovered Test"))
+        {
+            static bool embed_all_inside_a_child_window = false;
+            igCheckbox("Embed everything inside a child window (for additional testing)", &embed_all_inside_a_child_window);
+            if (embed_all_inside_a_child_window)
+                igBeginChild("embeddingchild", ImVec2(0, igGetFontSize() * 25), true);
+
+            // Testing IsWindowFocused() function with its various flags (note that the flags can be combined)
+            igBulletText(
+                "IsWindowFocused() = %d\n" ~
+                "IsWindowFocused(_ChildWindows) = %d\n" ~
+                "IsWindowFocused(_ChildWindows|_RootWindow) = %d\n" ~
+                "IsWindowFocused(_RootWindow) = %d\n",
+                igIsWindowFocused(),
+                igIsWindowFocused(ImGuiHoveredFlags_ChildWindows),
+                igIsWindowFocused(ImGuiHoveredFlags_ChildWindows | ImGuiHoveredFlags_RootWindow),
+                igIsWindowFocused(ImGuiHoveredFlags_RootWindow));
+
+            // Testing IsWindowHovered() function with its various flags (note that the flags can be combined)
+            igBulletText(
+                "IsWindowHovered() = %d\n" ~
+                "IsWindowHovered(_AllowWhenBlockedByPopup) = %d\n" ~
+                "IsWindowHovered(_AllowWhenBlockedByActiveItem) = %d\n" ~
+                "IsWindowHovered(_ChildWindows) = %d\n" ~
+                "IsWindowHovered(_ChildWindows|_RootWindow) = %d\n" ~
+                "IsWindowHovered(_RootWindow) = %d\n",
+                igIsWindowHovered(),
+                igIsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup),
+                igIsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem),
+                igIsWindowHovered(ImGuiHoveredFlags_ChildWindows),
+                igIsWindowHovered(ImGuiHoveredFlags_ChildWindows | ImGuiHoveredFlags_RootWindow),
+                igIsWindowHovered(ImGuiHoveredFlags_RootWindow));
+
+            // Testing IsItemHovered() function (because BulletText is an item itself and that would affect the output of IsItemHovered, we pass all lines in a single items to shorten the code)
+            igButton("ITEM");
+            igBulletText(
+                "IsItemHovered() = %d\n" ~
+                "IsItemHovered(_AllowWhenBlockedByPopup) = %d\n" ~
+                "IsItemHovered(_AllowWhenBlockedByActiveItem) = %d\n" ~
+                "IsItemHovered(_AllowWhenOverlapped) = %d\n" ~
+                "IsItemhovered(_RectOnly) = %d\n",
+                igIsItemHovered(),
+                igIsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup),
+                igIsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem),
+                igIsItemHovered(ImGuiHoveredFlags_AllowWhenOverlapped),
+                igIsItemHovered(ImGuiHoveredFlags_RectOnly));
+
+            igBeginChild("child", ImVec2(0,50), true);
+            igText("This is another child window for testing IsWindowHovered() flags.");
+            igEndChild();
+
+            if (embed_all_inside_a_child_window)
+                igEndChild();
+
+            igTreePop();
+        }
+
         if (igTreeNode("Dragging"))
         {
             igTextWrapped("You can use igGetMouseDragDelta(0) to query for the dragged amount on any widget.");
+            for (int button = 0; button < 3; button++)
+                igText("IsMouseDragging(%d):\n  w/ default threshold: %d,\n  w/ zero threshold: %d\n  w/ large threshold: %d", 
+                    button, igIsMouseDragging(button), igIsMouseDragging(button, 0.0f), igIsMouseDragging(button, 20.0f));
             igButton("Drag Me");
             if (igIsItemActive())
             {
@@ -1753,6 +1832,9 @@ void igShowTestWindow(bool* p_open)
                 igCalcItemRectClosestPoint(&pos1, igGetIO().MousePos, true, -2.0f);
                 draw_list.ImDrawList_AddLine(pos1, io.MousePos, ImColor(igGetStyle().Colors[ImGuiCol_Button]).asImU32, 4.0f);
                 draw_list.ImDrawList_PopClipRect();
+
+                // Drag operations gets "unlocked" when the mouse has moved past a certain threshold (the default threshold is stored in io.MouseDragThreshold)
+                // You can request a lower or higher threshold using the second parameter of IsMouseDragging() and GetMouseDragDelta()
                 ImVec2 value_raw;
                 igGetMouseDragDelta(&value_raw, 0, 0.0f);
                 ImVec2 value_with_lock_threshold;
@@ -1765,13 +1847,16 @@ void igShowTestWindow(bool* p_open)
 
         if (igTreeNode("Mouse cursors"))
         {
+            const string[] mouse_cursors_names = [ "Arrow", "TextInput", "Move", "ResizeNS", "ResizeEW", "ResizeNESW", "ResizeNWSE" ];
+            assert(mouse_cursors_names.length == ImGuiMouseCursor_Count_);
+
+            igText("Current mouse cursor = %d: %s", igGetMouseCursor(), toStringz(mouse_cursors_names[igGetMouseCursor()]));
             igText("Hover to see mouse cursors:");
             igSameLine(); ShowHelpMarker("Your application can render a different mouse cursor based on what igGetMouseCursor() returns. If software cursor rendering (io.MouseDrawCursor) is set ImGui will draw the right cursor for you, otherwise your backend needs to handle it.");
             for (int i = 0; i < ImGuiMouseCursor_Count_; i++)
             {
-                char[32] label;
-                sprintf(label.ptr, "Mouse cursor %d", i);
-                igBullet(); igSelectable(label.ptr, false);
+                auto label = format!"Mouse cursor %d: %s"(i, mouse_cursors_names[i]);
+                igBullet(); igSelectable(toStringz(label), false);
                 if (igIsItemHovered())
                     igSetMouseCursor(i);
             }
@@ -1787,23 +1872,44 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
     ImGuiStyle* style = igGetStyle();
 
     // You can pass in a reference ImGuiStyle structure to compare to, revert to and save to (else it compares to the default style)
-    const ImGuiStyle default_style; // Default style
-    if (igButton("Revert Style"))
-        *style = ref_ ? *ref_ : default_style;
+    static ImGuiStyle ref_saved_style;
 
-    if (ref_)
-    {
-        igSameLine();
-        if (igButton("Save Style"))
-            *ref_ = *style;
-    }
+    // Default to using internal storage as reference
+    static bool init = true;
+    if (init && ref_ == null)
+        ref_saved_style = *style;
+    init = false;
+    if (ref_ == null)
+        ref_ = &ref_saved_style;
 
-    igPushItemWidth(igGetWindowWidth() * 0.55f);
+    igPushItemWidth(igGetWindowWidth() * 0.50f);
+
+    if (igShowStyleSelector("Colors##Selector"))
+        ref_saved_style = *style;
+    igShowFontSelector("Fonts##Selector");
+
+    // Simplified Settings
+    if (igSliderFloat("FrameRounding", &style.FrameRounding, 0.0f, 12.0f, "%.0f")) 
+        style.GrabRounding = style.FrameRounding; // Make GrabRounding always the same value as FrameRounding
+    { bool window_border = (style.WindowBorderSize > 0.0f); if (igCheckbox("WindowBorder", &window_border)) style.WindowBorderSize = window_border ? 1.0f : 0.0f; }
+    igSameLine();
+    { bool frame_border = (style.FrameBorderSize > 0.0f); if (igCheckbox("FrameBorder", &frame_border)) style.FrameBorderSize = frame_border ? 1.0f : 0.0f; }
+    igSameLine();
+    { bool popup_border = (style.PopupBorderSize > 0.0f); if (igCheckbox("PopupBorder", &popup_border)) style.PopupBorderSize = popup_border ? 1.0f : 0.0f; }
+
+    // Save/Revert button
+    if (igButton("Save Ref"))
+        *ref_ = ref_saved_style = *style;
+    igSameLine();
+    if (igButton("Revert Ref"))
+        *style = *ref_;
+    igSameLine();
+    ShowHelpMarker("Save/Revert in local non-persistent storage. Default Colors definition are not affected. Use \"Export Colors\" below to save them somewhere.");
 
     if (igTreeNode("Rendering"))
     {
         igCheckbox("Anti-aliased lines", &style.AntiAliasedLines); igSameLine(); ShowHelpMarker("When disabling anti-aliasing lines, you'll probably want to disable borders in your style as well.");
-        igCheckbox("Anti-aliased shapes", &style.AntiAliasedShapes);
+        igCheckbox("Anti-aliased fill", &style.AntiAliasedFill);
         igPushItemWidth(100);
         igDragFloat("Curve Tessellation Tolerance", &style.CurveTessellationTol, 0.02f, 0.10f, FLT_MAX, null, 2.0f);
         if (style.CurveTessellationTol < 0.0f) style.CurveTessellationTol = 0.10f;
@@ -1815,18 +1921,25 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
     if (igTreeNode("Settings"))
     {
         igSliderFloat2("WindowPadding", (&style.WindowPadding.x)[0..2], 0.0f, 20.0f, "%.0f");
-        igSliderFloat("WindowRounding", &style.WindowRounding, 0.0f, 16.0f, "%.0f");
-        igSliderFloat("ChildWindowRounding", &style.ChildWindowRounding, 0.0f, 16.0f, "%.0f");
+        igSliderFloat("PopupRounding", &style.PopupRounding, 0.0f, 16.0f, "%.0f");
         igSliderFloat2("FramePadding", (&style.FramePadding.x)[0..2], 0.0f, 20.0f, "%.0f");
-        igSliderFloat("FrameRounding", &style.FrameRounding, 0.0f, 16.0f, "%.0f");
         igSliderFloat2("ItemSpacing", (&style.ItemSpacing.x)[0..2], 0.0f, 20.0f, "%.0f");
         igSliderFloat2("ItemInnerSpacing", (&style.ItemInnerSpacing.x)[0..2], 0.0f, 20.0f, "%.0f");
-        igSliderFloat2("TouchExtraPadding", (&style.TouchExtraPadding.x)[0..2], 0.0f, 10.0f, "%.0f");
+        igSliderFloat2("TouchExtraPadding",(&style.TouchExtraPadding.x)[0..2], 0.0f, 10.0f, "%.0f");
         igSliderFloat("IndentSpacing", &style.IndentSpacing, 0.0f, 30.0f, "%.0f");
         igSliderFloat("ScrollbarSize", &style.ScrollbarSize, 1.0f, 20.0f, "%.0f");
-        igSliderFloat("ScrollbarRounding", &style.ScrollbarRounding, 0.0f, 16.0f, "%.0f");
         igSliderFloat("GrabMinSize", &style.GrabMinSize, 1.0f, 20.0f, "%.0f");
-        igSliderFloat("GrabRounding", &style.GrabRounding, 0.0f, 16.0f, "%.0f");
+        igText("BorderSize");
+        igSliderFloat("WindowBorderSize", &style.WindowBorderSize, 0.0f, 1.0f, "%.0f");
+        igSliderFloat("ChildBorderSize", &style.ChildBorderSize, 0.0f, 1.0f, "%.0f");
+        igSliderFloat("PopupBorderSize", &style.PopupBorderSize, 0.0f, 1.0f, "%.0f");
+        igSliderFloat("FrameBorderSize", &style.FrameBorderSize, 0.0f, 1.0f, "%.0f");
+        igText("Rounding");
+        igSliderFloat("WindowRounding", &style.WindowRounding, 0.0f, 14.0f, "%.0f");
+        igSliderFloat("ChildRounding", &style.ChildRounding, 0.0f, 16.0f, "%.0f");
+        igSliderFloat("FrameRounding", &style.FrameRounding, 0.0f, 12.0f, "%.0f");
+        igSliderFloat("ScrollbarRounding", &style.ScrollbarRounding, 0.0f, 12.0f, "%.0f");
+        igSliderFloat("GrabRounding", &style.GrabRounding, 0.0f, 12.0f, "%.0f");
         igText("Alignment");
         igSliderFloat2("WindowTitleAlign", (&style.WindowTitleAlign.x)[0..2], 0.0f, 1.0f, "%.2f");
         igSliderFloat2("ButtonTextAlign", (&style.ButtonTextAlign.x)[0..2], 0.0f, 1.0f, "%.2f"); igSameLine(); ShowHelpMarker("Alignment applies when a button is larger than its text content.");
@@ -1836,25 +1949,25 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
     if (igTreeNode("Colors"))
     {
         static int output_dest = 0;
-        static bool output_only_modified = false;
-        if (igButton("Copy Colors"))
+        static bool output_only_modified = true;
+        if (igButton("Export Unsaved"))
         {
             if (output_dest == 0)
                 igLogToClipboard();
             else
                 igLogToTTY();
-            igLogText("ImGuiStyle& style = igGetStyle();" ~ IM_NEWLINE);
+            igLogText("ImVec4* colors = igGetStyle().Colors;" ~ IM_NEWLINE);
             for (int i = 0; i < ImGuiCol_COUNT; i++)
             {
-                const ImVec4* col = &style.Colors[i];
-                const(char)* name = igGetStyleColorName(i);
-                if (!output_only_modified || memcmp(col, (ref_ ? &ref_.Colors[i] : &default_style.Colors[i]), ImVec4.sizeof) != 0)
-                    igLogText("style.Colors[ImGuiCol_%s]%*s= ImVec4(%.2ff, %.2ff, %.2ff, %.2ff);" ~ IM_NEWLINE, name, 22 - cast(int)strlen(name), "".ptr, col.x, col.y, col.z, col.w);
+                const ImVec4 *col = &style.Colors[i];
+                const char* name = igGetStyleColorName(i);
+                if (!output_only_modified || memcmp(cast(void*)col, cast(void*)&ref_.Colors[i], ImVec4.sizeof) != 0)
+                    igLogText("colors[ImGuiCol_%s]%*s= ImVec4(%.2ff, %.2ff, %.2ff, %.2ff);" ~ IM_NEWLINE, name, 23-strlen(name), "".ptr, col.x, col.y, col.z, col.w);
             }
             igLogFinish();
         }
         igSameLine(); igPushItemWidth(120); igCombo2("##output_type", &output_dest, "To Clipboard\0To TTY\0"); igPopItemWidth();
-        igSameLine(); igCheckbox("Only Modified Fields", &output_only_modified);
+        igSameLine(); igCheckbox("Only Modified Colors", &output_only_modified);
 
         igText("Tip: Left-click on colored square to open color picker,\nRight-click to open edit options menu.");
 
@@ -1866,20 +1979,24 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
         igRadioButton("Alpha", &alpha_flags, ImGuiColorEditFlags_AlphaPreview); igSameLine(); 
         igRadioButton("Both", &alpha_flags, ImGuiColorEditFlags_AlphaPreviewHalf);
 
-        igBeginChild("#colors", ImVec2(0, 300), true, ImGuiWindowFlags_AlwaysVerticalScrollbar);
+        igBeginChild("#colors", ImVec2(0, 300), true, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_AlwaysHorizontalScrollbar);
         igPushItemWidth(-160);
         for (int i = 0; i < ImGuiCol_COUNT; i++)
         {
-            const(char)* name = igGetStyleColorName(i);
+            const char* name = igGetStyleColorName(i);
             if (!filter.PassFilter(name))
                 continue;
             igPushIDInt(i);
-            igColorEdit4(name, (&style.Colors[i].x)[0..4], ImGuiColorEditFlags_AlphaBar | alpha_flags);
-            if (memcmp(&style.Colors[i], (ref_ ? &ref_.Colors[i] : &default_style.Colors[i]), ImVec4.sizeof) != 0)
+            igColorEdit4("##color", (&style.Colors[i].x)[0..4], ImGuiColorEditFlags_AlphaBar | alpha_flags);
+            if (memcmp(cast(void*)&style.Colors[i], cast(void*)&ref_.Colors[i], ImVec4.sizeof) != 0)
             {
-                igSameLine(); if (igButton("Revert")) style.Colors[i] = ref_ ? ref_.Colors[i] : default_style.Colors[i];
-                if (ref_) { igSameLine(); if (igButton("Save")) ref_.Colors[i] = style.Colors[i]; }
+                // Tips: in a real user application, you may want to merge and use an icon font into the main font, so instead of "Save"/"Revert" you'd use icons.
+                // Read the FAQ and extra_fonts/README.txt about using icon fonts. It's really easy and super convenient!
+                igSameLine(0.0f, style.ItemInnerSpacing.x); if (igButton("Save")) ref_.Colors[i] = style.Colors[i];
+                igSameLine(0.0f, style.ItemInnerSpacing.x); if (igButton("Revert")) style.Colors[i] = ref_.Colors[i];
             }
+            igSameLine(0.0f, style.ItemInnerSpacing.x);
+            igTextUnformatted(name);
             igPopID();
         }
         igPopItemWidth();
@@ -1889,7 +2006,6 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
     }
 
     bool fonts_opened = igTreeNodeStr("Fonts", "Fonts (%d)", ImFontAtlas_Fonts_size(igGetIO().Fonts));
-    igSameLine(); ShowHelpMarker("Tip: Load fonts with io.Fonts.AddFontFromFileTTF()\nbefore calling io.Fonts.GetTex* functions.");
     if (fonts_opened)
     {
         ImFontAtlas* atlas = igGetIO().Fonts;
@@ -1902,6 +2018,7 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
         for (int i = 0; i < ImFontAtlas_Fonts_size(igGetIO().Fonts); i++)
         {
             ImFont* font = ImFontAtlas_Fonts_index(atlas, i);
+            igPushIDPtr(cast(void*)font);
             bool font_details_opened = igTreeNodePtr(font, "Font %d: \'%s\', %.2f px, %d glyphs", i, ImFont_GetConfigData(font) ? &ImFont_GetConfigData(font)[0].Name[0] : "", ImFont_GetFontSize(font), ImFont_Glyphs_size(font));
             igSameLine(); if (igSmallButton("Set as default")) igGetIO().FontDefault = font;
             if (font_details_opened)
@@ -1915,9 +2032,8 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
                 igSameLine(); ShowHelpMarker("Note than the default embedded font is NOT meant to be scaled.\n\nFont are currently rendered into bitmaps at a given size at the time of building the atlas. You may oversample them to get some flexibility with scaling. You can also render at multiple sizes and select which one to use at runtime.\n\n(Glimmer of hope: the atlas system should hopefully be rewritten in the future to make scaling more natural and automatic.)");
                 igText("Ascent: %f, Descent: %f, Height: %f", ImFont_GetAscent(font), ImFont_GetDescent(font), ImFont_GetAscent(font) - ImFont_GetDescent(font));
                 igText("Fallback character: '%c' (%d)", ImFont_GetFallbackChar(font), ImFont_GetFallbackChar(font));
-                igText("Texture surface: %d pixels (approx) ~ %dx%d", ImFont_GetMetricsTotalSurface(font), cast(int)sqrtf(cast(float)ImFont_GetMetricsTotalSurface(font)), cast(int)sqrtf(cast(float)ImFont_GetMetricsTotalSurface(font)));
-                auto c = ImFont_GetConfigDataCount(font);
-                for (int config_i = 0; config_i < c; config_i++)
+                igText("Texture surface: %d pixels (approx) ~ %dx%d", ImFont_GetMetricsTotalSurface(font), sqrtf(ImFont_GetMetricsTotalSurface(font)), sqrtf(ImFont_GetMetricsTotalSurface(font)));
+                for (int config_i = 0; config_i < ImFont_GetConfigDataCount(font); config_i++)
                 {
                     ImFontConfig* cfg = &ImFont_GetConfigData(font)[config_i];
                     igBulletText("Input %d: \'%s\', Oversample: (%d,%d), PixelSnapH: %d", config_i, cfg.Name.ptr, cfg.OversampleH, cfg.OversampleV, cfg.PixelSnapH);
@@ -1951,9 +2067,9 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
                                     igBeginTooltip();
                                     igText("Codepoint: U+%04X", base+n);
                                     igSeparator();
-                                    igText("XAdvance+1: %.1f", glyph.XAdvance);
-                                    igText("Pos: (%.2f,%.2f)->(%.2f,%.2f)", glyph.X0, glyph.Y0, glyph.X1, glyph.Y1);
-                                    igText("UV: (%.3f,%.3f)->(%.3f,%.3f)", glyph.U0, glyph.V0, glyph.U1, glyph.V1);
+                                    igText("XAdvance: %.1f", glyph.XAdvance);
+                                    igText("Pos: (%.2f,%.2f).(%.2f,%.2f)", glyph.X0, glyph.Y0, glyph.X1, glyph.Y1);
+                                    igText("UV: (%.3f,%.3f).(%.3f,%.3f)", glyph.U0, glyph.V0, glyph.U1, glyph.V1);
                                     igEndTooltip();
                                 }
                             }
@@ -1967,6 +2083,7 @@ void igShowStyleEditor(ImGuiStyle* ref_ = null)
                 }
                 igTreePop();
             }
+            igPopID();
         }
         static float window_scale = 1.0f;
         igDragFloat("this window scale", &window_scale, 0.005f, 0.3f, 2.0f, "%.1f");              // scale only this window
@@ -2048,8 +2165,17 @@ void ShowExampleMenuFile()
     }
     if (igBeginMenu("Colors"))
     {
+        igPushStyleVarVec(ImGuiStyleVar_FramePadding, ImVec2(0,0));
         for (int i = 0; i < ImGuiCol_COUNT; i++)
-            igMenuItem(igGetStyleColorName(cast(ImGuiCol)i));
+        {
+            const char* name = igGetStyleColorName(i);
+            ImVec4 col;
+            igGetStyleColorVec4(&col, cast(ImGuiCol)i);
+            igColorButton(name, col);
+            igSameLine();
+            igMenuItem(name);
+        }
+        igPopStyleVar();
         igEndMenu();
     }
     if (igBeginMenu("Disabled", false)) // Disabled
@@ -2087,13 +2213,16 @@ void ShowExampleAppConstrainedResize(bool* p_open)
         static void Step(ImGuiSizeConstraintCallbackData* data)   { float step = cast(float)cast(int)cast(intptr_t)data.UserData; data.DesiredSize = ImVec2(cast(int)(data.DesiredSize.x / step + 0.5f) * step, cast(int)(data.DesiredSize.y / step + 0.5f) * step); }
     }
 
+    static bool auto_resize = false;
     static int type = 0;
+    static int display_lines = 10;
     if (type == 0) igSetNextWindowSizeConstraints(ImVec2(-1, 0),    ImVec2(-1, FLT_MAX));      // Vertical only
     if (type == 1) igSetNextWindowSizeConstraints(ImVec2(0, -1),    ImVec2(FLT_MAX, -1));      // Horizontal only
     if (type == 2) igSetNextWindowSizeConstraints(ImVec2(100, 100), ImVec2(FLT_MAX, FLT_MAX)); // Width > 100, Height > 100
-    if (type == 3) igSetNextWindowSizeConstraints(ImVec2(300, 0),   ImVec2(400, FLT_MAX));     // Width 300-400
-    if (type == 4) igSetNextWindowSizeConstraints(ImVec2(0, 0),     ImVec2(FLT_MAX, FLT_MAX), &CustomConstraints.Square);          // Always Square
-    if (type == 5) igSetNextWindowSizeConstraints(ImVec2(0, 0),     ImVec2(FLT_MAX, FLT_MAX), &CustomConstraints.Step, cast(void*)100);// Fixed Step
+    if (type == 3) igSetNextWindowSizeConstraints(ImVec2(400, 0),   ImVec2(500, FLT_MAX));     // Width 300-400
+    if (type == 4) igSetNextWindowSizeConstraints(ImVec2(-1, 400),  ImVec2(-1, 500), &CustomConstraints.Square);          // Always Square
+    if (type == 5) igSetNextWindowSizeConstraints(ImVec2(0, 0),     ImVec2(FLT_MAX, FLT_MAX), &CustomConstraints.Square);          // Always Square
+    if (type == 6) igSetNextWindowSizeConstraints(ImVec2(0, 0),     ImVec2(FLT_MAX, FLT_MAX), &CustomConstraints.Step, cast(void*)100);// Fixed Step
 
     if (igBegin("Example: Constrained Resize", p_open))
     {
@@ -2102,16 +2231,21 @@ void ShowExampleAppConstrainedResize(bool* p_open)
             "Resize vertical only",
             "Resize horizontal only",
             "Width > 100, Height > 100",
-            "Width 300-400",
+            "Width 400-500",
+            "Height 400-500",
             "Custom: Always Square",
             "Custom: Fixed Steps (100)",
         ];
-        igCombo("Constraint", &type, desc.ptr, cast(int)IM_ARRAYSIZE(desc));
-        if (igButton("200x200")) igSetWindowSize(ImVec2(200,200)); igSameLine();
-        if (igButton("500x500")) igSetWindowSize(ImVec2(500,500)); igSameLine();
-        if (igButton("800x200")) igSetWindowSize(ImVec2(800,200));
-        for (int i = 0; i < 10; i++) 
-            igText("Hello, sailor! Making this line long enough for the example.");
+        if (igButton("200x200")) { igSetWindowSize(ImVec2(200, 200)); } igSameLine();
+        if (igButton("500x500")) { igSetWindowSize(ImVec2(500, 500)); } igSameLine();
+        if (igButton("800x200")) { igSetWindowSize(ImVec2(800, 200)); }
+        igPushItemWidth(200);
+        igCombo("Constraint", &type, desc.ptr, cast(int)desc.length);
+        igDragInt("Lines", &display_lines, 0.2f, 1, 100);
+        igPopItemWidth();
+        igCheckbox("Auto-resize", &auto_resize);
+        for (int i = 0; i < display_lines; i++)
+            igText("%*sHello, sailor! Making this line long enough for the example.", i * 4, "".ptr);
     }
     igEnd();
 }
@@ -2119,16 +2253,28 @@ void ShowExampleAppConstrainedResize(bool* p_open)
 // Demonstrate creating a simple static window with no decoration.
 void ShowExampleAppFixedOverlay(bool* p_open)
 {
-    igSetNextWindowPos(ImVec2(10,10));
-    if (!igBegin2("Example: Fixed Overlay", p_open, ImVec2(0,0), 0.3f, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings))
+    const float DISTANCE = 10.0f;
+    static int corner = 0;
+    ImVec2 window_pos = ImVec2((corner & 1) ? igGetIO().DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? igGetIO().DisplaySize.y - DISTANCE : DISTANCE);
+    ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+    igSetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+    igPushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.3f)); // Transparent background
+    if (igBegin("Example: Fixed Overlay", p_open, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings))
     {
+        igText("Simple overlay\nin the corner of the screen.\n(right-click to change position)");
+        igSeparator();
+        igText("Mouse Position: (%.1f,%.1f)", igGetIO().MousePos.x, igGetIO().MousePos.y);
+        if (igBeginPopupContextWindow())
+        {
+            if (igMenuItem("Top-left", null, corner == 0)) corner = 0;
+            if (igMenuItem("Top-right", null, corner == 1)) corner = 1;
+            if (igMenuItem("Bottom-left", null, corner == 2)) corner = 2;
+            if (igMenuItem("Bottom-right", null, corner == 3)) corner = 3;
+            igEndPopup();
+        }
         igEnd();
-        return;
     }
-    igText("Simple overlay\non the top-left side of the screen.");
-    igSeparator();
-    igText("Mouse Position: (%.1f,%.1f)", igGetIO().MousePos.x, igGetIO().MousePos.y);
-    igEnd();
+    igPopStyleColor();
 }
 
 // Demonstrate using "##" and "###" in identifiers to manipulate ID generation.
@@ -2335,7 +2481,7 @@ class ExampleAppConsole
         igPopStyleVar();
         igSeparator();
 
-        igBeginChild("ScrollingRegion", ImVec2(0,-igGetItemsLineHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);
+        igBeginChild("ScrollingRegion", ImVec2(0,-igGetFrameHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);
         if (igBeginPopupContextWindow())
         {
             if (igSelectable("Clear")) ClearLog();
@@ -2388,7 +2534,7 @@ class ExampleAppConsole
         }
 
         // Demonstrate keeping auto focus on the input box
-        if (igIsItemHovered() || (igIsRootWindowOrAnyChildFocused() && !igIsAnyItemActive() && !igIsMouseClicked(0)))
+        if (igIsItemHovered() || (igIsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && !igIsAnyItemActive() && !igIsMouseClicked(0)))
             igSetKeyboardFocusHere(-1); // Auto focus previous widget
 
         igEnd();
@@ -2572,7 +2718,7 @@ struct ExampleAppLog
         int old_size = Buf.size();
         va_list args;
         va_start(args, fmt);
-        Buf.appendv(fmt, args);
+        Buf.appendfv(fmt, args);
         va_end(args);
         for (int new_size = Buf.size(); old_size < new_size; old_size++)
             if (Buf[old_size] == '\n')
@@ -2667,7 +2813,7 @@ void ShowExampleAppLayout(bool* p_open)
 
         // right
         igBeginGroup();
-            igBeginChild("item view", ImVec2(0, -igGetItemsLineHeightWithSpacing())); // Leave room for 1 line below us
+            igBeginChild("item view", ImVec2(0, -igGetFrameHeightWithSpacing())); // Leave room for 1 line below us
                 igText("MyObject: %d", selected);
                 igSeparator();
                 igTextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
@@ -2703,10 +2849,10 @@ void ShowExampleAppPropertyEditor(bool* p_open)
         static void ShowDummyObject(const(char)* prefix, int uid)
         {
             igPushIDInt(uid);                      // Use object uid as identifier. Most commonly you could also use the object pointer as a base ID.
-            igAlignFirstTextHeightToWidgets();  // Text and Tree nodes are less high than regular widgets, here we add vertical spacing to make the tree lines equal high.
+            igAlignTextToFramePadding();  // Text and Tree nodes are less high than regular widgets, here we add vertical spacing to make the tree lines equal high.
             bool node_open = igTreeNodeStr("Object", "%s_%u", prefix, uid);
             igNextColumn();
-            igAlignFirstTextHeightToWidgets();
+            igAlignTextToFramePadding();
             igText("my sailor is rich");
             igNextColumn();
             if (node_open)
@@ -2721,7 +2867,7 @@ void ShowExampleAppPropertyEditor(bool* p_open)
                     }
                     else
                     {
-                        igAlignFirstTextHeightToWidgets();
+                        igAlignTextToFramePadding();
                         // Here we use a Selectable (instead of Text) to highlight on hover
                         //igText("Field_%d", i);
                         char[32] label;
@@ -2776,7 +2922,7 @@ void ShowExampleAppLongText(bool* p_open)
     if (igButton("Add 1000 lines"))
     {
         for (int i = 0; i < 1000; i++)
-            log.append("%i The quick brown fox jumps over the lazy dog\n", lines+i);
+            log.appendf("%i The quick brown fox jumps over the lazy dog\n", lines+i);
         lines += 1000;
     }
     igBeginChild("Log");
