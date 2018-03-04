@@ -36,6 +36,7 @@ import core.stdc.ctype : toupper;
 import core.stdc.stdio : printf, snprintf, sprintf;
 import core.stdc.math : cosf, sinf, sqrtf;
 import core.stdc.stdarg : va_list, va_end, va_start;
+import core.vararg;
 
 // Play it nice with Windows users. Notepad in 2015 still doesn't display text data with Unix-style \n.
 version(Windows) {
@@ -270,7 +271,7 @@ void igShowTestWindow(bool* p_open)
                 igBeginTooltip();
                 igText("I am a fancy tooltip");
                 static float[] arr = [ 0.6f, 0.1f, 1.0f, 0.5f, 0.92f, 0.1f, 0.2f ];
-                igPlotLines("Curve", arr.ptr, IM_ARRAYSIZE(arr));
+                igPlotLines("Curve", arr.ptr, cast(int)IM_ARRAYSIZE(arr));
                 igEndTooltip();
             }
 
@@ -289,7 +290,7 @@ void igShowTestWindow(bool* p_open)
 
             const(char)*[] items = [ "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII", "JJJJ", "KKKK" ];
             static int item2 = -1;
-            igCombo("combo scroll", &item2, items.ptr, IM_ARRAYSIZE(items));   // Combo using proper array. You can also pass a callback to retrieve array value, no need to create/copy an array just for that.
+            igCombo("combo scroll", &item2, items.ptr, cast(int)IM_ARRAYSIZE(items));   // Combo using proper array. You can also pass a callback to retrieve array value, no need to create/copy an array just for that.
 
             {
                 static char[128] str0 = "Hello, world!";
@@ -340,7 +341,7 @@ void igShowTestWindow(bool* p_open)
 
             const(char)*[] listbox_items = [ "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" ];
             static int listbox_item_current = 1;
-            igListBox("listbox\n(single select)", &listbox_item_current, listbox_items.ptr, IM_ARRAYSIZE(listbox_items), 4);
+            igListBox("listbox\n(single select)", &listbox_item_current, listbox_items.ptr, cast(int)IM_ARRAYSIZE(listbox_items), 4);
 
             //static int listbox_item_current2 = 2;
             //igPushItemWidth(-1);
@@ -664,7 +665,7 @@ void igShowTestWindow(bool* p_open)
             igCheckbox("Animate", &animate);
 
             static float[] arr2 = [ 0.6f, 0.1f, 1.0f, 0.5f, 0.92f, 0.1f, 0.2f ];
-            igPlotLines("Frame Times", arr2.ptr, IM_ARRAYSIZE(arr2));
+            igPlotLines("Frame Times", arr2.ptr, cast(int)IM_ARRAYSIZE(arr2));
 
             // Create a dummy array of contiguous float values to plot
             // Tip: If your float aren't contiguous but part of a structure, you can pass a pointer to your first float and the sizeof() of your structure in the Stride parameter.
@@ -677,12 +678,12 @@ void igShowTestWindow(bool* p_open)
             {
                 static float phase = 0.0f;
                 values[values_offset] = cosf(phase);
-                values_offset = (values_offset+1) % IM_ARRAYSIZE(values);
+                values_offset = (values_offset+1) % cast(int)IM_ARRAYSIZE(values);
                 phase += 0.10f*values_offset;
                 refresh_time += 1.0f/60.0f;
             }
-            igPlotLines("Lines", values.ptr, IM_ARRAYSIZE(values), values_offset, "avg 0.0", -1.0f, 1.0f, ImVec2(0,80));
-            igPlotHistogram("Histogram", arr2.ptr, IM_ARRAYSIZE(arr2), 0, null, 0.0f, 1.0f, ImVec2(0,80));
+            igPlotLines("Lines", values.ptr, cast(int)IM_ARRAYSIZE(values), values_offset, "avg 0.0", -1.0f, 1.0f, ImVec2(0,80));
+            igPlotHistogram("Histogram", arr2.ptr, cast(int)IM_ARRAYSIZE(arr2), 0, null, 0.0f, 1.0f, ImVec2(0,80));
 
             // Use functions to generate output
             // FIXME: This is rather awkward because current plot API only pass in indices. We probably want an API passing floats and user provide sample rate/count.
@@ -1071,7 +1072,7 @@ void igShowTestWindow(bool* p_open)
             igPushItemWidth(80);
             const(char)*[] items = [ "AAAA", "BBBB", "CCCC", "DDDD" ];
             static int item3 = -1;
-            igCombo("Combo", &item3, items.ptr, IM_ARRAYSIZE(items)); igSameLine();
+            igCombo("Combo", &item3, items.ptr, cast(int)IM_ARRAYSIZE(items)); igSameLine();
             igSliderFloat("X", &f5, 0.0f,5.0f); igSameLine();
             igSliderFloat("Y", &f6, 0.0f,5.0f); igSameLine();
             igSliderFloat("Z", &f7, 0.0f,5.0f);
@@ -1084,7 +1085,7 @@ void igShowTestWindow(bool* p_open)
             {
                 if (i > 0) igSameLine();
                 igPushIDInt(i);
-                igListBox("", &selection[i], items.ptr, IM_ARRAYSIZE(items));
+                igListBox("", &selection[i], items.ptr, cast(int)IM_ARRAYSIZE(items));
                 igPopID();
                 //if (igIsItemHovered()) igSetTooltip("ListBox %d hovered", i);
             }
@@ -1123,7 +1124,7 @@ void igShowTestWindow(bool* p_open)
             ImVec2 size;
             igGetItemRectSize(&size);
             const float[5] values = [ 0.5f, 0.20f, 0.80f, 0.60f, 0.25f ];
-            igPlotHistogram("##values", values.ptr, IM_ARRAYSIZE(values), 0, null, 0.0f, 1.0f, size);
+            igPlotHistogram("##values", values.ptr, cast(int)IM_ARRAYSIZE(values), 0, null, 0.0f, 1.0f, size);
 
             igButton("ACTION", ImVec2((size.x - igGetStyle().ItemSpacing.x)*0.5f,size.y));
             igSameLine();
@@ -2105,7 +2106,7 @@ void ShowExampleAppConstrainedResize(bool* p_open)
             "Custom: Always Square",
             "Custom: Fixed Steps (100)",
         ];
-        igCombo("Constraint", &type, desc.ptr, IM_ARRAYSIZE(desc)); 
+        igCombo("Constraint", &type, desc.ptr, cast(int)IM_ARRAYSIZE(desc));
         if (igButton("200x200")) igSetWindowSize(ImVec2(200,200)); igSameLine();
         if (igButton("500x500")) igSetWindowSize(ImVec2(500,500)); igSameLine();
         if (igButton("800x200")) igSetWindowSize(ImVec2(800,200));
@@ -2244,7 +2245,7 @@ void ShowExampleAppCustomRendering(bool* p_open)
                 points ~= mouse_pos_in_canvas;
                 adding_line = true;
             }
-            if (igIsMouseClicked(1) && !points.empty())
+            if (igIsMouseClicked(1) && points.length)
             {
                 adding_line = adding_preview = false;
                 points = points[0..$-2];
@@ -2399,7 +2400,7 @@ class ExampleAppConsole
 
         // Insert into history. First find match and delete it so it can be pushed to the back. This isn't trying to be smart or optimal.
         HistoryPos = -1;
-        for (int i = History.length - 1; i >= 0; i--)
+        for (int i = cast(int)History.length - 1; i >= 0; i--)
             if (icmp(History[i], command_line) == 0)
             {
                 History = History.remove(i);
@@ -2420,7 +2421,7 @@ class ExampleAppConsole
         }
         else if (icmp(command_line, "HISTORY") == 0)
         {
-            for (int i = History.length >= 10 ? History.length - 10 : 0; i < History.length; i++)
+            for (int i = History.length >= 10 ? cast(int)History.length - 10 : 0; i < History.length; i++)
                 AddLog("%3d: %s\n", i, History[i]);
         }
         else
@@ -2517,7 +2518,7 @@ class ExampleAppConsole
                     if (data.EventKey == ImGuiKey_UpArrow)
                     {
                         if (HistoryPos == -1)
-                            HistoryPos = History.length - 1;
+                            HistoryPos = cast(int)History.length - 1;
                         else if (HistoryPos > 0)
                             HistoryPos--;
                     }
