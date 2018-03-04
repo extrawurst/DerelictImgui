@@ -509,34 +509,37 @@ extern(C) @nogc nothrow:
 // Helper: Text buffer for logging/accumulating text
 struct ImGuiTextBufferWrapper
 {
-extern(C) nothrow:
+extern(C):
     import derelict.imgui.funcs;
     import core.stdc.stdarg: va_list, va_start, va_end;
     private ImGuiTextBuffer* buffer = null;
 
-    this(this) {
-        auto s = ImGuiTextBuffer_c_str(buffer);
-        buffer = ImGuiTextBuffer_Create();
-        ImGuiTextBuffer_append(buffer, "%s", s);
+    nothrow {
+        this(this) {
+            auto s = ImGuiTextBuffer_c_str(buffer);
+            buffer = ImGuiTextBuffer_Create();
+            ImGuiTextBuffer_append(buffer, "%s", s);
+        }
+        ~this() { if(buffer) ImGuiTextBuffer_Destroy(buffer); }
+        void init() { if(!buffer) buffer = ImGuiTextBuffer_Create(); }
+        char opIndex(int i) { if(!buffer) return 0; return ImGuiTextBuffer_index(buffer, i); }
+        const(char)* begin() const { if(!buffer) return ""; return ImGuiTextBuffer_begin(buffer); }
+        const(char)* end() const { if(!buffer) return begin(); return ImGuiTextBuffer_end(buffer); }
+        int size() const { if(!buffer) return 0; return ImGuiTextBuffer_size(buffer); }
+        bool empty() { if(!buffer) return true; return ImGuiTextBuffer_empty(buffer); }
+        void clear() { init(); return ImGuiTextBuffer_clear(buffer); }
+        const(char)* c_str() const { if(!buffer) return begin(); return ImGuiTextBuffer_c_str(buffer); }
+        void appendv(const(char)* fmt, va_list args) {
+            init();
+            return ImGuiTextBuffer_appendv(buffer, fmt, args);
+        }
     }
-    ~this() { if(buffer) ImGuiTextBuffer_Destroy(buffer); }
-    void init() { if(!buffer) buffer = ImGuiTextBuffer_Create(); }
-    char opIndex(int i) { if(!buffer) return 0; return ImGuiTextBuffer_index(buffer, i); }
-    const(char)* begin() const { if(!buffer) return ""; return ImGuiTextBuffer_begin(buffer); }
-    const(char)* end() const { if(!buffer) return begin(); return ImGuiTextBuffer_end(buffer); }
-    int size() const { if(!buffer) return 0; return ImGuiTextBuffer_size(buffer); }
-    bool empty() { if(!buffer) return true; return ImGuiTextBuffer_empty(buffer); }
-    void clear() { init(); return ImGuiTextBuffer_clear(buffer); }
-    const(char)* c_str() const { if(!buffer) return begin(); return ImGuiTextBuffer_c_str(buffer); }
+
     void append(const(char)* fmt, ...) {
         va_list args;
         va_start(args, fmt);
         appendv(fmt, args);
         va_end(args);
-    }
-    void appendv(const(char)* fmt, va_list args) {
-        init();
-        return ImGuiTextBuffer_appendv(buffer, fmt, args);
     }
 }
 

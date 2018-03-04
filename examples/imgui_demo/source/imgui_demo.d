@@ -2245,7 +2245,7 @@ void ShowExampleAppCustomRendering(bool* p_open)
                 points ~= mouse_pos_in_canvas;
                 adding_line = true;
             }
-            if (igIsMouseClicked(1) && !points.empty())
+            if (igIsMouseClicked(1) && points.length)
             {
                 adding_line = adding_preview = false;
                 points = points[0..$-2];
